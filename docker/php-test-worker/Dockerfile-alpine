@@ -1,0 +1,27 @@
+FROM php:5.6.27-alpine
+RUN apk update
+RUN apk add php5-pear=5.6.27-r0
+
+RUN apk add autoconf=2.69-r0
+RUN apk add alpine-sdk=0.4-r3
+
+RUN apk add php5-dev=5.6.27-r0
+RUN pecl install gearman-1.1.2
+
+RUN apk add coreutils && \\
+        alpine-sdk \
+        autoconf \
+        automake
+RUN apk add boost=1.60.0-r2 boost-iostreams=1.60.0-r2 boost-random=1.60.0-r2 boost-dev=1.60.0-r2 boost-serialization=1.60.0-r2 boost-math=1.60.0-r2 boost-filesystem=1.60.0-r2 boost-python3=1.60.0-r2 boost-system=1.60.0-r2 boost-graph=1.60.0-r2 boost-regex=1.60.0-r2 boost-program_options=1.60.0-r2 boost-signals=1.60.0-r2 boost-wave=1.60.0-r2 boost-doc=1.60.0-r2 boost-python=1.60.0-r2 boost-wserialization=1.60.0-r2 boost-thread=1.60.0-r2 boost-prg_exec_monitor=1.60.0-r2 boost-date_time=1.60.0-r2 boost-unit_test_framework=1.60.0-r2
+RUN apk add boost-dev=1.60.0-r2 gperf=3.0.4-r libevent=2.0.22-r0 libuuid=2.28-r3 cloog=0.18.4-r0 boost-program_options=1.60.0-r2
+
+RUN cd /tmp/ && \\
+        wget https://github.com/gearman/gearmand/releases/download/1.1.13/gearmand-1.1.13.tar.gz && \\
+        tar xzvf gearmand-1.1.13.tar.gz && \\
+        cd gearmand-1.1.13/ && \\
+        ./configure && \\
+        make && \\
+        make install
+RUN echo "extension=\"gearman.so\"" > /usr/local/etc/php/conf.d/gearman.ini
+
+ENTRYPOINT ["/bin/sh"]

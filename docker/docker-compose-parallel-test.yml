@@ -1,0 +1,23 @@
+version: '2'
+services:
+      gearman:
+        image: kendu/gearman
+        volumes_from:
+          - opencatsdata
+
+      php-test-worker:
+        build: ./php-test-worker/
+        volumes_from:
+          - opencatsdata
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+
+      opencatsdata:
+        container_name: opencats_test_data
+        image: busybox
+        volumes:
+          - ..:/var/www/public
+          - ../test/config.php:/var/www/public/config.php
+          - ../test/INSTALL_BLOCK:/var/www/public/INSTALL_BLOCK
+        command: "true"
+
