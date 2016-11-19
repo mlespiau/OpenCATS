@@ -62,17 +62,27 @@ class CandidatesUI extends UserInterface
     const TRUNCATE_KEYSKILLS = 30;
 
 
-    public function __construct()
+    public function __construct($moduleName, $moduleDirectory, $moduleTabText, $subTabs, $authenticationRequired)
     {
         parent::__construct();
+        $this->_moduleName = $moduleName;
+        $this->_moduleDirectory = $moduleDirectory;
+        $this->_moduleTabText = $moduleTabText;
+        $this->_subTabs = $subTabs;
+        $this->_authenticationRequired = $authenticationRequired;
+    }
 
-        $this->_authenticationRequired = true;
-        $this->_moduleDirectory = 'candidates';
-        $this->_moduleName = 'candidates';
-        $this->_moduleTabText = 'Candidates';
-        $this->_subTabs = array(
-            'Add Candidate'     => CATSUtility::getIndexName() . '?m=candidates&amp;a=add*al=' . ACCESS_LEVEL_EDIT,
-            'Search Candidates' => CATSUtility::getIndexName() . '?m=candidates&amp;a=search'
+    public function createDefault()
+    {
+        return new self(
+            'candidates',
+            'candidates',
+            'Candidates',
+            array(
+                'Add Candidate'     => CATSUtility::getIndexName() . '?m=candidates&amp;a=add*al=' . ACCESS_LEVEL_EDIT,
+                'Search Candidates' => CATSUtility::getIndexName() . '?m=candidates&amp;a=search'
+            ),
+            true
         );
     }
 
@@ -235,7 +245,6 @@ class CandidatesUI extends UserInterface
             case 'show_questionnaire':
                 $this->onShowQuestionnaire();
                 break;
-
             /* Main candidates page. */
             case 'listByView':
             default:

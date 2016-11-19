@@ -1386,7 +1386,7 @@ class JobOrdersUI extends UserInterface
         if (!eval(Hooks::get('JO_ON_ADD_CANDIDATE_MODAL'))) return;
 
         include_once('./modules/candidates/CandidatesUI.php');
-        $candidatesUI = new CandidatesUI();
+        $candidatesUI = CandidatesUI::createDefault();
 
         if (is_array($mp = $candidatesUI->checkParsingFunctions()))
         {
@@ -1540,7 +1540,7 @@ class JobOrdersUI extends UserInterface
         if (!eval(Hooks::get('JO_ON_ADD_ACTIVITY_CHANGE_STATUS'))) return;
 
         include_once('./modules/candidates/CandidatesUI.php');
-        $candidatesUI = new CandidatesUI();
+        $candidatesUI = CandidatesUI::createDefault();
         $candidatesUI->publicAddActivityChangeStatus(
             true, $regardingID, $this->_moduleDirectory
         );
