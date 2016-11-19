@@ -30,6 +30,8 @@
  * @version    $Id: ModuleUtility.php 3774 2007-11-30 18:17:49Z brian $
  */
 
+include_once('./vendor/autoload.php');
+use Symfony\Component\HttpFoundation\Request;
 /**
  *  Module Utility Library
  *  @package    CATS
@@ -76,7 +78,8 @@ class ModuleUtility
         if (!eval(Hooks::getInstance()->get('LOAD_MODULE'))) return;
 
         $module = self::createModule($moduleClass);
-        $module->handleRequest();
+        $request = Request::createFromGlobals();
+        $module->handleRequest($request);
     }
 
     /**

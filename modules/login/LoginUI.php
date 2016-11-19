@@ -45,9 +45,9 @@ class LoginUI extends UserInterface
         $this->_moduleDirectory = 'login';
     }
 
-    public function handleRequest()
+    public function handleRequest(Request $request)
     {
-        $action = $this->getAction();
+        $action = $this->getAction($request);
         switch ($action)
         {
             case 'attemptLogin':

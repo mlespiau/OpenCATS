@@ -48,6 +48,9 @@ include_once('./lib/License.php');
 include_once('./lib/ParseUtility.php');
 include_once('./lib/Questionnaire.php');
 include_once('./lib/Tags.php');
+include_once('./vendor/autoload.php');
+
+use Symfony\Component\HttpFoundation\Request;
 
 class CandidatesUI extends UserInterface
 {
@@ -97,12 +100,12 @@ class CandidatesUI extends UserInterface
     }
 
 
-    public function handleRequest()
+    public function handleRequest(Request $request)
     {
         // FIXME: Using hook for validating permissions, it should be handled by ACL code
         if (!eval($this->_hooks->get('CANDIDATES_HANDLE_REQUEST'))) return;
         
-        $action = $this->getAction();
+        $action = $this->getAction($request);
         switch ($action)
         {
 

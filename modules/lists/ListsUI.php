@@ -60,9 +60,9 @@ class ListsUI extends UserInterface
     }
 
 
-    public function handleRequest()
+    public function handleRequest(Request $request)
     {
-        $action = $this->getAction();
+        $action = $this->getAction($request);
 
         if (!eval(Hooks::getInstance()->get('LISTS_HANDLE_REQUEST'))) return;
 

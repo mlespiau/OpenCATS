@@ -49,11 +49,11 @@ class ToolbarUI extends UserInterface
         $this->_moduleDirectory = 'toolbar';
     }
 
-    public function handleRequest()
+    public function handleRequest(Request $request)
     {
         //$this->authenticate();
 
-        $action = $this->getAction();
+        $action = $this->getAction($request);
 
         switch ($action)
         {

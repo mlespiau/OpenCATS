@@ -234,9 +234,9 @@ class SettingsUI extends UserInterface
         $this->_template->display('./modules/settings/tags.tpl');
 	}
 
-    public function handleRequest()
+    public function handleRequest(Request $request)
     {
-        $action = $this->getAction();
+        $action = $this->getAction($request);
 
         if (!eval(Hooks::getInstance()->get('SETTINGS_HANDLE_REQUEST'))) return;
 

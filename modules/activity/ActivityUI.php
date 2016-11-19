@@ -54,9 +54,9 @@ class ActivityUI extends UserInterface
         $this->_moduleTabText = 'Activities';
     }
 
-    public function handleRequest()
+    public function handleRequest(Request $request)
     {
-        $action = $this->getAction();
+        $action = $this->getAction($request);
 
         if (!eval(Hooks::getInstance()->get('ACTIVITY_HANDLE_REQUEST'))) return;
 

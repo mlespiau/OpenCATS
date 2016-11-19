@@ -70,9 +70,9 @@ class GraphsUI extends UserInterface
     }
 
 
-    public function handleRequest()
+    public function handleRequest(Request $request)
     {
-        $action = $this->getAction();
+        $action = $this->getAction($request);
 
         //These graphs do not require a login.
         switch ($action)

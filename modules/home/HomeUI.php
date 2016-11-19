@@ -45,9 +45,9 @@ class HomeUI extends UserInterface
     }
 
 
-    public function handleRequest()
+    public function handleRequest(Request $request)
     {
-        $action = $this->getAction();
+        $action = $this->getAction($request);
 
         if (!eval(Hooks::getInstance()->get('HOME_HANDLE_REQUEST'))) return;
 

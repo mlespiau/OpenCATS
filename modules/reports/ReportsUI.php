@@ -48,11 +48,11 @@ class ReportsUI extends UserInterface
     }
 
 
-    public function handleRequest()
+    public function handleRequest(Request $request)
     {
         if (!eval(Hooks::getInstance()->get('REPORTS_HANDLE_REQUEST'))) return;
 
-        $action = $this->getAction();
+        $action = $this->getAction($request);
         switch ($action)
         {
             case 'graphView':

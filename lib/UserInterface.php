@@ -35,7 +35,7 @@
  *	@package    CATS
  *	@subpackage Library
  */
-class UserInterface
+abstract class UserInterface
 {
     protected $_moduleName = '';
     protected $_moduleTabText = '';
@@ -72,6 +72,8 @@ class UserInterface
             $this->_template->assign('accessLevel', $this->_accessLevel);
         }
     }
+
+    abstract public function handleRequest(Request $request);
 
     /**
      * Returns this module's name.
@@ -197,14 +199,9 @@ class UserInterface
      *
      * @return string action name
      */
-    protected function getAction()
+    protected function getAction(Request $request)
     {
-        if (isset($_GET['a']) && !empty($_GET['a']))
-        {
-            return $_GET['a'];
-        }
-
-        return '';
+        return $request->get('a');
     }
 
     /**
