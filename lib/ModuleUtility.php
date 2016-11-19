@@ -73,7 +73,7 @@ class ModuleUtility
             . $moduleClass . '.php'
         );
 
-        if (!eval(Hooks::get('LOAD_MODULE'))) return;
+        if (!eval(Hooks::getInstance()->get('LOAD_MODULE'))) return;
 
         $module = self::createModule($moduleClass);
         $module->handleRequest();
@@ -381,8 +381,8 @@ class ModuleUtility
      */
     private static function _sortModules($a, $b)
     {
-        if (!eval(Hooks::get('SORT_MODULES_RETURN_POS'))) return 1;
-        if (!eval(Hooks::get('SORT_MODULES_RETURN_NEG'))) return -1;
+        if (!eval(Hooks::getInstance()->get('SORT_MODULES_RETURN_POS'))) return 1;
+        if (!eval(Hooks::getInstance()->get('SORT_MODULES_RETURN_NEG'))) return -1;
 
         if (isset($GLOBALS['coreModules'][$a]))
         {

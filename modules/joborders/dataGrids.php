@@ -66,7 +66,7 @@ class JobOrdersListByViewDataGrid extends JobOrdersDataGrid
             array('name' => 'Owner', 'width' => 55),
         );
    
-        if (!eval(Hooks::get('JOBORDERS_DATAGRID_DEFAULTS'))) return;
+        if (!eval(Hooks::getInstance()->get('JOBORDERS_DATAGRID_DEFAULTS'))) return;
    
         parent::__construct("joborders:JobOrdersListByViewDataGrid", 
                              $siteID, $parameters, $misc
@@ -125,7 +125,7 @@ class joborderSavedListByViewDataGrid extends JobOrdersDataGrid
             array('name' => 'Owner', 'width' => 55),
         );
    
-        if (!eval(Hooks::get('JOBORDERS_DATAGRID_DEFAULTS'))) return;
+        if (!eval(Hooks::getInstance()->get('JOBORDERS_DATAGRID_DEFAULTS'))) return;
    
         parent::__construct("joborders:joborderSavedListByViewDataGrid", 
                              $siteID, $parameters, $misc

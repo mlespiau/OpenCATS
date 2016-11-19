@@ -117,7 +117,7 @@ class ExportUI extends UserInterface
         $export = new Export($dataItemType, $IDs, ',', $this->_siteID);
         $output = $export->getFormattedOutput();
 
-        if (!eval(Hooks::get('EXPORT'))) return;
+        if (!eval(Hooks::getInstance()->get('EXPORT'))) return;
 
         header('Content-Disposition: attachment; filename="' . $filename . '"');
         header('Content-Length: ' . strlen($output));

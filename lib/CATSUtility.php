@@ -234,7 +234,7 @@ class CATSUtility
             . str_replace('\\', '/', dirname($_SERVER['PHP_SELF'])) . '/';
 
         // This breaks stuff. FIXME http://www.catsone.com/bugs/?do=details&task_id=72
-        // if (!eval(Hooks::get('CATS_UTILITY_GET_INDEX_URL'))) return;
+        // if (!eval(Hooks::getInstance()->get('CATS_UTILITY_GET_INDEX_URL'))) return;
 
         $absoluteURI .= $relativePath;
 

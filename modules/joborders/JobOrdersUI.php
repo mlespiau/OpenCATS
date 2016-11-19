@@ -91,7 +91,7 @@ class JobOrdersUI extends UserInterface
     {
         $action = $this->getAction();
 
-        if (!eval(Hooks::get('JO_HANDLE_REQUEST'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_HANDLE_REQUEST'))) return;
 
         switch ($action)
         {
@@ -267,7 +267,7 @@ class JobOrdersUI extends UserInterface
         $this->_template->assign('userID', $_SESSION['CATS']->getUserID());
         $this->_template->assign('errMessage', $errMessage);
 
-        if (!eval(Hooks::get('JO_LIST_BY_VIEW'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_LIST_BY_VIEW'))) return;
 
         $jl = new JobOrders($this->_siteID);
         $this->_template->assign('totalJobOrders', $jl->getCount());
@@ -453,7 +453,7 @@ class JobOrdersUI extends UserInterface
         $this->_template->assign('privledgedUser', $privledgedUser);
         $this->_template->assign('sessionCookie', $_SESSION['CATS']->getCookie());
 
-        if (!eval(Hooks::get('JO_SHOW'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_SHOW'))) return;
 
         $this->_template->display('./modules/joborders/Show.tpl');
     }
@@ -475,7 +475,7 @@ class JobOrdersUI extends UserInterface
         $this->_template->assign('isModal', true);
         $this->_template->assign('rs', $rs);
 
-        if (!eval(Hooks::get('JO_ADD_MODAL'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ADD_MODAL'))) return;
 
         $this->_template->display('./modules/joborders/AddModalPopup.tpl');
     }
@@ -611,7 +611,7 @@ class JobOrdersUI extends UserInterface
         $this->_template->assign('isHrMode', $_SESSION['CATS']->isHrMode());
         $this->_template->assign('sessionCookie', $_SESSION['CATS']->getCookie());
 
-        if (!eval(Hooks::get('JO_ADD'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ADD'))) return;
 
         $this->_template->display('./modules/joborders/Add.tpl');
     }
@@ -719,7 +719,7 @@ class JobOrdersUI extends UserInterface
             CommonErrors::fatal(COMMONERROR_MISSINGFIELDS, $this, 'Required fields are missing.');
         }
 
-        if (!eval(Hooks::get('JO_ON_ADD'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ON_ADD'))) return;
 
         $jobOrders = new JobOrders($this->_siteID);
         $jobOrderID = $jobOrders->add(
@@ -737,7 +737,7 @@ class JobOrdersUI extends UserInterface
         /* Update extra fields. */
         $jobOrders->extraFields->setValuesOnEdit($jobOrderID);
 
-        if (!eval(Hooks::get('JO_ON_ADD_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ON_ADD_POST'))) return;
 
         CATSUtility::transferRelativeURI(
             'm=joborders&a=show&jobOrderID=' . $jobOrderID
@@ -885,7 +885,7 @@ class JobOrdersUI extends UserInterface
         $this->_template->assign('isHrMode', $_SESSION['CATS']->isHrMode());
         $this->_template->assign('sessionCookie', $_SESSION['CATS']->getCookie());
 
-        if (!eval(Hooks::get('JO_EDIT'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_EDIT'))) return;
 
         $this->_template->display('./modules/joborders/Edit.tpl');
     }
@@ -1071,7 +1071,7 @@ class JobOrdersUI extends UserInterface
             CommonErrors::fatal(COMMONERROR_MISSINGFIELDS, $this, 'Required fields are missing.');
         }
 
-        if (!eval(Hooks::get('JO_ON_EDIT_PRE'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ON_EDIT_PRE'))) return;
 
         if (!$jobOrders->update($jobOrderID, $title, $companyJobID, $companyID, $contactID,
             $description, $notes, $duration, $maxRate, $type, $isHot,
@@ -1084,7 +1084,7 @@ class JobOrdersUI extends UserInterface
         /* Update extra fields. */
         $jobOrders->extraFields->setValuesOnEdit($jobOrderID);
 
-        if (!eval(Hooks::get('JO_ON_EDIT_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ON_EDIT_POST'))) return;
 
         CATSUtility::transferRelativeURI(
             'm=joborders&a=show&jobOrderID=' . $jobOrderID
@@ -1109,7 +1109,7 @@ class JobOrdersUI extends UserInterface
 
         $jobOrderID = $_GET['jobOrderID'];
 
-        if (!eval(Hooks::get('JO_ON_DELETE_PRE'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ON_DELETE_PRE'))) return;
 
         $joborders = new JobOrders($this->_siteID);
         $joborders->delete($jobOrderID);
@@ -1119,7 +1119,7 @@ class JobOrdersUI extends UserInterface
             DATA_ITEM_JOBORDER, $jobOrderID
         );
 
-        if (!eval(Hooks::get('JO_ON_DELETE_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ON_DELETE_POST'))) return;
 
         CATSUtility::transferRelativeURI('m=joborders&a=listByView');
     }
@@ -1143,7 +1143,7 @@ class JobOrdersUI extends UserInterface
 
         $jobOrderID = $_GET['jobOrderID'];
 
-        if (!eval(Hooks::get('JO_CONSIDER_CANDIDATE_SEARCH'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_CONSIDER_CANDIDATE_SEARCH'))) return;
 
         $this->_template->assign('isFinishedMode', false);
         $this->_template->assign('isResultsMode', false);
@@ -1226,7 +1226,7 @@ class JobOrdersUI extends UserInterface
         $this->_template->assign('isResultsMode', true);
         $this->_template->assign('jobOrderID', $jobOrderID);
 
-        if (!eval(Hooks::get('JO_ON_CONSIDER_CANDIDATE_SEARCH'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ON_CONSIDER_CANDIDATE_SEARCH'))) return;
 
         $this->_template->display('./modules/joborders/ConsiderSearchModal.tpl');
     }
@@ -1257,7 +1257,7 @@ class JobOrdersUI extends UserInterface
         $jobOrderID  = $_GET['jobOrderID'];
         $candidateID = $_GET['candidateID'];
 
-        if (!eval(Hooks::get('JO_ON_ADD_PIPELINE'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ON_ADD_PIPELINE'))) return;
 
         $pipelines = new Pipelines($this->_siteID);
         if (!$pipelines->add($candidateID, $jobOrderID, $this->_userID))
@@ -1279,7 +1279,7 @@ class JobOrdersUI extends UserInterface
         $this->_template->assign('jobOrderID', $jobOrderID);
         $this->_template->assign('candidateID', $candidateID);
 
-        if (!eval(Hooks::get('JO_ON_ADD_PIPELINE_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ON_ADD_PIPELINE_POST'))) return;
 
         $this->_template->display(
             './modules/joborders/ConsiderSearchModal.tpl'
@@ -1351,7 +1351,7 @@ class JobOrdersUI extends UserInterface
         $this->_template->assign('associatedFileResume', false);
         $this->_template->assign('EEOSettingsRS', $EEOSettingsRS);
 
-        if (!eval(Hooks::get('JO_ADD_CANDIDATE_MODAL'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ADD_CANDIDATE_MODAL'))) return;
 
         /* REMEMBER TO ALSO UPDATE CandidatesUI::add() IF APPLICABLE. */
         $this->_template->display('./modules/candidates/Add.tpl');
@@ -1383,7 +1383,7 @@ class JobOrdersUI extends UserInterface
             $jobOrderID
         );
 
-        if (!eval(Hooks::get('JO_ON_ADD_CANDIDATE_MODAL'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ON_ADD_CANDIDATE_MODAL'))) return;
 
         include_once('./modules/candidates/CandidatesUI.php');
         $candidatesUI = CandidatesUI::createDefault();
@@ -1515,7 +1515,7 @@ class JobOrdersUI extends UserInterface
         $this->_template->assign('isFinishedMode', false);
         $this->_template->assign('isJobOrdersMode', true);
 
-        if (!eval(Hooks::get('JO_ADD_ACTIVITY_CHANGE_STATUS'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ADD_ACTIVITY_CHANGE_STATUS'))) return;
 
         $this->_template->display(
             './modules/candidates/AddActivityChangeStatusModal.tpl'
@@ -1537,7 +1537,7 @@ class JobOrdersUI extends UserInterface
 
         $regardingID = $_POST['regardingID'];
 
-        if (!eval(Hooks::get('JO_ON_ADD_ACTIVITY_CHANGE_STATUS'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ON_ADD_ACTIVITY_CHANGE_STATUS'))) return;
 
         include_once('./modules/candidates/CandidatesUI.php');
         $candidatesUI = CandidatesUI::createDefault();
@@ -1572,12 +1572,12 @@ class JobOrdersUI extends UserInterface
         $candidateID = $_GET['candidateID'];
         $jobOrderID  = $_GET['jobOrderID'];
 
-        if (!eval(Hooks::get('JO_ON_REMOVE_PIPELINE'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ON_REMOVE_PIPELINE'))) return;
 
         $pipelines = new Pipelines($this->_siteID);
         $pipelines->remove($candidateID, $jobOrderID);
 
-        if (!eval(Hooks::get('JO_ON_REMOVE_PIPELINE_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ON_REMOVE_PIPELINE_POST'))) return;
 
         CATSUtility::transferRelativeURI(
             'm=joborders&a=show&jobOrderID=' . $jobOrderID
@@ -1601,7 +1601,7 @@ class JobOrdersUI extends UserInterface
         $this->_template->assign('wildCardString_jobTitle', '');
         $this->_template->assign('mode', '');
 
-        if (!eval(Hooks::get('JO_SEARCH'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_SEARCH'))) return;
 
         $this->_template->display('./modules/joborders/Search.tpl');
     }
@@ -1747,7 +1747,7 @@ class JobOrdersUI extends UserInterface
         $this->_template->assign('isResultsMode', true);
         $this->_template->assign('mode', $mode);
 
-        if (!eval(Hooks::get('JO_ON_SEARCH'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ON_SEARCH'))) return;
 
         $this->_template->display('./modules/joborders/Search.tpl');
     }
@@ -1774,7 +1774,7 @@ class JobOrdersUI extends UserInterface
         $this->_template->assign('isFinishedMode', false);
         $this->_template->assign('jobOrderID', $jobOrderID);
 
-        if (!eval(Hooks::get('JO_CREATE_ATTACHMENT'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_CREATE_ATTACHMENT'))) return;
 
         $this->_template->display(
             './modules/joborders/CreateAttachmentModal.tpl'
@@ -1799,7 +1799,7 @@ class JobOrdersUI extends UserInterface
 
         $jobOrderID = $_POST['jobOrderID'];
 
-        if (!eval(Hooks::get('JO_ON_CREATE_ATTACHMENT_PRE'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ON_CREATE_ATTACHMENT_PRE'))) return;
 
         $attachmentCreator = new AttachmentCreator($this->_siteID);
         $attachmentCreator->createFromUpload(
@@ -1811,7 +1811,7 @@ class JobOrdersUI extends UserInterface
             CommonErrors::fatalModal(COMMONERROR_FILEERROR, $this, $attachmentCreator->getError());
         }
 
-        if (!eval(Hooks::get('JO_ON_CREATE_ATTACHMENT_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ON_CREATE_ATTACHMENT_POST'))) return;
 
         $this->_template->assign('isFinishedMode', true);
         $this->_template->assign('jobOrderID', $jobOrderID);
@@ -1846,12 +1846,12 @@ class JobOrdersUI extends UserInterface
         $jobOrderID  = $_GET['jobOrderID'];
         $attachmentID = $_GET['attachmentID'];
 
-        if (!eval(Hooks::get('JO_ON_DELETE_ATTACHMENT_PRE'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ON_DELETE_ATTACHMENT_PRE'))) return;
 
         $attachments = new Attachments($this->_siteID);
         $attachments->delete($attachmentID);
 
-        if (!eval(Hooks::get('JO_ON_DELETE_ATTACHMENT_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_ON_DELETE_ATTACHMENT_POST'))) return;
 
         CATSUtility::transferRelativeURI(
             'm=joborders&a=show&jobOrderID=' . $jobOrderID
@@ -1979,7 +1979,7 @@ class JobOrdersUI extends UserInterface
             }
         }
 
-        if (!eval(Hooks::get('JO_FORMAT_LIST_BY_VIEW_RESULTS'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_FORMAT_LIST_BY_VIEW_RESULTS'))) return;
 
         return $resultSet;
     }

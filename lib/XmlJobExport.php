@@ -107,7 +107,7 @@ class XmlTemplate
      */
     public static function submitXMLFeeds($siteID)
     {
-        if (!eval(Hooks::get('XML_SUBMIT_FEEDS_TO_QUEUE'))) return;
+        if (!eval(Hooks::getInstance()->get('XML_SUBMIT_FEEDS_TO_QUEUE'))) return;
     }
 
     /**

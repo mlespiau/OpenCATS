@@ -163,7 +163,7 @@ function printSortLink($field, $delimiter = "'", $changeDirection = true)
     }
 }
 
-if (!eval(Hooks::get('JO_AJAX_GET_PIPELINE'))) return;
+if (!eval(Hooks::getInstance()->get('JO_AJAX_GET_PIPELINE'))) return;
 
 ?>
 

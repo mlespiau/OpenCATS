@@ -257,7 +257,7 @@ if ($action == 'backup')
         
         $attachmentID = $row['attachment_id'];
         
-        if (!eval(Hooks::get('FORCE_ATTACHMENT_LOCAL'))) return;
+        if (!eval(Hooks::getInstance()->get('FORCE_ATTACHMENT_LOCAL'))) return;
         
         $status = $zipFileCreator->addFileFromDisk(
             $relativePath, $relativePath

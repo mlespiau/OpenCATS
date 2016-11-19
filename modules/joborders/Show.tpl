@@ -130,7 +130,7 @@
                               </tr>
                             <?php endfor; ?>
 
-                            <?php eval(Hooks::get('JO_TEMPLATE_SHOW_BOTTOM_OF_LEFT')); ?>
+                            <?php eval(Hooks::getInstance()->get('JO_TEMPLATE_SHOW_BOTTOM_OF_LEFT')); ?>
 
                         </table>
                     </td>
@@ -194,7 +194,7 @@
                                 </tr>
                             <?php endfor; ?>
 
-                            <?php eval(Hooks::get('JO_TEMPLATE_SHOW_BOTTOM_OF_RIGHT')); ?>
+                            <?php eval(Hooks::getInstance()->get('JO_TEMPLATE_SHOW_BOTTOM_OF_RIGHT')); ?>
                         </table>
                     </td>
                 </tr>

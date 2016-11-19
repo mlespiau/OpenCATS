@@ -58,7 +58,7 @@ class ActivityUI extends UserInterface
     {
         $action = $this->getAction();
 
-        if (!eval(Hooks::get('ACTIVITY_HANDLE_REQUEST'))) return;
+        if (!eval(Hooks::getInstance()->get('ACTIVITY_HANDLE_REQUEST'))) return;
 
         switch ($action)
         {
@@ -108,7 +108,7 @@ class ActivityUI extends UserInterface
 
         $quickLinks = $this->getQuickLinks();
 
-        if (!eval(Hooks::get('ACTIVITY_LIST_BY_VIEW_DG'))) return;
+        if (!eval(Hooks::getInstance()->get('ACTIVITY_LIST_BY_VIEW_DG'))) return;
 
         $this->_template->assign('quickLinks', $quickLinks);
         $this->_template->assign('active', $this);
@@ -126,7 +126,7 @@ class ActivityUI extends UserInterface
      */
     private function search()
     {
-        if (!eval(Hooks::get('ACTIVITY_SEARCH'))) return;
+        if (!eval(Hooks::getInstance()->get('ACTIVITY_SEARCH'))) return;
 
         $this->_template->assign('isResultsMode', false);
         $this->_template->assign('wildCardString', '');
@@ -253,7 +253,7 @@ class ActivityUI extends UserInterface
 
         $quickLinks = $this->getQuickLinks();
 
-        if (!eval(Hooks::get('ACTIVITY_LIST_BY_VIEW_DG'))) return;
+        if (!eval(Hooks::getInstance()->get('ACTIVITY_LIST_BY_VIEW_DG'))) return;
 
         $this->_template->assign('quickLinks', $quickLinks);
         $this->_template->assign('active', $this);

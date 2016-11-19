@@ -52,7 +52,7 @@ class AttachmentsUI extends UserInterface
     {
         $action = $this->getAction();
 
-        if (!eval(Hooks::get('ATTACHMENTS_HANDLE_REQUEST'))) return;
+        if (!eval(Hooks::getInstance()->get('ATTACHMENTS_HANDLE_REQUEST'))) return;
 
         switch ($action)
         {
@@ -107,7 +107,7 @@ class AttachmentsUI extends UserInterface
         }
         
         // FIXME: Stream file rather than redirect? (depends on download preparer working).
-        if (!eval(Hooks::get('ATTACHMENT_RETRIEVAL'))) return;
+        if (!eval(Hooks::getInstance()->get('ATTACHMENT_RETRIEVAL'))) return;
 
         /* Determine MIME content type of the file. */
         $contentType = Attachments::fileMimeType($fileName);

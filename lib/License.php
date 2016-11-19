@@ -709,7 +709,7 @@ class LicenseUtility
     {
         $license = new License();
 
-        //if (!eval(Hooks::get('PARSER_ENABLE_CHECK'))) return;
+        //if (!eval(Hooks::getInstance()->get('PARSER_ENABLE_CHECK'))) return;
         if (!defined('PARSING_ENABLED') || !PARSING_ENABLED)
         {
             return true;

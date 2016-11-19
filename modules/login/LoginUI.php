@@ -129,7 +129,7 @@ class LoginUI extends UserInterface
 
         $this->_template->assign('aspMode', false);
 
-        if (!eval(Hooks::get('SHOW_LOGIN_FORM_PRE'))) return;
+        if (!eval(Hooks::getInstance()->get('SHOW_LOGIN_FORM_PRE'))) return;
 
         /* If a site was specified, get the site's full name from its
          * unixname.
@@ -155,7 +155,7 @@ class LoginUI extends UserInterface
 
         $this->_template->assign('aspMode', false);
 
-        if (!eval(Hooks::get('SHOW_LOGIN_FORM_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('SHOW_LOGIN_FORM_POST'))) return;
 
         /* Display the login page. */
         $this->_template->assign('message', $message);
@@ -165,7 +165,7 @@ class LoginUI extends UserInterface
         $this->_template->assign('siteNameFull', $siteNameFull);
         $this->_template->assign('dateString', date('l, F jS, Y'));
 
-        if (!eval(Hooks::get('SHOW_LOGIN_FORM_POST_2'))) return;
+        if (!eval(Hooks::getInstance()->get('SHOW_LOGIN_FORM_POST_2'))) return;
 
         if (ModuleUtility::moduleExists("asp"))
                 $this->_template->display('./modules/asp/AspLogin.tpl');
@@ -175,7 +175,7 @@ class LoginUI extends UserInterface
 
     private function noCookiesModal()
     {
-        if (!eval(Hooks::get('NO_COOKIES_MODAL'))) return;
+        if (!eval(Hooks::getInstance()->get('NO_COOKIES_MODAL'))) return;
 
         $this->_template->display('./modules/login/NoCookiesModal.tpl');
     }
@@ -221,7 +221,7 @@ class LoginUI extends UserInterface
 
             $this->_template->assign('aspMode', false);
 
-            if (!eval(Hooks::get('LOGIN_NO_CREDENTIALS'))) return;
+            if (!eval(Hooks::getInstance()->get('LOGIN_NO_CREDENTIALS'))) return;
 
             $this->_template->assign('message', $message);
             $this->_template->assign('messageSuccess', false);
@@ -285,7 +285,7 @@ class LoginUI extends UserInterface
 
             $this->_template->assign('aspMode', false);
 
-            if (!eval(Hooks::get('LOGIN_UNSUCCESSFUL'))) return;
+            if (!eval(Hooks::getInstance()->get('LOGIN_UNSUCCESSFUL'))) return;
 
             $this->_template->assign('message', $message);
             $this->_template->assign('messageSuccess', false);
@@ -322,7 +322,7 @@ class LoginUI extends UserInterface
         if (!$_SESSION['CATS']->isAgreedToLicense())
         {
             $phpeval = '';
-            if (!eval(Hooks::get('LICENSE_TERMS'))) return;
+            if (!eval(Hooks::getInstance()->get('LICENSE_TERMS'))) return;
             $wizard->addPage('License', './modules/login/wizard/License.tpl', $phpeval, true, true);
         }
 
@@ -364,7 +364,7 @@ class LoginUI extends UserInterface
         }
 
         // CATS Hosted Wizard Pages
-        if (!eval(Hooks::get('ASP_WIZARD_PAGES'))) return;
+        if (!eval(Hooks::getInstance()->get('ASP_WIZARD_PAGES'))) return;
 
         if ($_SESSION['CATS']->isFirstTimeSetup())
         {
@@ -379,7 +379,7 @@ class LoginUI extends UserInterface
                 $this->_template->assign(\'accessLevels\', $users->getAccessLevels());
             ');
 
-            if (!eval(Hooks::get('ASP_WIZARD_IMPORT'))) return;
+            if (!eval(Hooks::getInstance()->get('ASP_WIZARD_IMPORT'))) return;
         }
 
         // The wizard will not display if no pages have been added.
@@ -395,7 +395,7 @@ class LoginUI extends UserInterface
         /* If we have a specific page to go to, go there. */
 
         /* These hooks are for important things, like disabling the site based on criteria. */
-        if (!eval(Hooks::get('LOGGED_IN'))) return;
+        if (!eval(Hooks::getInstance()->get('LOGGED_IN'))) return;
 
         if (isset($_GET['reloginVars']))
         {
@@ -403,7 +403,7 @@ class LoginUI extends UserInterface
         }
 
         /* LOGGED_IN_MESSAGES hooks are only for messages which show up on initial login (warnings, etc) */
-        if (!eval(Hooks::get('LOGGED_IN_MESSAGES'))) return;
+        if (!eval(Hooks::getInstance()->get('LOGGED_IN_MESSAGES'))) return;
 
         /* If logged in for the first time, make user change password. * /
         if (strtolower($username) == 'admin' &&
@@ -442,7 +442,7 @@ class LoginUI extends UserInterface
         /* If nothing else has stopped us, just go to the home page. */
         else
         {
-            if (!eval(Hooks::get('LOGGED_IN_HOME_PAGE'))) return;
+            if (!eval(Hooks::getInstance()->get('LOGGED_IN_HOME_PAGE'))) return;
             CATSUtility::transferRelativeURI('m=home');
         }
     }
@@ -453,7 +453,7 @@ class LoginUI extends UserInterface
      */
     private function forgotPassword()
     {
-        if (!eval(Hooks::get('FORGOT_PASSWORD'))) return;
+        if (!eval(Hooks::getInstance()->get('FORGOT_PASSWORD'))) return;
 
         $this->_template->display('./modules/login/ForgotPassword.tpl');
     }
@@ -466,7 +466,7 @@ class LoginUI extends UserInterface
     {
         $username = $this->getTrimmedInput('username', $_POST);
 
-        if (!eval(Hooks::get('ON_FORGOT_PASSWORD'))) return;
+        if (!eval(Hooks::getInstance()->get('ON_FORGOT_PASSWORD'))) return;
 
         $user = new Users($this->_siteID);
         if ($password = $user->getPassword($username))

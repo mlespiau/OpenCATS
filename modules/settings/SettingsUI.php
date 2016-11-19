@@ -47,7 +47,7 @@ include_once('./lib/CommonErrors.php');
 include_once('./lib/Import.php');
 include_once('./lib/Questionnaire.php');
 include_once('./lib/Tags.php');
-eval(Hooks::get('XML_FEED_SUBMISSION_SETTINGS_HEADERS'));
+eval(Hooks::getInstance()->get('XML_FEED_SUBMISSION_SETTINGS_HEADERS'));
 
 /* Users.php is included by index.php already. */
 
@@ -226,7 +226,7 @@ class SettingsUI extends UserInterface
         $tags = new Tags($this->_siteID);
         $tagsRS = $tags->getAll();
 
-        //if (!eval(Hooks::get('SETTINGS_EMAIL_TEMPLATES'))) return;
+        //if (!eval(Hooks::getInstance()->get('SETTINGS_EMAIL_TEMPLATES'))) return;
 
         $this->_template->assign('active', $this);
         $this->_template->assign('subActive', 'Administration');
@@ -238,7 +238,7 @@ class SettingsUI extends UserInterface
     {
         $action = $this->getAction();
 
-        if (!eval(Hooks::get('SETTINGS_HANDLE_REQUEST'))) return;
+        if (!eval(Hooks::getInstance()->get('SETTINGS_HANDLE_REQUEST'))) return;
 
         switch ($action)
         {
@@ -615,7 +615,7 @@ class SettingsUI extends UserInterface
             $templateFile = './modules/settings/MyProfile.tpl';
         }
 
-        if (!eval(Hooks::get('SETTINGS_DISPLAY_PROFILE_SETTINGS'))) return;
+        if (!eval(Hooks::getInstance()->get('SETTINGS_DISPLAY_PROFILE_SETTINGS'))) return;
 
         $this->_template->assign('isDemoUser', $isDemoUser);
         $this->_template->assign('userID', $this->_userID);
@@ -787,7 +787,7 @@ class SettingsUI extends UserInterface
         $this->_template->assign('categories', $categories);
 	$this->_template->assign('auth_mode', AUTH_MODE);
 
-        if (!eval(Hooks::get('SETTINGS_ADD_USER'))) return;
+        if (!eval(Hooks::getInstance()->get('SETTINGS_ADD_USER'))) return;
 
         $this->_template->display('./modules/settings/AddUser.tpl');
     }
@@ -896,7 +896,7 @@ class SettingsUI extends UserInterface
             CommonErrors::fatal(COMMONERROR_RECORDERROR, $this, 'Failed to add user.');
         }
 
-        if (!eval(Hooks::get('SETTINGS_ON_ADD_USER'))) return;
+        if (!eval(Hooks::getInstance()->get('SETTINGS_ON_ADD_USER'))) return;
 
         CATSUtility::transferRelativeURI(
             'm=settings&a=showUser&userID=' . $userID
@@ -1292,7 +1292,7 @@ class SettingsUI extends UserInterface
         $emailTemplates = new EmailTemplates($this->_siteID);
         $emailTemplatesRS = $emailTemplates->getAll();
 
-        if (!eval(Hooks::get('SETTINGS_EMAIL_TEMPLATES'))) return;
+        if (!eval(Hooks::getInstance()->get('SETTINGS_EMAIL_TEMPLATES'))) return;
 
         $this->_template->assign('active', $this);
         $this->_template->assign('subActive', 'Administration');
@@ -1525,7 +1525,7 @@ class SettingsUI extends UserInterface
 
         $careerPortalURL = CATSUtility::getAbsoluteURI() . 'careers/';
 
-        if (!eval(Hooks::get('SETTINGS_CAREER_PORTAL'))) return;
+        if (!eval(Hooks::getInstance()->get('SETTINGS_CAREER_PORTAL'))) return;
 
         $questionnaires = new Questionnaire($this->_siteID);
         $data = $questionnaires->getAll(true);
@@ -1555,7 +1555,7 @@ class SettingsUI extends UserInterface
 
         foreach ($careerPortalSettingsRS as $setting => $value)
         {
-            eval(Hooks::get('XML_FEED_SUBMISSION_SETTINGS_BODY'));
+            eval(Hooks::getInstance()->get('XML_FEED_SUBMISSION_SETTINGS_BODY'));
             if ($setting == 'enabled')
             {
                 if ($this->isChecked($setting, $_POST))
@@ -2336,7 +2336,7 @@ class SettingsUI extends UserInterface
             $this->_template->assign('totalCandidates', $candidates->getCount());
         }
 
-        if (!eval(Hooks::get('SETTINGS_DISPLAY_ADMINISTRATION'))) return;
+        if (!eval(Hooks::getInstance()->get('SETTINGS_DISPLAY_ADMINISTRATION'))) return;
 
         /* Check if careers website is enabled or can be enabled */
         $careerPortalUnlock = false;
@@ -3340,7 +3340,7 @@ class SettingsUI extends UserInterface
         $website = trim(isset($_GET[$id='website']) ? $_GET[$id] : '');
         if (strlen($website) > 10)
         {
-            if (!eval(Hooks::get('SETTINGS_CP_REQUEST'))) return;
+            if (!eval(Hooks::getInstance()->get('SETTINGS_CP_REQUEST'))) return;
         }
 
         echo 'Ok';

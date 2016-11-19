@@ -90,7 +90,7 @@ class QueueProcessor
 
         if ($errorCode == 1)
         {
-            if (!eval(Hooks::get('QUEUEERROR_NOTIFY_DEV'))) return;
+            if (!eval(Hooks::getInstance()->get('QUEUEERROR_NOTIFY_DEV'))) return;
         }
 
         return $rs;

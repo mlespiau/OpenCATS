@@ -41,6 +41,15 @@ class Hooks
     private function __construct() {}
     private function __clone() {}
 
+    public static function getInstance()
+    {
+        static $instance = null;
+        if ($instance == null)
+        {
+            $instance = new self();
+        }
+        return $instance;
+    }
 
     /**
      * Executes all hooks by name, if any.
@@ -49,7 +58,7 @@ class Hooks
      * @param string hook name
      * @return void
      */
-    public static function get($hookName)
+    public function get($hookName)
     {
         if (!isset($_SESSION['hooks'])) 
         {

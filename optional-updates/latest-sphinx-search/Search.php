@@ -1254,8 +1254,8 @@ class SearchJobOrders
             $sortDirection
         );
 
-        if (!eval(Hooks::get('JO_SEARCH_SQL'))) return;
-        if (!eval(Hooks::get('JO_SEARCH_BY_TITLE'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_SEARCH_SQL'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_SEARCH_BY_TITLE'))) return;
 
         return $this->_db->getAllAssoc($sql);
     }
@@ -1342,8 +1342,8 @@ class SearchJobOrders
             $sortDirection
         );
 
-        if (!eval(Hooks::get('JO_SEARCH_SQL'))) return;
-        if (!eval(Hooks::get('JO_SEARCH_BY_CLIENT_NAME'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_SEARCH_SQL'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_SEARCH_BY_CLIENT_NAME'))) return;
 
         return $this->_db->getAllAssoc($sql);
     }
@@ -1425,7 +1425,7 @@ class SearchJobOrders
             $limit
         );
 
-        if (!eval(Hooks::get('JO_SEARCH_SQL'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_SEARCH_SQL'))) return;
 
         return $this->_db->getAllAssoc($sql);
     }
@@ -1954,8 +1954,8 @@ class QuickSearch
             $this->_siteID
         );
 
-        if (!eval(Hooks::get('JO_SEARCH_SQL'))) return;
-        if (!eval(Hooks::get('JO_SEARCH_BY_EVERYTHING'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_SEARCH_SQL'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_SEARCH_BY_EVERYTHING'))) return;
 
         return $this->_db->getAllAssoc($sql);
     }

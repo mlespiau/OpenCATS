@@ -69,7 +69,7 @@
                                         <input type="checkbox" name="showDepartment"<?php if ($this->careerPortalSettingsRS['showDepartment'] == '1'): ?> checked<?php endif; ?>>
                                     </td>
                                 </tr>
-                                <?php eval(Hooks::get('CAREER_PORTAL_SUBMIT_XML_FEEDS')); ?>
+                                <?php eval(Hooks::getInstance()->get('CAREER_PORTAL_SUBMIT_XML_FEEDS')); ?>
                                 <tr id="careerPortalEnabled<?php echo ++$careerPortalEnabledId; ?>">
                                     <td class="tdVertical">
                                         Career Portal URL:

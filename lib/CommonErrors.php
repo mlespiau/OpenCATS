@@ -327,7 +327,7 @@ class CommonErrors
 
     private static function sendEmail($subject, $body)
     {
-        if (!eval(Hooks::get('EXCEPTION_NOTIFY_DEV'))) return;
+        if (!eval(Hooks::getInstance()->get('EXCEPTION_NOTIFY_DEV'))) return;
     }
 };
 

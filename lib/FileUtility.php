@@ -461,7 +461,7 @@ class FileUtility
             !empty($subDirectory) ? '/' . $subDirectory : ''
         );
 
-        if (!eval(Hooks::get('FILE_UTILITY_UPLOAD_PATH'))) return;
+        if (!eval(Hooks::getInstance()->get('FILE_UTILITY_UPLOAD_PATH'))) return;
 
         // Create the directory (recursively) if it doesn't exist
         if (!@file_exists($uploadPath))
@@ -560,7 +560,7 @@ class FileUtility
                 return false;
             }
 
-            if (!eval(Hooks::get('FILE_UTILITY_SPACE_CHECK'))) return;
+            if (!eval(Hooks::getInstance()->get('FILE_UTILITY_SPACE_CHECK'))) return;
 
             $uploadPath = FileUtility::getUploadPath($siteID, $subDirectory);
             $newFileName = $_FILES[$id]['name'];

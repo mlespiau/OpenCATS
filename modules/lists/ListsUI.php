@@ -64,7 +64,7 @@ class ListsUI extends UserInterface
     {
         $action = $this->getAction();
 
-        if (!eval(Hooks::get('LISTS_HANDLE_REQUEST'))) return;
+        if (!eval(Hooks::getInstance()->get('LISTS_HANDLE_REQUEST'))) return;
 
         switch ($action)
         {
@@ -129,7 +129,7 @@ class ListsUI extends UserInterface
         $this->_template->assign('dataGrid', $dataGrid);
         $this->_template->assign('userID', $_SESSION['CATS']->getUserID());
 
-        if (!eval(Hooks::get('LISTS_LIST_BY_VIEW'))) return;
+        if (!eval(Hooks::getInstance()->get('LISTS_LIST_BY_VIEW'))) return;
 
         $this->_template->display('./modules/lists/Lists.tpl');
     }

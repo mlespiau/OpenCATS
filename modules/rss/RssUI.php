@@ -102,7 +102,7 @@ class RssUI extends UserInterface
 
         $careerPortalSiteID = $site->getFirstSiteID();
 
-        if (!eval(Hooks::get('RSS_SITEID'))) return;
+        if (!eval(Hooks::getInstance()->get('RSS_SITEID'))) return;
 
         $jobOrders = new JobOrders($careerPortalSiteID);
         $rs = $jobOrders->getAll(JOBORDERS_STATUS_ACTIVE, -1, -1, -1, false, true);

@@ -236,7 +236,7 @@ else if (!isset($_GET['m']) || empty($_GET['m']))
     {
         $_SESSION['CATS']->logPageView();
 
-        if (!eval(Hooks::get('INDEX_LOAD_HOME'))) return;
+        if (!eval(Hooks::getInstance()->get('INDEX_LOAD_HOME'))) return;
 
         ModuleUtility::loadModule('home');
     }

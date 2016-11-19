@@ -54,7 +54,7 @@ class CalendarUI extends UserInterface
     {
         $action = $this->getAction();
 
-        if (!eval(Hooks::get('CALENDAR_HANDLE_REQUEST'))) return;
+        if (!eval(Hooks::getInstance()->get('CALENDAR_HANDLE_REQUEST'))) return;
 
         switch ($action)
         {
@@ -251,7 +251,7 @@ class CalendarUI extends UserInterface
 
         $summaryHTML = $calendar->getUpcomingEventsHTML(12, UPCOMING_FOR_CALENDAR);
 
-        if (!eval(Hooks::get('CALENDAR_SHOW'))) return;
+        if (!eval(Hooks::getInstance()->get('CALENDAR_SHOW'))) return;
 
         if (SystemUtility::isSchedulerEnabled() && !$_SESSION['CATS']->isDemo())
         {
@@ -332,7 +332,7 @@ class CalendarUI extends UserInterface
             $year
         );
 
-        if (!eval(Hooks::get('CALENDAR_DATA'))) return;
+        if (!eval(Hooks::getInstance()->get('CALENDAR_DATA'))) return;
 
         echo $eventsString;
     }
@@ -459,7 +459,7 @@ class CalendarUI extends UserInterface
 
         $timeZoneOffset = $_SESSION['CATS']->getTimeZoneOffset();
 
-        if (!eval(Hooks::get('CALENDAR_ADD_PRE'))) return;
+        if (!eval(Hooks::getInstance()->get('CALENDAR_ADD_PRE'))) return;
 
         $calendar = new Calendar($this->_siteID);
         $eventID = $calendar->addEvent(
@@ -491,7 +491,7 @@ class CalendarUI extends UserInterface
             $newParams[] = urlencode($name) . '=' . urlencode($value);
         }
 
-        if (!eval(Hooks::get('CALENDAR_ADD_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('CALENDAR_ADD_POST'))) return;
 
         CATSUtility::transferRelativeURI(implode('&', $newParams));
     }
@@ -647,7 +647,7 @@ class CalendarUI extends UserInterface
             );
         }
 
-        if (!eval(Hooks::get('CALENDAR_EDIT_PRE'))) return;
+        if (!eval(Hooks::getInstance()->get('CALENDAR_EDIT_PRE'))) return;
 
         /* Update the event. */
         $calendar = new Calendar($this->_siteID);
@@ -659,7 +659,7 @@ class CalendarUI extends UserInterface
             CommonErrors::fatal(COMMONERROR_RECORDERROR, $this, 'Failed to update calendar event.');
         }
 
-        if (!eval(Hooks::get('CALENDAR_EDIT_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('CALENDAR_EDIT_POST'))) return;
 
         /* Extract the date parts from the specified date. */
         $parsedDate = strtotime($date);
@@ -700,12 +700,12 @@ class CalendarUI extends UserInterface
 
         $eventID = $_GET['eventID'];
 
-        if (!eval(Hooks::get('CALENDAR_DELETE_PRE'))) return;
+        if (!eval(Hooks::getInstance()->get('CALENDAR_DELETE_PRE'))) return;
 
         $calendar = new Calendar($this->_siteID);
         $calendar->deleteEvent($eventID);
 
-        if (!eval(Hooks::get('CALENDAR_DELETE_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('CALENDAR_DELETE_POST'))) return;
 
         /* Transfer to same url without a=deleteEvent or eventID. */
         $newGet = $_GET;

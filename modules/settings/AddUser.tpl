@@ -171,7 +171,7 @@
                             </table>
                         </td>
                         <?php
-                        eval(Hooks::get('SETTINGS_USERS_FULLQUOTALICENSES'));
+                        eval(Hooks::getInstance()->get('SETTINGS_USERS_FULLQUOTALICENSES'));
                         if (!$this->license['canAdd'] && !$this->license['unlimited'] && LicenseUtility::isProfessional() && !file_exists('modules/asp'))
                         {
                             echo '<td valign="top" align="center">';

@@ -68,7 +68,7 @@ class CompaniesUI extends UserInterface
     {
         $action = $this->getAction();
 
-        if (!eval(Hooks::get('CLIENTS_HANDLE_REQUEST'))) return;
+        if (!eval(Hooks::getInstance()->get('CLIENTS_HANDLE_REQUEST'))) return;
 
         switch ($action)
         {
@@ -183,7 +183,7 @@ class CompaniesUI extends UserInterface
         $this->_template->assign('userID', $_SESSION['CATS']->getUserID());
         $this->_template->assign('errMessage', $errMessage);
 
-        if (!eval(Hooks::get('CLIENTS_LIST_BY_VIEW'))) return;
+        if (!eval(Hooks::getInstance()->get('CLIENTS_LIST_BY_VIEW'))) return;
 
         $this->_template->display('./modules/companies/Companies.tpl');
     }
@@ -411,7 +411,7 @@ class CompaniesUI extends UserInterface
         $this->_template->assign('privledgedUser', $privledgedUser);
         $this->_template->assign('companyID', $companyID);
 
-        if (!eval(Hooks::get('CLIENTS_SHOW'))) return;
+        if (!eval(Hooks::getInstance()->get('CLIENTS_SHOW'))) return;
 
         $this->_template->display('./modules/companies/Show.tpl');
     }
@@ -445,7 +445,7 @@ class CompaniesUI extends UserInterface
         /* Get extra fields. */
         $extraFieldRS = $companies->extraFields->getValuesForAdd();
 
-        if (!eval(Hooks::get('CLIENTS_ADD'))) return;
+        if (!eval(Hooks::getInstance()->get('CLIENTS_ADD'))) return;
 
         $this->_template->assign('extraFieldRS', $extraFieldRS);
         $this->_template->assign('active', $this);
@@ -532,7 +532,7 @@ class CompaniesUI extends UserInterface
             return;
         }
 
-        if (!eval(Hooks::get('CLIENTS_ON_ADD_PRE'))) return;
+        if (!eval(Hooks::getInstance()->get('CLIENTS_ON_ADD_PRE'))) return;
 
         $companies = new Companies($this->_siteID);
         $companyID = $companies->add(
@@ -546,7 +546,7 @@ class CompaniesUI extends UserInterface
             CommonErrors::fatal(COMMONERROR_RECORDERROR, $this, 'Failed to add company.');
         }
 
-        if (!eval(Hooks::get('CLIENTS_ON_ADD_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('CLIENTS_ON_ADD_POST'))) return;
 
         /* Update extra fields. */
         $companies->extraFields->setValuesOnEdit($companyID);
@@ -635,7 +635,7 @@ class CompaniesUI extends UserInterface
             $canEmail = true;
         }
 
-        if (!eval(Hooks::get('CLIENTS_EDIT'))) return;
+        if (!eval(Hooks::getInstance()->get('CLIENTS_EDIT'))) return;
 
         $this->_template->assign('canEmail', $canEmail);
         $this->_template->assign('active', $this);
@@ -815,7 +815,7 @@ class CompaniesUI extends UserInterface
             return;
         }
 
-       if (!eval(Hooks::get('CLIENTS_ON_EDIT_PRE'))) return;
+       if (!eval(Hooks::getInstance()->get('CLIENTS_ON_EDIT_PRE'))) return;
 
         $departments = $companies->getDepartments($companyID);
         $departmentsDifferences = ListEditor::getDifferencesFromList(
@@ -830,7 +830,7 @@ class CompaniesUI extends UserInterface
             CommonErrors::fatal(COMMONERROR_RECORDERROR, $this, 'Failed to update company.');
         }
 
-       if (!eval(Hooks::get('CLIENTS_ON_EDIT_POST'))) return;
+       if (!eval(Hooks::getInstance()->get('CLIENTS_ON_EDIT_POST'))) return;
 
         /* Update extra fields. */
         $companies->extraFields->setValuesOnEdit($companyID);
@@ -886,7 +886,7 @@ class CompaniesUI extends UserInterface
             return;
         }
 
-       if (!eval(Hooks::get('CLIENTS_ON_DELETE_PRE'))) return;
+       if (!eval(Hooks::getInstance()->get('CLIENTS_ON_DELETE_PRE'))) return;
 
         $companies->delete($companyID);
 
@@ -895,7 +895,7 @@ class CompaniesUI extends UserInterface
             DATA_ITEM_COMPANY, $companyID
         );
 
-       if (!eval(Hooks::get('CLIENTS_ON_DELETE_POST'))) return;
+       if (!eval(Hooks::getInstance()->get('CLIENTS_ON_DELETE_POST'))) return;
 
         CATSUtility::transferRelativeURI('m=companies&a=listByView');
     }
@@ -908,7 +908,7 @@ class CompaniesUI extends UserInterface
         $savedSearches = new SavedSearches($this->_siteID);
         $savedSearchRS = $savedSearches->get(DATA_ITEM_COMPANY);
 
-        if (!eval(Hooks::get('CLIENTS_SEARCH'))) return;
+        if (!eval(Hooks::getInstance()->get('CLIENTS_SEARCH'))) return;
 
         $this->_template->assign('wildCardString', '');
         $this->_template->assign('savedSearchRS', $savedSearchRS);
@@ -977,7 +977,7 @@ class CompaniesUI extends UserInterface
         );
         $searchPager->setSortByParameters($baseURL, $sortBy, $sortDirection);
 
-        if (!eval(Hooks::get('CLIENTS_ON_SEARCH_PRE'))) return;
+        if (!eval(Hooks::getInstance()->get('CLIENTS_ON_SEARCH_PRE'))) return;
 
         /* Get our current searching mode. */
         $mode = $this->getTrimmedInput('mode', $_GET);
@@ -1045,7 +1045,7 @@ class CompaniesUI extends UserInterface
 
         $query = urlencode(htmlspecialchars($query));
 
-        if (!eval(Hooks::get('CLIENTS_ON_SEARCH_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('CLIENTS_ON_SEARCH_POST'))) return;
 
         $this->_template->assign('savedSearchRS', $savedSearchRS);
         $this->_template->assign('active', $this);
@@ -1081,7 +1081,7 @@ class CompaniesUI extends UserInterface
 
         $companyID = $_GET['companyID'];
 
-        if (!eval(Hooks::get('CLIENTS_CREATE_ATTACHMENT'))) return;
+        if (!eval(Hooks::getInstance()->get('CLIENTS_CREATE_ATTACHMENT'))) return;
 
         $this->_template->assign('isFinishedMode', false);
         $this->_template->assign('companyID', $companyID);
@@ -1109,7 +1109,7 @@ class CompaniesUI extends UserInterface
 
         $companyID = $_POST['companyID'];
 
-        if (!eval(Hooks::get('CLIENTS_ON_CREATE_ATTACHMENT_PRE'))) return;
+        if (!eval(Hooks::getInstance()->get('CLIENTS_ON_CREATE_ATTACHMENT_PRE'))) return;
 
         $attachmentCreator = new AttachmentCreator($this->_siteID);
         $attachmentCreator->createFromUpload(
@@ -1121,7 +1121,7 @@ class CompaniesUI extends UserInterface
             CommonErrors::fatalModal(COMMONERROR_FILEERROR, $this, $attachmentCreator->getError());
         }
 
-        if (!eval(Hooks::get('CLIENTS_ON_CREATE_ATTACHMENT_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('CLIENTS_ON_CREATE_ATTACHMENT_POST'))) return;
 
         $this->_template->assign('isFinishedMode', true);
         $this->_template->assign('companyID', $companyID);
@@ -1156,12 +1156,12 @@ class CompaniesUI extends UserInterface
         $companyID  = $_GET['companyID'];
         $attachmentID = $_GET['attachmentID'];
 
-        if (!eval(Hooks::get('CLIENTS_ON_DELETE_ATTACHMENT_PRE'))) return;
+        if (!eval(Hooks::getInstance()->get('CLIENTS_ON_DELETE_ATTACHMENT_PRE'))) return;
 
         $attachments = new Attachments($this->_siteID);
         $attachments->delete($attachmentID);
 
-        if (!eval(Hooks::get('CLIENTS_ON_DELETE_ATTACHMENT_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('CLIENTS_ON_DELETE_ATTACHMENT_POST'))) return;
 
         CATSUtility::transferRelativeURI(
             'm=companies&a=show&companyID=' . $companyID

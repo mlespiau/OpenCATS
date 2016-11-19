@@ -96,14 +96,14 @@ class ToolbarUI extends UserInterface
         $username = $this->getTrimmedInput('CATSUser', $_GET);
         $password = $this->getTrimmedInput('CATSPassword', $_GET);
 
-        if (!eval(Hooks::get('TOOLBAR_AUTHENTICATE_PRE'))) return;
+        if (!eval(Hooks::getInstance()->get('TOOLBAR_AUTHENTICATE_PRE'))) return;
 
         if(!$_SESSION['CATS']->isLoggedIn())
         {
             $_SESSION['CATS']->processLogin($username, $password);
         }
 
-        if (!eval(Hooks::get('TOOLBAR_AUTHENTICATE_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('TOOLBAR_AUTHENTICATE_POST'))) return;
 
         if (!$_SESSION['CATS']->isLoggedIn())
         {
@@ -161,7 +161,7 @@ class ToolbarUI extends UserInterface
 
     private function checkEmailIsInSystem()
     {
-        if (!eval(Hooks::get('TOOLBAR_CHECK_EMAIL'))) return;
+        if (!eval(Hooks::getInstance()->get('TOOLBAR_CHECK_EMAIL'))) return;
 
         $this->_authenticate();
 

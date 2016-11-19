@@ -49,7 +49,7 @@ class HomeUI extends UserInterface
     {
         $action = $this->getAction();
 
-        if (!eval(Hooks::get('HOME_HANDLE_REQUEST'))) return;
+        if (!eval(Hooks::getInstance()->get('HOME_HANDLE_REQUEST'))) return;
 
         switch ($action)
         {
@@ -90,7 +90,7 @@ class HomeUI extends UserInterface
 
     private function home()
     {        
-         if (!eval(Hooks::get('HOME'))) return;
+         if (!eval(Hooks::getInstance()->get('HOME'))) return;
         
         NewVersionCheck::getNews();
         
@@ -153,12 +153,12 @@ class HomeUI extends UserInterface
         $searchID   = $_GET['searchID'];
         $currentURL = $_GET['currentURL'];
 
-        if (!eval(Hooks::get('HOME_DELETE_SAVED_SEARCH_PRE'))) return;
+        if (!eval(Hooks::getInstance()->get('HOME_DELETE_SAVED_SEARCH_PRE'))) return;
 
         $savedSearches = new SavedSearches($this->_siteID);
         $savedSearches->remove($searchID);
 
-        if (!eval(Hooks::get('HOME_DELETE_SAVED_SEARCH_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('HOME_DELETE_SAVED_SEARCH_POST'))) return;
 
         CATSUtility::transferRelativeURI($currentURL);
     }
@@ -178,12 +178,12 @@ class HomeUI extends UserInterface
         $searchID   = $_GET['searchID'];
         $currentURL = $_GET['currentURL'];
 
-        if (!eval(Hooks::get('HOME_ADD_SAVED_SEARCH_PRE'))) return;
+        if (!eval(Hooks::getInstance()->get('HOME_ADD_SAVED_SEARCH_PRE'))) return;
 
         $savedSearches = new SavedSearches($this->_siteID);
         $savedSearches->save($searchID);
 
-        if (!eval(Hooks::get('HOME_ADD_SAVED_SEARCH_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('HOME_ADD_SAVED_SEARCH_POST'))) return;
 
         CATSUtility::transferRelativeURI($currentURL);
     }
@@ -372,7 +372,7 @@ class HomeUI extends UserInterface
         //$this->_template->assign('listsRS', $listsRS);
         $this->_template->assign('wildCardQuickSearch', $wildCardQuickSearch);
 
-        if (!eval(Hooks::get('HOME_QUICK_SEARCH'))) return;
+        if (!eval(Hooks::getInstance()->get('HOME_QUICK_SEARCH'))) return;
 
         $this->_template->display('./modules/home/SearchEverything.tpl');
     }

@@ -50,7 +50,7 @@ class ReportsUI extends UserInterface
 
     public function handleRequest()
     {
-        if (!eval(Hooks::get('REPORTS_HANDLE_REQUEST'))) return;
+        if (!eval(Hooks::getInstance()->get('REPORTS_HANDLE_REQUEST'))) return;
 
         $action = $this->getAction();
         switch ($action)
@@ -161,7 +161,7 @@ class ReportsUI extends UserInterface
         $statisticsData['jobOrdersThisYear']  = $statistics->getJobOrderCount(TIME_PERIOD_THISYEAR);
         $statisticsData['jobOrdersLastYear']  = $statistics->getJobOrderCount(TIME_PERIOD_LASTYEAR);
 
-        if (!eval(Hooks::get('REPORTS_SHOW'))) return;
+        if (!eval(Hooks::getInstance()->get('REPORTS_SHOW'))) return;
 
         $this->_template->assign('active', $this);
         $this->_template->assign('statisticsData', $statisticsData);
@@ -179,7 +179,7 @@ class ReportsUI extends UserInterface
             $this->_template->assign('theImage', '');
         }
 
-        if (!eval(Hooks::get('REPORTS_GRAPH'))) return;
+        if (!eval(Hooks::getInstance()->get('REPORTS_GRAPH'))) return;
 
         $this->_template->assign('active', $this);
         $this->_template->display('./modules/reports/GraphView.tpl');
@@ -258,7 +258,7 @@ class ReportsUI extends UserInterface
             );
         }
 
-        if (!eval(Hooks::get('REPORTS_SHOW_SUBMISSION'))) return;
+        if (!eval(Hooks::getInstance()->get('REPORTS_SHOW_SUBMISSION'))) return;
 
         $this->_template->assign('reportTitle', $reportTitle);
         $this->_template->assign('submissionJobOrdersRS', $submissionJobOrdersRS);
@@ -338,7 +338,7 @@ class ReportsUI extends UserInterface
             );
         }
 
-        if (!eval(Hooks::get('REPORTS_SHOW_SUBMISSION'))) return;
+        if (!eval(Hooks::getInstance()->get('REPORTS_SHOW_SUBMISSION'))) return;
 
         $this->_template->assign('reportTitle', $reportTitle);
         $this->_template->assign('placementsJobOrdersRS', $placementsJobOrdersRS);
@@ -445,7 +445,7 @@ class ReportsUI extends UserInterface
         $pdf = new FPDF();
         $pdf->AddPage();
 
-        if (!eval(Hooks::get('REPORTS_CUSTOMIZE_JO_REPORT_PRE'))) return;
+        if (!eval(Hooks::getInstance()->get('REPORTS_CUSTOMIZE_JO_REPORT_PRE'))) return;
 
         if ($isASP && $unixName == 'cognizo')
         {
@@ -558,7 +558,7 @@ class ReportsUI extends UserInterface
 
         $pdf->Rect(3, 6, 204, 285);
 
-        if (!eval(Hooks::get('REPORTS_CUSTOMIZE_JO_REPORT_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('REPORTS_CUSTOMIZE_JO_REPORT_POST'))) return;
 
         $pdf->Output();
         die();

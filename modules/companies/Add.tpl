@@ -29,13 +29,13 @@
                         </td>
                         <td rowspan="5" align="left" valign="top">
                             <?php $freeformTop = '<p class="freeformtop">Cut and paste freeform address here.</p>'; ?>
-                            <?php eval(Hooks::get('CANDIDATE_TEMPLATE_ABOVE_FREEFORM')); ?>
+                            <?php eval(Hooks::getInstance()->get('CANDIDATE_TEMPLATE_ABOVE_FREEFORM')); ?>
                             <?php echo($freeformTop); ?>
 
                             <textarea class="inputbox" tabindex="90" name="addressBlock" id="addressBlock" rows="5" cols="40" style="width: 300px; height: 100px;"></textarea>
 
                             <?php $freeformBottom = '<p class="freeformbottom">Cut and paste freeform address here.</p>'; ?>
-                            <?php eval(Hooks::get('CANDIDATE_TEMPLATE_BELOW_FREEFORM')); ?>
+                            <?php eval(Hooks::getInstance()->get('CANDIDATE_TEMPLATE_BELOW_FREEFORM')); ?>
                             <?php echo($freeformBottom); ?>
                         </td>
                         <td width="200"></td>

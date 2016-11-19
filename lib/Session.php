@@ -983,7 +983,7 @@ class CATSSession
         /* Force a new MRU object to be created. */
         $this->_MRU = null;
 
-        if (!eval(Hooks::get('TRANSPARENT_LOGIN_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('TRANSPARENT_LOGIN_POST'))) return;
 
         $cookie = $this->getCookie();
         $sql = sprintf(

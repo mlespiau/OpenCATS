@@ -632,7 +632,7 @@ class Users
                 ACCESS_LEVEL_DISABLED
                 );
 
-        if (!eval(Hooks::get('USERS_GET_SELECT_SQL'))) return;
+        if (!eval(Hooks::getInstance()->get('USERS_GET_SELECT_SQL'))) return;
 
         return $this->_db->getAllAssoc($sql);
     }

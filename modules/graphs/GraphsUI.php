@@ -141,7 +141,7 @@ class GraphsUI extends UserInterface
         $y = array(1, 2, 3, 4);
         $graph = new GraphSimple($x, $y, 'DarkGreen', 'Test Graph', $this->width, $this->height);
 
-        if (!eval(Hooks::get('GRAPH_TEST'))) return;
+        if (!eval(Hooks::getInstance()->get('GRAPH_TEST'))) return;
 
         $graph->draw();
         die();
@@ -182,7 +182,7 @@ class GraphsUI extends UserInterface
         $colorArray[] = new LinearGradient(new Orange, new White, 0);
         $graph = new jobOrderReportGraph($y, $x, $colorArray, '', 800, 800);
 
-        if (!eval(Hooks::get('GRAPH_JOB_ORDER_REPORT'))) return;
+        if (!eval(Hooks::getInstance()->get('GRAPH_JOB_ORDER_REPORT'))) return;
 
         $graph->draw(IMG_JPG);
         die();
@@ -239,7 +239,7 @@ class GraphsUI extends UserInterface
 
         $graph = new GraphSimple($y, $x, 'DarkGreen', 'Activity', $this->width, $this->height);
 
-        if (!eval(Hooks::get('GRAPH_WEEKLY_ACTIVITY'))) return;
+        if (!eval(Hooks::getInstance()->get('GRAPH_WEEKLY_ACTIVITY'))) return;
 
         $graph->draw();
         die();
@@ -294,7 +294,7 @@ class GraphsUI extends UserInterface
 
         $graph = new GraphSimple($y, $x, 'Blue', 'New Candidates', $this->width, $this->height);
 
-        if (!eval(Hooks::get('GRAPH_NEW_CANDIDATES'))) return;
+        if (!eval(Hooks::getInstance()->get('GRAPH_NEW_CANDIDATES'))) return;
 
         $graph->draw();
         die();
@@ -348,7 +348,7 @@ class GraphsUI extends UserInterface
 
         $graph = new GraphSimple($y, $x, 'Red', 'New Job Orders', $this->width, $this->height);
 
-        if (!eval(Hooks::get('GRAPH_NEW_JOB_ORDERS'))) return;
+        if (!eval(Hooks::getInstance()->get('GRAPH_NEW_JOB_ORDERS'))) return;
 
         $graph->draw();
         die();
@@ -379,7 +379,7 @@ class GraphsUI extends UserInterface
 
         $graph = new GraphSimple($labels, $data, "DarkGreen", $title, $this->width, $this->height);
 
-        if (!eval(Hooks::get('GRAPH_GENERIC'))) return;
+        if (!eval(Hooks::getInstance()->get('GRAPH_GENERIC'))) return;
 
         $graph->draw();
         die();
@@ -395,7 +395,7 @@ class GraphsUI extends UserInterface
 
         $graph = new GraphPie($labels, $data, $title, $this->width, $this->height);
 
-        if (!eval(Hooks::get('GRAPH_GENERIC_PIE'))) return;
+        if (!eval(Hooks::getInstance()->get('GRAPH_GENERIC_PIE'))) return;
 
         $graph->draw();
         die();
@@ -527,7 +527,7 @@ class GraphsUI extends UserInterface
             $this->height, $statisticsData['totalPipeline']
         );
 
-        if (!eval(Hooks::get('GRAPH_MINI_PIPELINE'))) return;
+        if (!eval(Hooks::getInstance()->get('GRAPH_MINI_PIPELINE'))) return;
 
         $graph->draw();
         die();
@@ -582,7 +582,7 @@ class GraphsUI extends UserInterface
 
         $graph = new GraphSimple($y, $x, 'Orange', 'New Submissions', $this->width, $this->height);
 
-        if (!eval(Hooks::get('GRAPH_NEW_SUBMISSIONS'))) return;
+        if (!eval(Hooks::getInstance()->get('GRAPH_NEW_SUBMISSIONS'))) return;
 
         $graph->draw();
         die();

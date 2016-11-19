@@ -70,7 +70,7 @@ class NewVersionCheck
             $systemInfoDb->updateUID($systemInfo['uid']);
         }
 
-        if (!eval(Hooks::get('NEW_VERSION_CHECK_CHECK_FOR_UPDATE'))) return;
+        if (!eval(Hooks::getInstance()->get('NEW_VERSION_CHECK_CHECK_FOR_UPDATE'))) return;
 
         /* Bail if the user disabled new version checking. */
         if ($systemInfo['disable_version_check'])

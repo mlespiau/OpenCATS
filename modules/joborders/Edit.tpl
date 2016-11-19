@@ -288,7 +288,7 @@
                         </td>
                     </tr>
 
-                    <?php eval(Hooks::get('JO_TEMPLATE_BOTTOM_OF_TOP')); ?>
+                    <?php eval(Hooks::getInstance()->get('JO_TEMPLATE_BOTTOM_OF_TOP')); ?>
 
                 </table>
 

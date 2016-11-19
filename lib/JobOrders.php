@@ -479,7 +479,7 @@ class JobOrders
             $this->_siteID
         );
 
-        if (!eval(Hooks::get('JO_GET_1_SQL'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_GET_1_SQL'))) return;
 
         return $this->_db->getAssoc($sql);
     }
@@ -536,7 +536,7 @@ class JobOrders
             $this->_siteID
         );
 
-        if (!eval(Hooks::get('JO_GET_EDIT_SQL'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_GET_EDIT_SQL'))) return;
 
         $rs = $this->_db->getAssoc($sql);
 
@@ -745,7 +745,7 @@ class JobOrders
             $adminHiddenCriterion
         );
 
-        if (!eval(Hooks::get('JO_GET_ALL_SQL'))) return;
+        if (!eval(Hooks::getInstance()->get('JO_GET_ALL_SQL'))) return;
 
         return $this->_db->getAllAssoc($sql);
     }
@@ -1169,7 +1169,7 @@ class JobOrdersDataGrid extends DataGrid
                                      'filterDescription' => 'Only Hot Job Orders')
         );
 
-        if (!eval(Hooks::get('JOBORDERS_DATAGRID_COLUMNS'))) return;
+        if (!eval(Hooks::getInstance()->get('JOBORDERS_DATAGRID_COLUMNS'))) return;
 
         /* Extra fields get added as columns here. */
         $jobOrders = new JobOrders($this->_siteID);
@@ -1227,7 +1227,7 @@ class JobOrdersDataGrid extends DataGrid
                                     AND saved_list_entry.site_id = '.$this->_siteID;
         }
 
-        if (!eval(Hooks::get('JOBORDER_DATAGRID_GETSQL'))) return;
+        if (!eval(Hooks::getInstance()->get('JOBORDER_DATAGRID_GETSQL'))) return;
 
         $sql = sprintf(
             "SELECT SQL_CALC_FOUND_ROWS %s

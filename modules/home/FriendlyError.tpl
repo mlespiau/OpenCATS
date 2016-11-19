@@ -49,7 +49,7 @@ div.friendlyErrorMessage {
                             and none of the demo restrictions are in place. To sign up, <a href="?a=getcats">click here</a>!
                             <?php endif; ?>
                             <?php
-                            eval(Hooks::get('FRIENDLYERRORS_CONTACTCATS'));
+                            eval(Hooks::getInstance()->get('FRIENDLYERRORS_CONTACTCATS'));
                             ?>
                         </div>
                     </td>

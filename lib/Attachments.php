@@ -157,7 +157,7 @@ class Attachments
         $lastInsertID = $this->_db->getLastInsertID();
 
         // FIXME: Slow?
-        eval(Hooks::get('UPDATE_SPHINX_DELTA'));
+        eval(Hooks::getInstance()->get('UPDATE_SPHINX_DELTA'));
 
         $this->updateSiteSize();
 
@@ -172,7 +172,7 @@ class Attachments
      */
     public function forceAttachmentLocal($attachmentID)
     {
-        if (!eval(Hooks::get('FORCE_ATTACHMENT_LOCAL'))) return;
+        if (!eval(Hooks::getInstance()->get('FORCE_ATTACHMENT_LOCAL'))) return;
     }
 
     /**
@@ -189,7 +189,7 @@ class Attachments
      */
     public function forceAttachmentRemote($attachmentID)
     {
-        if (!eval(Hooks::get('FORCE_ATTACHMENT_REMOTE'))) return;
+        if (!eval(Hooks::getInstance()->get('FORCE_ATTACHMENT_REMOTE'))) return;
     }
 
     /**
@@ -199,7 +199,7 @@ class Attachments
      */
     public function forceRemoteDeleteAttachment($attachmentID)
     {
-        if (!eval(Hooks::get('FORCE_ATTACHMENT_DELETE'))) return;
+        if (!eval(Hooks::getInstance()->get('FORCE_ATTACHMENT_DELETE'))) return;
     }
 
     /**
@@ -1273,7 +1273,7 @@ class AttachmentCreator
             str_replace('./attachments/', '', $uniqueDirectory)
         );
 
-        if (!eval(Hooks::get('CREATE_ATTACHMENT_FINISHED'))) return;
+        if (!eval(Hooks::getInstance()->get('CREATE_ATTACHMENT_FINISHED'))) return;
 
         return true;
     }

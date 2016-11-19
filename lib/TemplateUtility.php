@@ -106,9 +106,9 @@ class TemplateUtility
         echo '</tr>', "\n";
         echo '</table>', "\n";
 
-        if (!eval(Hooks::get('TEMPLATE_LIVE_CHAT'))) return;
+        if (!eval(Hooks::getInstance()->get('TEMPLATE_LIVE_CHAT'))) return;
 
-        if (!eval(Hooks::get('TEMPLATE_LOGIN_INFO_PRE_TOP_RIGHT'))) return;
+        if (!eval(Hooks::getInstance()->get('TEMPLATE_LOGIN_INFO_PRE_TOP_RIGHT'))) return;
 
         if ($showTopRight)
         {
@@ -121,14 +121,14 @@ class TemplateUtility
                $username = str_replace('@'.$_SESSION['CATS']->getSiteID(), '', $username);
             }
 
-            if (!eval(Hooks::get('TEMPLATE_LOGIN_INFO_TOP_RIGHT_1'))) return;
+            if (!eval(Hooks::getInstance()->get('TEMPLATE_LOGIN_INFO_TOP_RIGHT_1'))) return;
 
             /* Top Right Corner */
             echo '<div id="topRight">', "\n";
 
             echo '<div style="padding-bottom: 8px;">';
             // Begin top-right action block
-            if (!eval(Hooks::get('TEMPLATE_LOGIN_INFO_TOP_RIGHT_UPGRADE'))) return;
+            if (!eval(Hooks::getInstance()->get('TEMPLATE_LOGIN_INFO_TOP_RIGHT_UPGRADE'))) return;
 
             if ((!file_exists('modules/asp') || (defined('CATS_TEST_MODE') && CATS_TEST_MODE)) && LicenseUtility::isProfessional() &&
                 $_SESSION['CATS']->getAccessLevel() >= ACCESS_LEVEL_SA)
@@ -161,7 +161,7 @@ class TemplateUtility
             echo '</div>', "\n";
             // End top-right action block
 
-            if (!eval(Hooks::get('TEMPLATE_LOGIN_INFO_EXTENDED_SITE_NAME'))) return;
+            if (!eval(Hooks::getInstance()->get('TEMPLATE_LOGIN_INFO_EXTENDED_SITE_NAME'))) return;
 
             echo '<span>', $fullName, '&nbsp;&lt;', $username, '&gt;&nbsp;(', $siteName, ')</span>', "\n";
 
@@ -195,7 +195,7 @@ class TemplateUtility
             }
             else
             {
-                if (!eval(Hooks::get('TEMPLATE_LOGIN_INFO_TOP_RIGHT_2_ELSE'))) return;
+                if (!eval(Hooks::getInstance()->get('TEMPLATE_LOGIN_INFO_TOP_RIGHT_2_ELSE'))) return;
             }
 
             echo '</div>', "\n";
@@ -613,7 +613,7 @@ class TemplateUtility
             /* Allow a hook to prevent a module from being displayed. */
             $displayTab = true;
 
-            if (!eval(Hooks::get('TEMPLATE_UTILITY_EVALUATE_TAB_VISIBLE'))) return;
+            if (!eval(Hooks::getInstance()->get('TEMPLATE_UTILITY_EVALUATE_TAB_VISIBLE'))) return;
 
             if (!$displayTab)
             {
@@ -769,7 +769,7 @@ class TemplateUtility
                     }
                 }
 
-                if (!eval(Hooks::get('TEMPLATE_UTILITY_DRAW_SUBTABS'))) return;
+                if (!eval(Hooks::getInstance()->get('TEMPLATE_UTILITY_DRAW_SUBTABS'))) return;
 
                 echo '</ul>';
             }
@@ -817,10 +817,10 @@ class TemplateUtility
              '. <span id="toolbarVersion"></span>Powered by <a href="http://www.catsone.com/"><strong>CATS</strong></a>.</p>', "\n";
         echo '<span id="footerResponse">Server Response Time: ', $loadTime, ' seconds.</span><br />';
         echo '<span id="footerCopyright">', COPYRIGHT_HTML, '</span>', "\n";
-        if (!eval(Hooks::get('TEMPLATEUTILITY_SHOWPRIVACYPOLICY'))) return;
+        if (!eval(Hooks::getInstance()->get('TEMPLATEUTILITY_SHOWPRIVACYPOLICY'))) return;
         echo '</div>', "\n";
 
-        eval(Hooks::get('TEMPLATE_UTILITY_PRINT_FOOTER'));
+        eval(Hooks::getInstance()->get('TEMPLATE_UTILITY_PRINT_FOOTER'));
 
         echo '</body>', "\n";
         echo '</html>', "\n";

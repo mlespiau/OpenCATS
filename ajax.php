@@ -113,7 +113,7 @@ if (!isset($_REQUEST['nobuffer']))
     include($filename);
     $output = ob_get_clean();
 
-    if (!eval(Hooks::get('AJAX_HOOK'))) return;
+    if (!eval(Hooks::getInstance()->get('AJAX_HOOK'))) return;
 
     if (!isset($_REQUEST['nospacefilter']))
     {

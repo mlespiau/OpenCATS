@@ -91,7 +91,7 @@ class Pipelines
         $extraFields = '';
         $extraValues = '';
 
-        if (!eval(Hooks::get('PIPELINES_ADD_SQL'))) return;
+        if (!eval(Hooks::getInstance()->get('PIPELINES_ADD_SQL'))) return;
 
         $sql = sprintf(
             "INSERT INTO candidate_joborder (

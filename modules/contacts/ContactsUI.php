@@ -78,7 +78,7 @@ class ContactsUI extends UserInterface
     {
         $action = $this->getAction();
 
-        if (!eval(Hooks::get('CONTACTS_HANDLE_REQUEST'))) return;
+        if (!eval(Hooks::getInstance()->get('CONTACTS_HANDLE_REQUEST'))) return;
 
         switch ($action)
         {
@@ -163,7 +163,7 @@ class ContactsUI extends UserInterface
      */
     private function listByView($errMessage = '')
     {
-        if (!eval(Hooks::get('CONTACTS_LIST_BY_VIEW_TOP'))) return;
+        if (!eval(Hooks::getInstance()->get('CONTACTS_LIST_BY_VIEW_TOP'))) return;
 
         $dataGridProperties = DataGrid::getRecentParamaters("contacts:ContactsListByViewDataGrid");
 
@@ -186,7 +186,7 @@ class ContactsUI extends UserInterface
         $contacts = new Contacts($this->_siteID);
         $this->_template->assign('totalContacts', $contacts->getCount());
 
-        if (!eval(Hooks::get('CONTACTS_LIST_BY_VIEW'))) return;
+        if (!eval(Hooks::getInstance()->get('CONTACTS_LIST_BY_VIEW'))) return;
 
         $this->_template->display('./modules/contacts/Contacts.tpl');
     }
@@ -373,7 +373,7 @@ class ContactsUI extends UserInterface
         $this->_template->assign('privledgedUser', $privledgedUser);
         $this->_template->assign('sessionCookie', $_SESSION['CATS']->getCookie());
 
-        if (!eval(Hooks::get('CONTACTS_SHOW'))) return;
+        if (!eval(Hooks::getInstance()->get('CONTACTS_SHOW'))) return;
 
         $this->_template->display('./modules/contacts/Show.tpl');
     }
@@ -425,7 +425,7 @@ class ContactsUI extends UserInterface
             $defaultCompanyRS = array();
         }
 
-        if (!eval(Hooks::get('CONTACTS_ADD'))) return;
+        if (!eval(Hooks::getInstance()->get('CONTACTS_ADD'))) return;
 
         $this->_template->assign('defaultCompanyID', $defaultCompanyID);
         $this->_template->assign('defaultCompanyRS', $defaultCompanyRS);
@@ -527,7 +527,7 @@ class ContactsUI extends UserInterface
         );
         $companies->updateDepartments($companyID, $departmentsDifferences);
 
-        if (!eval(Hooks::get('CONTACTS_ON_ADD_PRE'))) return;
+        if (!eval(Hooks::getInstance()->get('CONTACTS_ON_ADD_PRE'))) return;
 
         $contacts = new Contacts($this->_siteID);
         $contactID = $contacts->add(
@@ -544,7 +544,7 @@ class ContactsUI extends UserInterface
         /* Update extra fields. */
         $contacts->extraFields->setValuesOnEdit($contactID);
 
-        if (!eval(Hooks::get('CONTACTS_ON_ADD_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('CONTACTS_ON_ADD_POST'))) return;
 
         if (isset($_GET['v']) && $_GET['v'] != -1)
         {
@@ -640,7 +640,7 @@ class ContactsUI extends UserInterface
             $defaultCompanyRS = array();
         }
 
-        if (!eval(Hooks::get('CONTACTS_EDIT'))) return;
+        if (!eval(Hooks::getInstance()->get('CONTACTS_EDIT'))) return;
 
         $this->_template->assign('defaultCompanyID', $defaultCompanyID);
         $this->_template->assign('defaultCompanyRS', $defaultCompanyRS);
@@ -816,7 +816,7 @@ class ContactsUI extends UserInterface
             CommonErrors::fatal(COMMONERROR_MISSINGFIELDS, $this, 'Required fields are missing.');
         }
 
-        if (!eval(Hooks::get('CONTACTS_ON_EDIT_PRE'))) return;
+        if (!eval(Hooks::getInstance()->get('CONTACTS_ON_EDIT_PRE'))) return;
 
         /* Update departments. */
         $companies = new Companies($this->_siteID);
@@ -837,7 +837,7 @@ class ContactsUI extends UserInterface
         /* Update extra fields. */
         $contacts->extraFields->setValuesOnEdit($contactID);
 
-        if (!eval(Hooks::get('CONTACTS_ON_EDIT_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('CONTACTS_ON_EDIT_POST'))) return;
 
         CATSUtility::transferRelativeURI(
             'm=contacts&a=show&contactID=' . $contactID
@@ -862,7 +862,7 @@ class ContactsUI extends UserInterface
 
         $contactID = $_GET['contactID'];
 
-        if (!eval(Hooks::get('CONTACTS_DELETE_PRE'))) return;
+        if (!eval(Hooks::getInstance()->get('CONTACTS_DELETE_PRE'))) return;
 
         $contacts = new Contacts($this->_siteID);
         $contacts->delete($contactID);
@@ -872,7 +872,7 @@ class ContactsUI extends UserInterface
             DATA_ITEM_CONTACT, $contactID
         );
 
-        if (!eval(Hooks::get('CONTACTS_DELETE_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('CONTACTS_DELETE_POST'))) return;
 
         CATSUtility::transferRelativeURI('m=contacts&a=listByView');
     }
@@ -885,7 +885,7 @@ class ContactsUI extends UserInterface
         $savedSearches = new SavedSearches($this->_siteID);
         $savedSearchRS = $savedSearches->get(DATA_ITEM_CONTACT);
 
-        if (!eval(Hooks::get('CONTACTS_SEARCH'))) return;
+        if (!eval(Hooks::getInstance()->get('CONTACTS_SEARCH'))) return;
 
         $this->_template->assign('wildCardString', '');
         $this->_template->assign('savedSearchRS', $savedSearchRS);
@@ -1039,7 +1039,7 @@ class ContactsUI extends UserInterface
 
         $query = urlencode(htmlspecialchars($query));
 
-        if (!eval(Hooks::get('CONTACTS_ON_SEARCH'))) return;
+        if (!eval(Hooks::getInstance()->get('CONTACTS_ON_SEARCH'))) return;
 
         $this->_template->assign('savedSearchRS', $savedSearchRS);
         $this->_template->assign('active', $this);
@@ -1065,7 +1065,7 @@ class ContactsUI extends UserInterface
 
         $rs = $contacts->getColdCallList();
 
-        if (!eval(Hooks::get('CONTACTS_COLD_CALL_LIST'))) return;
+        if (!eval(Hooks::getInstance()->get('CONTACTS_COLD_CALL_LIST'))) return;
         $this->_template->assign('active', $this);
         $this->_template->assign('subActive', 'Cold Call List');
         $this->_template->assign('rs', $rs);
@@ -1099,7 +1099,7 @@ class ContactsUI extends UserInterface
         /* Are we in "Only Schedule Event" mode? */
         $onlyScheduleEvent = $this->isChecked('onlyScheduleEvent', $_GET);
 
-        if (!eval(Hooks::get('CONTACTS_ADD_ACTIVITY_SCHEDULE_EVENT'))) return;
+        if (!eval(Hooks::getInstance()->get('CONTACTS_ADD_ACTIVITY_SCHEDULE_EVENT'))) return;
 
         if (SystemUtility::isSchedulerEnabled() && !$_SESSION['CATS']->isDemo())
         {
@@ -1215,7 +1215,7 @@ class ContactsUI extends UserInterface
         $vCard->setTitle($contact['title']);
         $vCard->setOrganization($company['name']);
 
-        if (!eval(Hooks::get('CONTACTS_GET_VCARD'))) return;
+        if (!eval(Hooks::getInstance()->get('CONTACTS_GET_VCARD'))) return;
 
         $vCard->printVCardWithHeaders();
     }
@@ -1296,7 +1296,7 @@ class ContactsUI extends UserInterface
             }
         }
 
-        if (!eval(Hooks::get('CONTACTS_FORMAT_LIST_BY_VIEW'))) return;
+        if (!eval(Hooks::getInstance()->get('CONTACTS_FORMAT_LIST_BY_VIEW'))) return;
 
         return $resultSet;
     }
@@ -1331,7 +1331,7 @@ class ContactsUI extends UserInterface
 
         $contactID = $_POST['contactID'];
 
-        //if (!eval(Hooks::get('CONTACT_ON_ADD_ACTIVITY_SCHEDULE_EVENT_PRE'))) return;
+        //if (!eval(Hooks::getInstance()->get('CONTACT_ON_ADD_ACTIVITY_SCHEDULE_EVENT_PRE'))) return;
 
         if ($this->isChecked('addActivity', $_POST))
         {
@@ -1541,7 +1541,7 @@ class ContactsUI extends UserInterface
             $changesMade = true;
         }
 
-        if (!eval(Hooks::get('CANDIDATE_ON_ADD_ACTIVITY_CHANGE_STATUS_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_ADD_ACTIVITY_CHANGE_STATUS_POST'))) return;
 
         $this->_template->assign('contactID', $contactID);
         $this->_template->assign('regardingID', $regardingID);

@@ -214,7 +214,7 @@ class EmailTemplates
 
             $siteID = $site->getFirstSiteID();
 
-            if (!eval(Hooks::get('CAREERS_SITEID'))) return;
+            if (!eval(Hooks::getInstance()->get('CAREERS_SITEID'))) return;
 
             $siteRS = $site->getSiteBySiteID($siteID);
 

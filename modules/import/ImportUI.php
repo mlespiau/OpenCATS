@@ -150,7 +150,7 @@ class ImportUI extends UserInterface
         );
         $tableName = $import->delete($importID);
 
-        if (!eval(Hooks::get('IMPORT_REVERT'))) return;
+        if (!eval(Hooks::getInstance()->get('IMPORT_REVERT'))) return;
 
         $message = 'The revert was successful.';
 
@@ -176,7 +176,7 @@ class ImportUI extends UserInterface
         $import = new Import($this->_siteID);
         $importData = $import->get($importID);
 
-        if (!eval(Hooks::get('IMPORT_VIEW_ERRORS'))) return;
+        if (!eval(Hooks::getInstance()->get('IMPORT_VIEW_ERRORS'))) return;
 
         if (isset($importData['importErrors']))
         {
@@ -206,7 +206,7 @@ class ImportUI extends UserInterface
         }
         else
         {
-            if (!eval(Hooks::get('IMPORT_VIEW_PENDING'))) return;
+            if (!eval(Hooks::getInstance()->get('IMPORT_VIEW_PENDING'))) return;
 
             $this->_template->assign('data', $data);
             $this->_template->assign('active', $this);
@@ -271,7 +271,7 @@ class ImportUI extends UserInterface
             'Fax Number',       'fax_number'
         );
 
-        if (!eval(Hooks::get('IMPORT_TYPES_2'))) return;
+        if (!eval(Hooks::getInstance()->get('IMPORT_TYPES_2'))) return;
 
         $companies = new Companies($this->_siteID);
         $candidates = new Candidates($this->_siteID);
@@ -315,7 +315,7 @@ class ImportUI extends UserInterface
             $this->_template->assign('pendingCommits', true);
         }
 
-        if (!eval(Hooks::get('IMPORT2_SHOW'))) return;
+        if (!eval(Hooks::getInstance()->get('IMPORT2_SHOW'))) return;
 
         $this->_template->assign('active', $this);
         $this->_template->assign('bulk', $bulk);
@@ -352,7 +352,7 @@ class ImportUI extends UserInterface
                $this->_template->assign('allowAspFlashUploader', false);
            }
 
-           if (!eval(Hooks::get('IMPORT_RESUMES'))) return;
+           if (!eval(Hooks::getInstance()->get('IMPORT_RESUMES'))) return;
 
            $this->_template->display('./modules/import/ImportResumes.tpl');
            */
@@ -362,7 +362,7 @@ class ImportUI extends UserInterface
            $this->_template->assign('active', $this);
            $this->_template->assign('typeOfImport', $typeOfImport);
 
-           if (!eval(Hooks::get('IMPORT_UPLOAD'))) return;
+           if (!eval(Hooks::getInstance()->get('IMPORT_UPLOAD'))) return;
 
            $this->_template->display('./modules/import/Import2.tpl');
        }
@@ -431,7 +431,7 @@ class ImportUI extends UserInterface
                 CommonErrors::fatal(COMMONERROR_PERMISSION, $this, 'Demo user can not import data.');
             }
 
-            if (!eval(Hooks::get('IMPORT_ON_IMPORT_1'))) return;
+            if (!eval(Hooks::getInstance()->get('IMPORT_ON_IMPORT_1'))) return;
 
             switch($dataType)
             {
@@ -451,7 +451,7 @@ class ImportUI extends UserInterface
 
         /* Otherwise, parse the file... */
 
-        if (!eval(Hooks::get('IMPORT_ON_IMPORT_2'))) return;
+        if (!eval(Hooks::getInstance()->get('IMPORT_ON_IMPORT_2'))) return;
 
         if (!isset($_FILES['file']) || empty($_FILES['file']['name']))
         {
@@ -547,7 +547,7 @@ class ImportUI extends UserInterface
            files they shouldn't be reading. */
         $_SESSION['CATS']->validImportFileIDs[] = $randomFile;
 
-        if (!eval(Hooks::get('IMPORT_ON_IMPORT_3'))) return;
+        if (!eval(Hooks::getInstance()->get('IMPORT_ON_IMPORT_3'))) return;
 
         switch($dataType)
         {
@@ -593,7 +593,7 @@ class ImportUI extends UserInterface
             return;
         }
 
-        if (!eval(Hooks::get('IMPORT_ON_IMPORT_DELIMITED_1'))) return;
+        if (!eval(Hooks::getInstance()->get('IMPORT_ON_IMPORT_DELIMITED_1'))) return;
 
         switch ($dataContaining)
         {
@@ -613,7 +613,7 @@ class ImportUI extends UserInterface
                 return;
         }
 
-        if (!eval(Hooks::get('IMPORT_ON_IMPORT_DELIMITED_2'))) return;
+        if (!eval(Hooks::getInstance()->get('IMPORT_ON_IMPORT_DELIMITED_2'))) return;
 
         switch ($importInto)
         {
@@ -668,7 +668,7 @@ class ImportUI extends UserInterface
                 continue;
             }
 
-            if (!eval(Hooks::get('IMPORT_ON_IMPORT_DELIMITED_3'))) return;
+            if (!eval(Hooks::getInstance()->get('IMPORT_ON_IMPORT_DELIMITED_3'))) return;
 
             switch ($dataContaining)
             {
@@ -692,7 +692,7 @@ class ImportUI extends UserInterface
 
         $isSA = ($this->_accessLevel >= ACCESS_LEVEL_SA);
 
-        if (!eval(Hooks::get('IMPORT_ON_IMPORT_DELIMITED_4'))) return;
+        if (!eval(Hooks::getInstance()->get('IMPORT_ON_IMPORT_DELIMITED_4'))) return;
 
         $this->_template->assign('isSA', $isSA);
         $this->_template->assign('arrayOfData', $ArrayOfData);
@@ -749,7 +749,7 @@ class ImportUI extends UserInterface
             return;
         }
 
-        if (!eval(Hooks::get('IMPORT_ON_IMPORT_DELIMITED_5'))) return;
+        if (!eval(Hooks::getInstance()->get('IMPORT_ON_IMPORT_DELIMITED_5'))) return;
 
         switch ($dataContaining)
         {
@@ -767,7 +767,7 @@ class ImportUI extends UserInterface
                 return;
         }
 
-        if (!eval(Hooks::get('IMPORT_ON_IMPORT_DELIMITED_6'))) return;
+        if (!eval(Hooks::getInstance()->get('IMPORT_ON_IMPORT_DELIMITED_6'))) return;
 
         /* Set up a new import record, and set table types. */
         $import = new Import($this->_siteID);
@@ -808,7 +808,7 @@ class ImportUI extends UserInterface
             $totalRows++;
             // FIXME: This decision should be made outside the loop.
 
-            if (!eval(Hooks::get('IMPORT_ON_IMPORT_DELIMITED_7'))) return;
+            if (!eval(Hooks::getInstance()->get('IMPORT_ON_IMPORT_DELIMITED_7'))) return;
 
             switch ($dataContaining)
             {
@@ -859,7 +859,7 @@ class ImportUI extends UserInterface
                         $import = new Import($this->_siteID);
                         if ($theFieldPreferenceValue == 'foreign')
                         {
-                            if (!eval(Hooks::get('IMPORT_ON_IMPORT_DELIMITED_8'))) return;
+                            if (!eval(Hooks::getInstance()->get('IMPORT_ON_IMPORT_DELIMITED_8'))) return;
 
                             switch ($importInto)
                             {
@@ -892,7 +892,7 @@ class ImportUI extends UserInterface
 
             $result = '';
 
-            if (!eval(Hooks::get('IMPORT_ON_IMPORT_DELIMITED_9'))) return;
+            if (!eval(Hooks::getInstance()->get('IMPORT_ON_IMPORT_DELIMITED_9'))) return;
 
             /* Execute the add data command. */
             switch ($importInto)
@@ -979,7 +979,7 @@ class ImportUI extends UserInterface
             $message .= CATSUtility::getIndexName() . '?m=import&amp;a=viewerrors&amp;importID=' . $importID . '\';" value="View Import Errors" class="button">';
         }
 
-        if (!eval(Hooks::get('IMPORT_ON_IMPORT_DELIMITED_10'))) return;
+        if (!eval(Hooks::getInstance()->get('IMPORT_ON_IMPORT_DELIMITED_10'))) return;
 
         /* Send off to the import template. */
         $this->_template->assign('successMessage', $message);
@@ -991,7 +991,7 @@ class ImportUI extends UserInterface
     */
     private function addForeign($dataTable, $data, $assocID, $importID)
     {
-        if (!eval(Hooks::get('IMPORT_ADD_FOREIGN'))) return;
+        if (!eval(Hooks::getInstance()->get('IMPORT_ADD_FOREIGN'))) return;
 
         $import = new Import($this->_siteID);
         $import->addForeign($dataTable, $data, $assocID, $importID);
@@ -1021,7 +1021,7 @@ class ImportUI extends UserInterface
             return 'Required fields (first name, last name) are missing.';
         }
 
-        if (!eval(Hooks::get('IMPORT_ADD_CANDIDATE'))) return;
+        if (!eval(Hooks::getInstance()->get('IMPORT_ADD_CANDIDATE'))) return;
 
         $candidatesImport = new CandidatesImport($this->_siteID);
         $candidateID = $candidatesImport->add($dataNamed, $this->_userID, $importID);
@@ -1033,7 +1033,7 @@ class ImportUI extends UserInterface
 
         $this->addForeign(DATA_ITEM_CANDIDATE, $dataForeign, $candidateID, $importID);
 
-        if (!eval(Hooks::get('IMPORT_ADD_CANDIDATE_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('IMPORT_ADD_CANDIDATE_POST'))) return;
 
         return '';
     }
@@ -1060,7 +1060,7 @@ class ImportUI extends UserInterface
             return 'Duplicate entry.';
         }
 
-        if (!eval(Hooks::get('IMPORT_ADD_CLIENT'))) return;
+        if (!eval(Hooks::getInstance()->get('IMPORT_ADD_CLIENT'))) return;
 
         $companyID = $companiesImport->add($dataNamed, $this->_userID, $importID);
 
@@ -1071,7 +1071,7 @@ class ImportUI extends UserInterface
 
         $this->addForeign(DATA_ITEM_COMPANY, $dataForeign, $companyID, $importID);
 
-        if (!eval(Hooks::get('IMPORT_ADD_CLIENT_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('IMPORT_ADD_CLIENT_POST'))) return;
 
         return '';
     }
@@ -1115,7 +1115,7 @@ class ImportUI extends UserInterface
                     }
                 }
 
-                if (!eval(Hooks::get('IMPORT_ADD_CONTACT_CLIENT'))) return;
+                if (!eval(Hooks::getInstance()->get('IMPORT_ADD_CONTACT_CLIENT'))) return;
 
                 $companyID = $contactImport->addCompany($dataCompany, $this->_userID, $importID);
                 if ($companyID == -1)
@@ -1124,7 +1124,7 @@ class ImportUI extends UserInterface
                 }
                 $genCompany = true;
 
-                if (!eval(Hooks::get('IMPORT_ADD_CONTACT_CLIENT_POST'))) return;
+                if (!eval(Hooks::getInstance()->get('IMPORT_ADD_CONTACT_CLIENT_POST'))) return;
             }
             else
             {
@@ -1163,7 +1163,7 @@ class ImportUI extends UserInterface
 
         }
 
-        if (!eval(Hooks::get('IMPORT_ADD_CONTACT'))) return;
+        if (!eval(Hooks::getInstance()->get('IMPORT_ADD_CONTACT'))) return;
 
         $contactID = $contactImport->add($dataNamed, $this->_userID, $importID);
 
@@ -1174,7 +1174,7 @@ class ImportUI extends UserInterface
 
         $this->addForeign(DATA_ITEM_CONTACT, $dataForeign, $contactID, $importID);
 
-        if (!eval(Hooks::get('IMPORT_ADD_CONTACT_POST'))) return;
+        if (!eval(Hooks::getInstance()->get('IMPORT_ADD_CONTACT_POST'))) return;
 
         if ($genCompany)
         {
@@ -1487,7 +1487,7 @@ class ImportUI extends UserInterface
             }
             else
             {
-                if (!eval(Hooks::get('MASS_IMPORT_SPACE_CHECK'))) return;
+                if (!eval(Hooks::getInstance()->get('MASS_IMPORT_SPACE_CHECK'))) return;
 
                 // Build the javascript to handle the ajax parsing (for progress bar)
                 $js = '';
@@ -1535,7 +1535,7 @@ class ImportUI extends UserInterface
                 );
             }
 
-            //if (!eval(Hooks::get('IMPORT_NOTIFY_DEV'))) return;
+            //if (!eval(Hooks::getInstance()->get('IMPORT_NOTIFY_DEV'))) return;
 
             $this->_template->assign('importedCandidates', $importedCandidates);
             $this->_template->assign('importedDocuments', $importedDocuments);

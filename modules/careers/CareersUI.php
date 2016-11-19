@@ -78,10 +78,10 @@ class CareersUI extends UserInterface
 
         $siteID = $site->getFirstSiteID();
 
-        if (!eval(Hooks::get('CAREERS_SITEID'))) return;
+        if (!eval(Hooks::getInstance()->get('CAREERS_SITEID'))) return;
 
         /*
-        if (!eval(Hooks::get('CAREERS_IS_ENABLED'))) return;
+        if (!eval(Hooks::getInstance()->get('CAREERS_IS_ENABLED'))) return;
         if (!file_exists('modules/asp') && !LicenseUtility::isProfessional())
         {
             CommonErrors::fatal(COMMONERROR_INVALIDMODULE, $this, 'Career Portal');
@@ -965,7 +965,7 @@ class CareersUI extends UserInterface
         $this->_template->assign('template', $template);
         $this->_template->assign('siteName', $siteName);
 
-        if (!eval(Hooks::get('CAREERS_PAGE_BOTTOM'))) return;
+        if (!eval(Hooks::getInstance()->get('CAREERS_PAGE_BOTTOM'))) return;
 
         if ($careerPortalSettingsRS['useCATSTemplate'] != '')
         {

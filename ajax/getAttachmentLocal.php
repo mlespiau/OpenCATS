@@ -70,7 +70,7 @@ if ($rs['contentType'] == 'catsbackup')
 
 $url = 'attachments/'.$directoryName.'/'.$fileName;
 
-if (!eval(Hooks::get('ATTACHMENT_RETRIEVAL'))) return;
+if (!eval(Hooks::getInstance()->get('ATTACHMENT_RETRIEVAL'))) return;
 
 if (!file_exists('attachments/'.$directoryName.'/'.$fileName))
 {
