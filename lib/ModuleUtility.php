@@ -75,7 +75,7 @@ class ModuleUtility
 
         if (!eval(Hooks::get('LOAD_MODULE'))) return;
 
-        $module = new $moduleClass();
+        $module = self::createModule($moduleClass);
         $module->handleRequest();
     }
 
@@ -126,7 +126,7 @@ class ModuleUtility
             . $moduleClass . '.php'
         );
 
-        $module = new $moduleClass();
+        $module = self::createModule($moduleClass);
 
         if (!method_exists($module, 'requiresAuthentication'))
         {
@@ -264,7 +264,7 @@ class ModuleUtility
                 $moduleName = basename($directoryName);
                 $moduleClass = basename(substr($fullFilePath, 0, -4));
 
-                $module = new $moduleClass();
+                $module = self::createModule($moduleClass);
                 $modules[$moduleName] = array(
                     $moduleClass,
                     $module->getModuleTabText(),
@@ -561,6 +561,15 @@ class ModuleUtility
             $rs = $db->query($sql);
 
             $currentVersion = $version;
+        }
+    }
+
+    private static function createModule($className)
+    {
+        if (method_exists($className, 'createDefault')) {
+            return $className::createDefault();
+        } else {
+            return new $className;
         }
     }
 }
