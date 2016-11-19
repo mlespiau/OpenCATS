@@ -61,15 +61,24 @@ class CandidatesUI extends UserInterface
      */
     const TRUNCATE_KEYSKILLS = 30;
 
+    private $_hooks;
 
-    public function __construct($moduleName, $moduleDirectory, $moduleTabText, $subTabs, $authenticationRequired)
-    {
+
+    public function __construct(
+        $moduleName,
+        $moduleDirectory,
+        $moduleTabText,
+        $subTabs,
+        $authenticationRequired,
+        Hooks $hooks
+    ) {
         parent::__construct();
         $this->_moduleName = $moduleName;
         $this->_moduleDirectory = $moduleDirectory;
         $this->_moduleTabText = $moduleTabText;
         $this->_subTabs = $subTabs;
         $this->_authenticationRequired = $authenticationRequired;
+        $this->_hooks = $hooks;
     }
 
     public function createDefault()
@@ -82,18 +91,21 @@ class CandidatesUI extends UserInterface
                 'Add Candidate'     => CATSUtility::getIndexName() . '?m=candidates&amp;a=add*al=' . ACCESS_LEVEL_EDIT,
                 'Search Candidates' => CATSUtility::getIndexName() . '?m=candidates&amp;a=search'
             ),
-            true
+            true,
+            $this->_hooks
         );
     }
 
 
     public function handleRequest()
     {
-        if (!eval(Hooks::getInstance()->get('CANDIDATES_HANDLE_REQUEST'))) return;
+        // FIXME: Using hook for validating permissions, it should be handled by ACL code
+        if (!eval($this->_hooks->get('CANDIDATES_HANDLE_REQUEST'))) return;
         
         $action = $this->getAction();
         switch ($action)
         {
+
             case 'show':
                 $this->show();
                 break;
@@ -333,7 +345,7 @@ class CandidatesUI extends UserInterface
         $this->_template->assign('topLog', $topLog);
         $this->_template->assign('tagsRS', $tagsRS);
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_LIST_BY_VIEW'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_LIST_BY_VIEW'))) return;
 
         $this->_template->display('./modules/candidates/Candidates.tpl');
     }
@@ -618,7 +630,7 @@ class CandidatesUI extends UserInterface
         $this->_template->assign('tagsRS', $tags->getAll());
         $this->_template->assign('assignedTags', $tags->getCandidateTagsTitle($candidateID));
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_SHOW'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_SHOW'))) return;
 
         $this->_template->display('./modules/candidates/Show.tpl');
     }
@@ -722,7 +734,7 @@ class CandidatesUI extends UserInterface
         $EEOSettingsRS = $EEOSettings->getAll();
 
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_ADD'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_ADD'))) return;
 
         /* If parsing is not enabled server-wide, say so. */
         if (!LicenseUtility::isParsingEnabled())
@@ -1035,7 +1047,7 @@ class CandidatesUI extends UserInterface
             $data['dateAvailableMDY'] = $data['dateAvailable'];
         }
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_EDIT'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_EDIT'))) return;
 
         $EEOSettings = new EEOSettings($this->_siteID);
         $EEOSettingsRS = $EEOSettings->getAll();
@@ -1233,7 +1245,7 @@ class CandidatesUI extends UserInterface
             CommonErrors::fatal(COMMONERROR_MISSINGFIELDS, $this, 'Required fields are missing.');
         }
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_EDIT_PRE'))) return;
+        if (!eval($this->_hooks->getInstance()->get('CANDIDATE_ON_EDIT_PRE'))) return;
 
         /* Update the candidate record. */
         $updateSuccess = $candidates->update(
@@ -1286,7 +1298,7 @@ class CandidatesUI extends UserInterface
 
         $candidates->updatePossibleSources($sourcesDifferences);
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_EDIT_POST'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_ON_EDIT_POST'))) return;
 
         CATSUtility::transferRelativeURI(
             'm=candidates&a=show&candidateID=' . $candidateID
@@ -1311,7 +1323,7 @@ class CandidatesUI extends UserInterface
 
         $candidateID = $_GET['candidateID'];
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_DELETE'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_DELETE'))) return;
 
         $candidates = new Candidates($this->_siteID);
         $candidates->delete($candidateID);
@@ -1445,7 +1457,7 @@ class CandidatesUI extends UserInterface
             );
         }
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_CONSIDER_FOR_JOB_SEARCH'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_ON_CONSIDER_FOR_JOB_SEARCH'))) return;
 
         $this->_template->assign('rs', $rs);
         $this->_template->assign('isFinishedMode', false);
@@ -1514,7 +1526,7 @@ class CandidatesUI extends UserInterface
 
         $jobOrderID  = $_GET['jobOrderID'];
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_ADD_TO_PIPELINE_PRE'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_ADD_TO_PIPELINE_PRE'))) return;
 
         $pipelines = new Pipelines($this->_siteID);
         $activityEntries = new ActivityEntries($this->_siteID);
@@ -1548,10 +1560,10 @@ class CandidatesUI extends UserInterface
                 $jobOrderID
             );
 
-            if (!eval(Hooks::getInstance()->get('CANDIDATE_ADD_TO_PIPELINE_POST_IND'))) return;
+            if (!eval($this->_hooks->get('CANDIDATE_ADD_TO_PIPELINE_POST_IND'))) return;
         }
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_ADD_TO_PIPELINE_POST'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_ADD_TO_PIPELINE_POST'))) return;
 
         $this->_template->assign('isFinishedMode', true);
         $this->_template->assign('jobOrderID', $jobOrderID);
@@ -1656,7 +1668,7 @@ class CandidatesUI extends UserInterface
         $calendar = new Calendar($this->_siteID);
         $calendarEventTypes = $calendar->getAllEventTypes();
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_ADD_ACTIVITY_CHANGE_STATUS'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_ADD_ACTIVITY_CHANGE_STATUS'))) return;
 
         if (SystemUtility::isSchedulerEnabled() && !$_SESSION['CATS']->isDemo())
         {
@@ -1807,12 +1819,12 @@ class CandidatesUI extends UserInterface
         $candidateID = $_GET['candidateID'];
         $jobOrderID  = $_GET['jobOrderID'];
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_REMOVE_FROM_PIPELINE_PRE'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_REMOVE_FROM_PIPELINE_PRE'))) return;
 
         $pipelines = new Pipelines($this->_siteID);
         $pipelines->remove($candidateID, $jobOrderID);
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_REMOVE_FROM_PIPELINE_POST'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_REMOVE_FROM_PIPELINE_POST'))) return;
 
         CATSUtility::transferRelativeURI(
             'm=candidates&a=show&candidateID=' . $candidateID
@@ -1827,7 +1839,7 @@ class CandidatesUI extends UserInterface
         $savedSearches = new SavedSearches($this->_siteID);
         $savedSearchRS = $savedSearches->get(DATA_ITEM_CANDIDATE);
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_SEARCH'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_SEARCH'))) return;
 
         $this->_template->assign('wildCardString', '');
         $this->_template->assign('savedSearchRS', $savedSearchRS);
@@ -2083,7 +2095,7 @@ class CandidatesUI extends UserInterface
             DATA_ITEM_CANDIDATE, $candidateIDs, 32, 9
         );
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_SEARCH'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_ON_SEARCH'))) return;
 
         /* Save the search. */
         $savedSearches = new SavedSearches($this->_siteID);
@@ -2137,7 +2149,7 @@ class CandidatesUI extends UserInterface
             $data['text'] = SearchUtility::makePreview($query, $data['text']);
         }
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_VIEW_RESUME'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_VIEW_RESUME'))) return;
 
         $this->_template->assign('active', $this);
         $this->_template->assign('data', $data);
@@ -2164,7 +2176,7 @@ class CandidatesUI extends UserInterface
             DATA_ITEM_CANDIDATE, $candidateID
         );
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_ADD_EDIT_IMAGE'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_ADD_EDIT_IMAGE'))) return;
 
         $this->_template->assign('isFinishedMode', false);
         $this->_template->assign('candidateID', $candidateID);
@@ -2192,7 +2204,7 @@ class CandidatesUI extends UserInterface
 
         $candidateID = $_POST['candidateID'];
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_ADD_EDIT_IMAGE_PRE'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_ON_ADD_EDIT_IMAGE_PRE'))) return;
 
         $attachmentCreator = new AttachmentCreator($this->_siteID);
         $attachmentCreator->createFromUpload(
@@ -2206,7 +2218,7 @@ class CandidatesUI extends UserInterface
             //$this->fatalModal($attachmentCreator->getError());
         }
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_ADD_EDIT_IMAGE_POST'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_ON_ADD_EDIT_IMAGE_POST'))) return;
 
         $this->_template->assign('isFinishedMode', true);
         $this->_template->assign('candidateID', $candidateID);
@@ -2234,7 +2246,7 @@ class CandidatesUI extends UserInterface
 
         $candidateID = $_GET['candidateID'];
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_CREATE_ATTACHMENT'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_CREATE_ATTACHMENT'))) return;
 
         $this->_template->assign('isFinishedMode', false);
         $this->_template->assign('candidateID', $candidateID);
@@ -2277,7 +2289,7 @@ class CandidatesUI extends UserInterface
             $isResume = false;
         }
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_CREATE_ATTACHMENT_PRE'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_ON_CREATE_ATTACHMENT_PRE'))) return;
 
         $attachmentCreator = new AttachmentCreator($this->_siteID);
         $attachmentCreator->createFromUpload(
@@ -2302,7 +2314,7 @@ class CandidatesUI extends UserInterface
         $textExtractionErrorMessage = $attachmentCreator->getTextExtractionError();
         $resumeText = $attachmentCreator->getExtractedText();
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_CREATE_ATTACHMENT_POST'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_ON_CREATE_ATTACHMENT_POST'))) return;
 
         $this->_template->assign('resumeText', $resumeText);
         $this->_template->assign('isFinishedMode', true);
@@ -2337,12 +2349,12 @@ class CandidatesUI extends UserInterface
         $candidateID  = $_GET['candidateID'];
         $attachmentID = $_GET['attachmentID'];
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_DELETE_ATTACHMENT_PRE'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_ON_DELETE_ATTACHMENT_PRE'))) return;
 
         $attachments = new Attachments($this->_siteID);
         $attachments->delete($attachmentID);
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_DELETE_ATTACHMENT_POST'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_ON_DELETE_ATTACHMENT_POST'))) return;
 
         CATSUtility::transferRelativeURI(
             'm=candidates&a=show&candidateID=' . $candidateID
@@ -2587,7 +2599,7 @@ class CandidatesUI extends UserInterface
             CommonErrors::fatal(COMMONERROR_MISSINGFIELDS, $this);
         }
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_ADD_PRE'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_ON_ADD_PRE'))) return;
 
         $candidates = new Candidates($this->_siteID);
         $candidateID = $candidates->add(
@@ -2649,7 +2661,7 @@ class CandidatesUI extends UserInterface
         /* NOTE: This function cannot be called if parsing is enabled */
         else if (isset($_FILES['file']) && !empty($_FILES['file']['name']))
         {
-            if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_CREATE_ATTACHMENT_PRE'))) return;
+            if (!eval($this->_hooks->get('CANDIDATE_ON_CREATE_ATTACHMENT_PRE'))) return;
 
             $attachmentCreator = new AttachmentCreator($this->_siteID);
             $attachmentCreator->createFromUpload(
@@ -2675,7 +2687,7 @@ class CandidatesUI extends UserInterface
 
             // FIXME: Show parse errors!
 
-            if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_CREATE_ATTACHMENT_POST'))) return;
+            if (!eval($this->_hooks->get('CANDIDATE_ON_CREATE_ATTACHMENT_POST'))) return;
         }
 
         /**
@@ -2724,7 +2736,7 @@ class CandidatesUI extends UserInterface
 
             if ($tempFile !== false && $tempFullPath !== false)
             {
-                if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_CREATE_ATTACHMENT_PRE'))) return;
+                if (!eval($this->_hooks->get('CANDIDATE_ON_CREATE_ATTACHMENT_PRE'))) return;
 
                 $attachmentCreator = new AttachmentCreator($this->_siteID);
                 $attachmentCreator->createFromFile(
@@ -2748,7 +2760,7 @@ class CandidatesUI extends UserInterface
                 $isTextExtractionError = $attachmentCreator->isTextExtractionError();
                 $textExtractionErrorMessage = $attachmentCreator->getTextExtractionError();
 
-                if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_CREATE_ATTACHMENT_POST'))) return;
+                if (!eval($this->_hooks->get('CANDIDATE_ON_CREATE_ATTACHMENT_POST'))) return;
 
                 // Remove the cleanup cookie since the file no longer exists
                 setcookie('CATS_SP_TEMP_FILE', '');
@@ -2760,7 +2772,7 @@ class CandidatesUI extends UserInterface
             {
                 // Resume was pasted into the form and not uploaded from a file
 
-                if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_CREATE_ATTACHMENT_PRE'))) return;
+                if (!eval($this->_hooks->get('CANDIDATE_ON_CREATE_ATTACHMENT_PRE'))) return;
 
                 $attachmentCreator = new AttachmentCreator($this->_siteID);
                 $attachmentCreator->createFromText(
@@ -2780,7 +2792,7 @@ class CandidatesUI extends UserInterface
                     return;
                 }
 
-                if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_CREATE_ATTACHMENT_POST'))) return;
+                if (!eval($this->_hooks->get('CANDIDATE_ON_CREATE_ATTACHMENT_POST'))) return;
             }
         }
 
@@ -2805,7 +2817,7 @@ class CandidatesUI extends UserInterface
         }
 
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_ADD_POST'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_ON_ADD_POST'))) return;
 
         return $candidateID;
     }
@@ -2856,7 +2868,7 @@ class CandidatesUI extends UserInterface
 
         $candidateID = $_POST['candidateID'];
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_ADD_ACTIVITY_CHANGE_STATUS_PRE'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_ON_ADD_ACTIVITY_CHANGE_STATUS_PRE'))) return;
 
         if ($this->isChecked('addActivity', $_POST))
         {
@@ -3182,7 +3194,7 @@ class CandidatesUI extends UserInterface
             $changesMade = true;
         }
 
-        if (!eval(Hooks::getInstance()->get('CANDIDATE_ON_ADD_ACTIVITY_CHANGE_STATUS_POST'))) return;
+        if (!eval($this->_hooks->get('CANDIDATE_ON_ADD_ACTIVITY_CHANGE_STATUS_POST'))) return;
 
         $this->_template->assign('candidateID', $candidateID);
         $this->_template->assign('regardingID', $regardingID);
