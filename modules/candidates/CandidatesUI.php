@@ -3315,7 +3315,6 @@ class CandidatesUI extends UserInterface
     private function onShowDuplicates()
     {
         $candidates = new Candidates($this->_siteID);
-        print_r($candidates->findDuplicates());
         $this->_template->assign('active', $this);
         $this->_template->assign('results', $candidates->findDuplicates());
         $this->_template->display('./modules/candidates/ShowDuplicates.tpl');
