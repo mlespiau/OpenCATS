@@ -965,6 +965,71 @@ class Candidates
         return $this->_db->getAllAssoc($sql);
     }
 
+    public function findDuplicates()
+    {
+        $candidateList = $this->_db->getAllAssoc("select 
+              email1 as email,
+              count(*) as c,
+              group_concat(candidate_id) as ids
+          from candidate
+          where email1 <> ''
+          group by email1 having c > 1;");
+        $candidateList = array_merge($candidateList, $this->_db->getAllAssoc("select 
+              email2 as email,
+              count(*) as c,
+              group_concat(candidate_id) as ids
+          from candidate
+          where email2 <> ''
+          group by email2 having c > 1;"));
+        $result = array();
+        foreach ($candidateList as $candidates)
+        {
+            if (empty($result[$candidates['email']]))
+            {
+                $result[$candidates['email']] = array();
+            }
+            $ids = explode(",", $candidates['ids']);
+            foreach ($ids as $id) {
+                $result[$candidates['email']][$id] = array(
+                    'data' => $this->_db->getAllAssoc("select * from candidate where candidate_id = " . $id)[0],
+                    'extra' => $this->_db->getAllAssoc("select * from extra_field where extra_field.data_item_type = 100 and extra_field.data_item_id = " . $id)[0]
+                );
+            }
+        }
+        $emailOneVsEmailTwo = $this->_db->getAllAssoc("select 
+                candidate.candidate_id as ci1,
+                candidate.email1,
+                c2.candidate_id as ci2,
+                c2.email2 
+            from candidate 
+            join (select candidate_id, email2 from candidate) as c2 
+            on candidate.email1 = c2.email2 
+            and candidate.candidate_id <> c2.candidate_id 
+            and c2.email2 <> '';");
+        foreach ($emailOneVsEmailTwo as $candidates)
+        {
+            if (empty($result[$candidates['email1']]))
+            {
+                $result[$candidates['email1']] = array();
+            }
+            $idOne = $candidates['ci1'];
+            $idTwo = $candidates['ci2'];
+            if (empty($result[$candidates['email1']][$idOne])) {
+                $result[$candidates['email']][$idOne] = array(
+                    'data' => $this->_db->getAllAssoc("select * from candidate where candidate_id = " . $idOne)[0],
+                    'extra' => $this->_db->getAllAssoc("select * from extra_field where extra_field.data_item_type = 100 and extra_field.data_item_id = " . $idOne)[0]
+                );
+            }
+            if (empty($result[$candidates['email1']][$idTwo])) {
+                $result[$candidates['email']][$idTwo] = array(
+                    'data' => $this->_db->getAllAssoc("select * from candidate where candidate_id = " . $idTwo)[0],
+                    'extra' => $this->_db->getAllAssoc("select * from extra_field where extra_field.data_item_type = 100 and extra_field.data_item_id = " . $idTwo)[0]
+                );
+            }
+        }
+        return $result;
+    }
+
     /**
      * Updates a sites possible sources with an array generated
      * by getDifferencesFromList (ListEditor.php).
@@ -1628,6 +1693,7 @@ class EEOSettings
          );
          $this->_db->query($sql);
     }
+
 }
 
 ?>

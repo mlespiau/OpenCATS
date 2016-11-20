@@ -72,7 +72,8 @@ class CandidatesUI extends UserInterface
         $this->_moduleTabText = 'Candidates';
         $this->_subTabs = array(
             'Add Candidate'     => CATSUtility::getIndexName() . '?m=candidates&amp;a=add*al=' . ACCESS_LEVEL_EDIT,
-            'Search Candidates' => CATSUtility::getIndexName() . '?m=candidates&amp;a=search'
+            'Search Candidates' => CATSUtility::getIndexName() . '?m=candidates&amp;a=search',
+            'Find Duplicates' => CATSUtility::getIndexName() . '?m=candidates&amp;a=showDuplicates',
         );
     }
 
@@ -235,7 +236,9 @@ class CandidatesUI extends UserInterface
             case 'show_questionnaire':
                 $this->onShowQuestionnaire();
                 break;
-
+            case 'showDuplicates':
+                $this->onShowDuplicates();
+                break;
             /* Main candidates page. */
             case 'listByView':
             default:
@@ -1311,8 +1314,11 @@ class CandidatesUI extends UserInterface
         $_SESSION['CATS']->getMRU()->removeEntry(
             DATA_ITEM_CANDIDATE, $candidateID
         );
-
-        CATSUtility::transferRelativeURI('m=candidates&a=listByView');
+        if (isset($_GET['redirectToAction'])) {
+            CATSUtility::transferRelativeURI('m=candidates&a=' . $_GET['redirectToAction']);
+        } else {
+            CATSUtility::transferRelativeURI('m=candidates&a=listByView');
+        }
     }
 
     /*
@@ -3304,6 +3310,15 @@ class CandidatesUI extends UserInterface
         $this->_template->assign('print', $printValue);
 
         $this->_template->display('./modules/candidates/Questionnaire.tpl');
+    }
+
+    private function onShowDuplicates()
+    {
+        $candidates = new Candidates($this->_siteID);
+        print_r($candidates->findDuplicates());
+        $this->_template->assign('active', $this);
+        $this->_template->assign('results', $candidates->findDuplicates());
+        $this->_template->display('./modules/candidates/ShowDuplicates.tpl');
     }
 }
 
