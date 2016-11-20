@@ -3,6 +3,7 @@ namespace OpenCATS\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 include_once('./lib/Candidates.php');
+include_once('./lib/TemplateUtility.php');
 
 class CandidateController
 {
@@ -14,10 +15,11 @@ class CandidateController
      */
     const NOTES_MAXLEN = 500;
 
-    function __construct(\Template $template, \Hooks $hooks)
+    function __construct(\Template $template, \Hooks $hooks, \Candidates $candidates)
     {
         $this->template = $template;
         $this->hooks = $hooks;
+        $this->candidates = $candidates;
     }
 
     /*
@@ -36,24 +38,16 @@ class CandidateController
         }
         $siteId = isset($_SESSION['CATS']) ? $_SESSION['CATS']->getSiteID() : -1;
         $accessLevel = isset($_SESSION['CATS']) ? $_SESSION['CATS']->getAccessLevel() : -1;
-        $candidates = new \Candidates($siteId);
         try {
-            if (isset($_GET['candidateID']))
-            {
-                $candidateID = $_GET['candidateID'];
-            }
-            else
-            {
-                $candidateID = $candidates->getIDByEmail($_GET['email']);
-            }
-            $data = $candidates->get($candidateID);
+            $candidateID = $request->get('email') ? $this->candidates->getIDByEmail($request->get('email')) : $request->get('candidateID');
+            $data = $this->candidates->get($candidateID);
         } catch (Exception $e) {
-            CommonErrors::fatal(COMMONERROR_BADINDEX, $this, $e->getMessage());
+            \CommonErrors::fatal(COMMONERROR_BADINDEX, $this, $e->getMessage());
         }
         /* Bail out if we got an empty result set. */
         if (empty($data))
         {
-            CommonErrors::fatal(COMMONERROR_BADINDEX, $this, 'The specified candidate ID could not be found.');
+            \CommonErrors::fatal(COMMONERROR_BADINDEX, $this, 'The specified candidate ID could not be found.');
             return;
         }
 
@@ -215,7 +209,7 @@ class CandidateController
         }
 
         /* Get upcoming calendar entries. */
-        $calendarRS = $candidates->getUpcomingEvents($candidateID);
+        $calendarRS = $this->candidates->getUpcomingEvents($candidateID);
         if (!empty($calendarRS))
         {
             foreach ($calendarRS as $rowIndex => $row)
@@ -230,7 +224,7 @@ class CandidateController
         }
 
         /* Get extra fields. */
-        $extraFieldRS = $candidates->extraFields->getValuesForShow($candidateID);
+        $extraFieldRS = $this->candidates->extraFields->getValuesForShow($candidateID);
 
         /* Add an MRU entry. */
         $_SESSION['CATS']->getMRU()->addEntry(

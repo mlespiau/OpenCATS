@@ -37,7 +37,7 @@ include_once('./lib/SavedLists.php');
 include_once('./lib/ExtraFields.php');
 include_once('lib/DataGrid.php');
 
-
+use OpenCATS\Exception\CandidateException;
 /**
  *  Candidates Library
  *  @package    CATS

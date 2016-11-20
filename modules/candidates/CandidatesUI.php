@@ -85,6 +85,7 @@ class CandidatesUI extends UserInterface
 
     public function createDefault()
     {
+        $siteId = isset($_SESSION['CATS']) ? $_SESSION['CATS']->getSiteID() : -1;
         $template = new Template();
         $instance = new self(
             'candidates',
@@ -96,7 +97,11 @@ class CandidatesUI extends UserInterface
             ),
             true,
             Hooks::getInstance(),
-            new CandidateController($template, Hooks::getInstance())
+            new CandidateController(
+                $template,
+                Hooks::getInstance(),
+                new \Candidates($siteId)
+            )
         );
         $template->assign('active', $this);
         return $instance;
