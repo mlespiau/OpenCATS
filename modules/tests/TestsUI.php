@@ -42,6 +42,8 @@ include_once('./modules/tests/CATSTestReporter.php');
 include_once('./modules/tests/CATSWebTestCase.php');
 include_once('./modules/tests/CATSAJAXTestCase.php');
 include_once('./modules/tests/TestCaseList.php');
+include_once('./vendor/autoload.php');
+use Symfony\Component\HttpFoundation\Request;
 
 
 class TestsUI extends UserInterface

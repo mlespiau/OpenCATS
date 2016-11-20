@@ -33,6 +33,8 @@ include_once('./lib/GraphGenerator.php');
 include_once('./lib/DateUtility.php');
 include_once('./lib/CommonErrors.php');
 include_once('./lib/Dashboard.php');
+include_once('./vendor/autoload.php');
+use Symfony\Component\HttpFoundation\Request;
 
 
 class GraphsUI extends UserInterface

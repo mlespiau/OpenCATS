@@ -40,6 +40,8 @@ include_once('./lib/Site.php');
 include_once('./lib/XmlJobExport.php');
 include_once('./lib/HttpLogger.php');
 include_once('./lib/CareerPortal.php');
+include_once('./vendor/autoload.php');
+use Symfony\Component\HttpFoundation\Request;
 
 define('XTPL_HEADER_STRING',    'header');
 define('XTPL_FOOTER_STRING',    'footer');

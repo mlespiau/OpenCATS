@@ -33,6 +33,8 @@ include_once('./lib/Site.php');
 include_once('./lib/Candidates.php');
 include_once('./lib/DocumentToText.php');
 include_once('./lib/License.php');
+include_once('./vendor/autoload.php');
+use Symfony\Component\HttpFoundation\Request;
 
 /* Toolbar library version. Increment to notify toolbars of an update. */
 define('TOOLBAR_LIB_VERSION', 32);

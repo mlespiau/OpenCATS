@@ -30,6 +30,8 @@
 include_once('./lib/NewVersionCheck.php');
 include_once('./lib/CommonErrors.php');
 include_once('./lib/Dashboard.php');
+include_once('./vendor/autoload.php');
+use Symfony\Component\HttpFoundation\Request;
 
 class HomeUI extends UserInterface
 {

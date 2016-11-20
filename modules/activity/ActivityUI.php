@@ -32,6 +32,8 @@ include_once('./lib/Candidates.php');
 include_once('./lib/DateUtility.php');
 include_once('./lib/InfoString.php');
 
+include_once('./vendor/autoload.php');
+use Symfony\Component\HttpFoundation\Request;
 
 class ActivityUI extends UserInterface
 {

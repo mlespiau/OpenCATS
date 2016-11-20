@@ -444,6 +444,9 @@ class Candidates
      */
     public function get($candidateID)
     {
+        if (!ctype_digit($candidateID)) {
+            throw new CandidateException('invalidCandidateId');
+        }
         $sql = sprintf(
             "SELECT
                 candidate.candidate_id AS candidateID,

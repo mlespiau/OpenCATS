@@ -45,6 +45,8 @@ include_once('./lib/ExtraFields.php');
 include_once('./lib/Graphs.php');
 include_once('./lib/Questionnaire.php');
 include_once('./lib/CommonErrors.php');
+include_once('./vendor/autoload.php');
+use Symfony\Component\HttpFoundation\Request;
 
 
 class JobOrdersUI extends UserInterface

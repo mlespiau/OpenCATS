@@ -43,6 +43,8 @@ include_once('./lib/Questionnaire.php');
 include_once('./lib/DocumentToText.php');
 include_once('./lib/FileUtility.php');
 include_once('./lib/ParseUtility.php');
+include_once('./vendor/autoload.php');
+use Symfony\Component\HttpFoundation\Request;
 
 class CareersUI extends UserInterface
 {

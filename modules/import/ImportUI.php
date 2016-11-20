@@ -39,6 +39,8 @@ include_once('./lib/ExtraFields.php');
 include_once('./lib/Attachments.php');
 include_once('./lib/ParseUtility.php');
 include_once('./lib/Import.php');
+include_once('./vendor/autoload.php');
+use Symfony\Component\HttpFoundation\Request;
 
 
 class ImportUI extends UserInterface

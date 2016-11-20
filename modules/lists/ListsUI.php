@@ -39,6 +39,8 @@ include_once('./lib/ListEditor.php');
 include_once('./lib/FileUtility.php');
 include_once('./lib/SavedLists.php');
 include_once('./lib/ExtraFields.php');
+include_once('./vendor/autoload.php');
+use Symfony\Component\HttpFoundation\Request;
 
 
 class ListsUI extends UserInterface

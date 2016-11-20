@@ -38,6 +38,8 @@ include_once('./lib/Export.php');
 include_once('./lib/ExtraFields.php');
 include_once('./lib/Calendar.php');
 include_once('./lib/CommonErrors.php');
+include_once('./vendor/autoload.php');
+use Symfony\Component\HttpFoundation\Request;
 
 
 class ContactsUI extends UserInterface

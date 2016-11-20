@@ -35,6 +35,10 @@
  *	@package    CATS
  *	@subpackage Library
  */
+
+include_once('./vendor/autoload.php');
+use Symfony\Component\HttpFoundation\Request;
+
 abstract class UserInterface
 {
     protected $_moduleName = '';

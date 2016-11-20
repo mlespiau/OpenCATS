@@ -26,6 +26,8 @@
  */
 
 include_once('./modules/install/Schema.php');
+include_once('./vendor/autoload.php');
+use Symfony\Component\HttpFoundation\Request;
 
 class CATSUI extends UserInterface
 {

@@ -31,6 +31,8 @@
  *
  * $Id: QueueUI.php 3600 2007-11-13 18:01:57Z andrew $
  */
+include_once('./vendor/autoload.php');
+use Symfony\Component\HttpFoundation\Request;
 
 class QueueUI extends UserInterface
 {

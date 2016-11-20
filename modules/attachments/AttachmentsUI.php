@@ -29,6 +29,8 @@
 
 include_once('./lib/CommonErrors.php');
 include_once('./lib/Attachments.php');
+include_once('./vendor/autoload.php');
+use Symfony\Component\HttpFoundation\Request;
 
 class AttachmentsUI extends UserInterface
 {

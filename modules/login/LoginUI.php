@@ -33,6 +33,8 @@ include_once('./lib/Site.php');
 include_once('./lib/NewVersionCheck.php');
 include_once('./lib/Wizard.php');
 include_once('./lib/License.php');
+include_once('./vendor/autoload.php');
+use Symfony\Component\HttpFoundation\Request;
 
 class LoginUI extends UserInterface
 {

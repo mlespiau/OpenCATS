@@ -48,6 +48,9 @@ include_once('./lib/Import.php');
 include_once('./lib/Questionnaire.php');
 include_once('./lib/Tags.php');
 eval(Hooks::getInstance()->get('XML_FEED_SUBMISSION_SETTINGS_HEADERS'));
+include_once('./vendor/autoload.php');
+use Symfony\Component\HttpFoundation\Request;
+
 
 /* Users.php is included by index.php already. */
 
