@@ -27,7 +27,9 @@
                     <?php foreach ($duplicates as $id => $candidate): ?>
                         <td>
                             <h3>
-                                Candidate Id: <?=$id?>
+                                <a href="<?php echo(CATSUtility::getIndexName()); ?>?m=candidates&amp;a=show&amp;candidateID=<?php echo($id); ?>">
+                                    Candidate Id: <?=$id?>
+                                </a>
                                 <?php if ($this->accessLevel >= ACCESS_LEVEL_DELETE): ?>
                                 <a id="delete_link" href="<?php echo(CATSUtility::getIndexName()); ?>?m=candidates&amp;a=delete&amp;candidateID=<?php echo($id); ?>&amp;redirectToAction=showDuplicates" onclick="javascript:return confirm('Delete this candidate?');">
                                     <img src="images/actions/delete.gif" width="16" height="16" class="absmiddle" alt="delete" border="0" />&nbsp;Delete
