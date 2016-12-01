@@ -1129,9 +1129,9 @@ class TemplateUtility
         {
             $onClick = 'showHideSingleQuickActionMenu(new ';
             $onClick .= $dataItemType == DATA_ITEM_CANDIDATE ? 'quickAction.CandidateMenu' : 'quickAction.DefaultMenu';
-            $onClick .= '('.$dataItemType.', '.$dataItemID.', docjslib_getRealLeft(this)-20, docjslib_getRealTop(this)+20);';
+            $onClick .= '('.$dataItemType.', '.$dataItemID.', docjslib_getRealLeft(this)-20, docjslib_getRealTop(this)+20)';
             $onClick .= ');';
-            echo '<a href="javascript:void(0);" onclick="'. $onClick . '"><img src="images/downward.gif border=0"></a>';
+            echo '<a href="javascript:void(0);" onclick="'. $onClick . '"><img src="images/downward.gif" border="0"></a>';
         }
         else
         {
@@ -1141,7 +1141,7 @@ class TemplateUtility
             $onClick .= 'quickAction.DuplicateCandidateMenu';
             $onClick .= '('. $dataItemType .', ' . $dataItemID . ', docjslib_getRealLeft(this)-20, docjslib_getRealTop(this)+20, ' . $url1 . ', ' . $url2;
             $onClick .= '));';
-            echo '<a href="javascript:void(0);" onclick="'. $onClick . '"><img src="images/downward.gif" border=0"></a>';
+            echo '<a href="javascript:void(0);" onclick="'. $onClick . '"><img src="images/downward.gif" border="0"></a>';
         }
     }
 
