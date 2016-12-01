@@ -53,12 +53,7 @@ var AJAX_TIMEOUT = 15000;
 function toggleVisibility()
 {
     var singleQuickActionMenu = document.getElementById('singleQuickActionMenu');
-    
-    if (singleQuickActionMenu.style.display == 'block')
-    {
-        singleQuickActionMenu.style.display = 'none';
-        return;
-    }
+    singleQuickActionMenu.style.display = singleQuickActionMenu.style.display == 'block' ? 'none' : 'block';
 }
 
 /**
