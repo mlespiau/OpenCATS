@@ -19,7 +19,7 @@ quickAction.MenuOption.prototype.getAction = function()
 
 quickAction.MenuOption.prototype.getHtml = function()
 {
-    return '<a href="javascript:void(0);" onclick="' + this.getAction() + ' closeQuickActionMenu();">' + this.getTitle() + '</a><br />';
+    return '<a href="javascript:void(0);" onclick="' + this.getAction() + '">' + this.getTitle() + '</a><br />';
 }
 
 quickAction.LinkMenuOption = function(title, action, option)
@@ -82,10 +82,8 @@ quickAction.DefaultMenu.prototype.getOptions = function()
 
 quickAction.DefaultMenu.prototype.toggle = function()
 {
-    if (this.element.style.display == 'block')
+    if (this.element.style.display != 'block')
     {
-        closeQuickActionMenu();
-    } else {
         this.element.style.display = 'block';
         this.element.style.left = this.menuX + 'px';
         this.element.style.top = this.menuY + 'px';
@@ -97,13 +95,6 @@ quickAction.DefaultMenu.prototype.toggle = function()
         }
     }
 }
-
-quickAction.DefaultMenu.prototype.closeQuickActionMenu = function()
-{
-    var singleQuickActionMenu = document.getElementById('singleQuickActionMenu');
-    singleQuickActionMenu.style.display = 'none';
-}
-
 
 /* Creates and displays a popup menu for an individual data item on the page to do some simple action to. */
 function showHideSingleQuickActionMenu(menu)
@@ -123,13 +114,6 @@ function showQuickActionAddToPipeline(menuDataItemId)
 {
     /* Create a popup window for adding this candidate to the pipeline */
     showPopWin(CATSIndexName + '?m=candidates&a=considerForJobSearch&candidateID=' + menuDataItemId, 750, 390, null);
-}
-
-// TODO: Fix this static method that "knows" about singleQuickActionMenu, it should be part of the Menu class
-function closeQuickActionMenu()
-{
-    var singleQuickActionMenu = document.getElementById('singleQuickActionMenu');
-    singleQuickActionMenu.style.display = 'none';
 }
 
 function mergeCandidates()
