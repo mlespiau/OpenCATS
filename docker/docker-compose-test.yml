@@ -11,7 +11,7 @@ services:
 
     php:
       container_name: opencats_test_php
-      build: ./php/
+      image: opencats/php:5.6.27-fpm-alpine
       volumes_from:
         - opencatsdata
 
@@ -28,7 +28,7 @@ services:
       container_name: opencats_test_mariadb
       image: mariadb
       ports:
-        - 3306:3306
+        - 3306
       environment:
         - MYSQL_ROOT_PASSWORD=dev
         - MYSQL_USER=dev
@@ -36,7 +36,9 @@ services:
         - MYSQL_DATABASE=cats_test
       volumes:
         - ../test/data/:/test/data/
-        - ../test/data/test.sql:/docker-entrypoint-initdb.d/000_test.sql
+        - ../test/scripts/:/test/scripts
+        - ../test/data/test.sql:/docker-entrypoint-initdb.d/000_initDB.sql
+        - ../test/data/securityTests.sql:/docker-entrypoint-initdb.d/001_addUsers.sql
 
     integrationtestdb:
       image: mariadb
