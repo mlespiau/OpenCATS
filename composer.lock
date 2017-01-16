@@ -318,7 +318,7 @@
                 "test",
                 "web"
             ],
-            "time": "2016-11-17 11:38:25"
+            "time": "2016-11-17T11:38:25+00:00"
         },
         {
             "name": "behat/mink-goutte-driver",
