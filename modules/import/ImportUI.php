@@ -39,9 +39,9 @@ include_once(LEGACY_ROOT . '/lib/ExtraFields.php');
 include_once(LEGACY_ROOT . '/lib/Attachments.php');
 include_once(LEGACY_ROOT . '/lib/ParseUtility.php');
 include_once(LEGACY_ROOT . '/lib/ImportUtility.php');
-include_once(LEGACY_ROOT . '/lib/CandidatesImport.php');
-include_once(LEGACY_ROOT . '/lib/CompaniesImport.php');
-include_once(LEGACY_ROOT . '/lib/ContactsImport.php');
+include_once(LEGACY_ROOT . '/lib/CandidatesImportService.php');
+include_once(LEGACY_ROOT . '/lib/CompaniesImportService.php');
+include_once(LEGACY_ROOT . '/lib/ContactsImportService.php');
 
 
 class ImportUI extends UserInterface
@@ -1009,7 +1009,7 @@ class ImportUI extends UserInterface
 
         if (!eval(Hooks::get('IMPORT_ADD_CANDIDATE'))) return;
 
-        $candidatesImport = new CandidatesImport($this->_siteID);
+        $candidatesImport = new CandidatesImportService($this->_siteID);
         $candidateID = $candidatesImport->add($dataNamed, $this->_userID, $importID, $encoding);
 
         if ($candidateID <= 0)
@@ -1029,7 +1029,7 @@ class ImportUI extends UserInterface
     */
     private function addToCompanies($dataFields, $dataNamed, $dataForeign, $importID, $encoding)
     {
-        $companiesImport = new CompaniesImport($this->_siteID);
+        $companiesImport = new CompaniesImportService($this->_siteID);
         $companies = new Companies($this->_siteID);
 
         /* Bail out if any of the required fields are empty. */
@@ -1068,7 +1068,7 @@ class ImportUI extends UserInterface
     */
     private function addToContacts($dataFields, $dataNamed, $dataForeign, $importID, $encoding)
     {
-        $contactImport = new ContactImport($this->_siteID);
+        $contactImport = new ContactImportService($this->_siteID);
         $companies = new Companies($this->_siteID);
 
         /* Try to find the company. */
@@ -1105,7 +1105,7 @@ class ImportUI extends UserInterface
 
                 if (!eval(Hooks::get('IMPORT_ADD_CONTACT_CLIENT'))) return;
 
-                $companiesImport = new CompaniesImport($this->_siteID);
+                $companiesImport = new CompaniesImportService($this->_siteID);
                 $companyID = $companiesImport->add($dataCompany, $this->_userID, $importID, $encoding);
                 if ($companyID == -1)
                 {

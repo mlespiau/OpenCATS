@@ -2,29 +2,28 @@
 
 include_once(LEGACY_ROOT . '/lib/ImportService.php');
 
-class CandidatesImport extends ImportService
+class ContactImportService extends ImportService
 {
     public function __construct($siteID)
     {
-        parent::__construct($siteID);
+       parent::__construct($siteID);
     }
 
     /**
-     * Adds a record to the candidates table.
+     * Adds a record to the contacts table.
      *
      * @param array (field => value)
      * @param userID
      * @param importID
-     * @return int candidateID
+     * @return contactID
      */
     public function add($dataNamed, $userID, $importID, $encoding)
     {
         $data = $this->prepareData($dataNamed, $encoding);
 
         $sql = sprintf(
-            "INSERT INTO candidate (
+            "INSERT INTO contact (
                 %s,
-                can_relocate,
                 entered_by,
                 owner,
                 site_id,
@@ -37,14 +36,12 @@ class CandidatesImport extends ImportService
                 %s,
                 %s,
                 %s,
-                %s,
                 NOW(),
                 NOW(),
                 %s
             )",
             implode(",\n", $data['dataColumns']),
             implode(",\n", $data['data']),
-            0,
             $userID,
             $userID,
             $this->_siteID,

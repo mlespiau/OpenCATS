@@ -2,27 +2,29 @@
 
 include_once(LEGACY_ROOT . '/lib/ImportService.php');
 
-class ContactImport extends ImportService
+class CompaniesImportService extends ImportService
 {
     public function __construct($siteID)
     {
-       parent::__construct($siteID);
+        parent::__construct($siteID);
     }
 
     /**
-     * Adds a record to the contacts table.
+     * Adds a record to the companies table.
      *
      * @param array (field => value)
      * @param userID
      * @param importID
-     * @return contactID
+     * @param encoding
+     * @return companyID
      */
+
     public function add($dataNamed, $userID, $importID, $encoding)
     {
         $data = $this->prepareData($dataNamed, $encoding);
 
         $sql = sprintf(
-            "INSERT INTO contact (
+            "INSERT INTO company (
                 %s,
                 entered_by,
                 owner,

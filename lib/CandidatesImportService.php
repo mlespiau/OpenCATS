@@ -2,7 +2,7 @@
 
 include_once(LEGACY_ROOT . '/lib/ImportService.php');
 
-class CompaniesImport extends ImportService
+class CandidatesImportService extends ImportService
 {
     public function __construct($siteID)
     {
@@ -10,22 +10,21 @@ class CompaniesImport extends ImportService
     }
 
     /**
-     * Adds a record to the companies table.
+     * Adds a record to the candidates table.
      *
      * @param array (field => value)
      * @param userID
      * @param importID
-     * @param encoding
-     * @return companyID
+     * @return int candidateID
      */
-
     public function add($dataNamed, $userID, $importID, $encoding)
     {
         $data = $this->prepareData($dataNamed, $encoding);
 
         $sql = sprintf(
-            "INSERT INTO company (
+            "INSERT INTO candidate (
                 %s,
+                can_relocate,
                 entered_by,
                 owner,
                 site_id,
@@ -38,12 +37,14 @@ class CompaniesImport extends ImportService
                 %s,
                 %s,
                 %s,
+                %s,
                 NOW(),
                 NOW(),
                 %s
             )",
             implode(",\n", $data['dataColumns']),
             implode(",\n", $data['data']),
+            0,
             $userID,
             $userID,
             $this->_siteID,
