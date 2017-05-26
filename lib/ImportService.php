@@ -1,6 +1,6 @@
 <?php
 
-abstract class ImportableEntity
+abstract class ImportService
 {
     protected $_db;
     protected $_siteID;

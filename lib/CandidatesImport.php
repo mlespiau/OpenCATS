@@ -1,8 +1,8 @@
 <?php
 
-include_once(LEGACY_ROOT . '/lib/ImportableEntity.php');
+include_once(LEGACY_ROOT . '/lib/ImportService.php');
 
-class CandidatesImport extends ImportableEntity
+class CandidatesImport extends ImportService
 {
     public function __construct($siteID)
     {
