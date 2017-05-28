@@ -13,6 +13,14 @@ abstract class ImportService
         $this->_db = DatabaseConnection::getInstance();
     }
 
+    /**
+     * Translate encoding of all values in an array from input encoding to UTF-8.
+     *
+     * @param array (field => value)
+     * @param dataNamed
+     * @param encoding
+     * @return array
+     */
     public function prepareData($dataNamed, $encoding)
     {
         $dataColumns = array();
