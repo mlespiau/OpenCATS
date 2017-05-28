@@ -9,19 +9,9 @@ class CandidatesImportService extends ImportService
         parent::__construct($siteID);
     }
 
-    /**
-     * Adds a record to the candidates table.
-     *
-     * @param array (field => value)
-     * @param userID
-     * @param importID
-     * @return int candidateID
-     */
-    public function add($dataNamed, $userID, $importID, $encoding)
+    public function getInsertQuery($columns, $values, $userID, $importID)
     {
-        $data = $this->prepareData($dataNamed, $encoding);
-
-        $sql = sprintf(
+        return sprintf(
             "INSERT INTO candidate (
                 %s,
                 can_relocate,
@@ -42,20 +32,13 @@ class CandidatesImportService extends ImportService
                 NOW(),
                 %s
             )",
-            implode(",\n", $data['dataColumns']),
-            implode(",\n", $data['data']),
+            implode(",\n", $columns),
+            implode(",\n", $values),
             0,
             $userID,
             $userID,
             $this->_siteID,
             $importID
         );
-        $queryResult = $this->_db->query($sql);
-        if (!$queryResult)
-        {
-            return -1;
-        }
-
-        return $this->_db->getLastInsertID();
     }
 }
