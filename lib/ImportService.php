@@ -21,18 +21,14 @@ abstract class ImportService
      * @param encoding
      * @return array
      */
-    public function prepareData($dataNamed, $encoding)
+    public function prepareData($dataNamed)
     {
         $dataColumns = array();
         $data = array();
 
         foreach ($dataNamed AS $dataColumn => $d) {
             $dataColumns[] = $dataColumn;
-            if ($encoding != "") {
-                $data[] = iconv($encoding, 'UTF-8', $this->_db->makeQueryStringOrNULL($d));
-            } else {
-                $data[] = $this->_db->makeQueryStringOrNULL($d);
-            }
+            $data[] = $this->_db->makeQueryStringOrNULL($d);
         }
         return array('data' => $data, 'dataColumns' => $dataColumns);
     }
@@ -46,10 +42,10 @@ abstract class ImportService
      * @param encoding
      * @return entityID
      */
-    public function add($dataNamed, $userID, $importID, $encoding)
+    public function add($dataNamed, $userID, $importID)
     {
-        $data = $this->prepareData($dataNamed, $encoding);
-        $sql = $this->getInsertQuery($data['dataColumuns'], $data['data'], $userID, $importID);
+        $data = $this->prepareData($dataNamed);
+        $sql = $this->getInsertQuery($data['dataColumns'], $data['data'], $userID, $importID);
         $queryResult = $this->_db->query($sql);
         if (!$queryResult)
         {

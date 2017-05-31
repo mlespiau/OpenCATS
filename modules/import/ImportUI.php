@@ -834,7 +834,12 @@ class ImportUI extends UserInterface
                     else
                     {
                         $catsEntriesRows[] = $_POST['importIntoField' .$fieldID];
-                        $catsEntriesValuesNamed[$_POST['importIntoField' . $fieldID]] = trim($theData[$fieldID]);
+                        if ($encoding != "") {
+                            $catsEntriesValuesNamed[$_POST['importIntoField' . $fieldID]] = trim(iconv($encoding, 'UTF-8', $theData[$fieldID]));
+                        } else {
+                            $catsEntriesValuesNamed[$_POST['importIntoField' . $fieldID]] = trim($theData[$fieldID]);
+                        }
+
                     }
                 }
                 else if ($theFieldPreferenceValue == 'foreign' || $theFieldPreferenceValue == 'foreignAdded')
@@ -884,15 +889,15 @@ class ImportUI extends UserInterface
             switch ($importInto)
             {
                 case 'Candidates':
-                    $result = $this->addToCandidates($catsEntriesRows, $catsEntriesValuesNamed, $foreignEntries, $importID, $encoding);
+                    $result = $this->addToCandidates($catsEntriesRows, $catsEntriesValuesNamed, $foreignEntries, $importID);
                     break;
 
                 case 'Contacts':
-                    $result = $this->addToContacts($catsEntriesRows, $catsEntriesValuesNamed, $foreignEntries, $importID, $encoding);
+                    $result = $this->addToContacts($catsEntriesRows, $catsEntriesValuesNamed, $foreignEntries, $importID);
                     break;
 
                 case 'Companies':
-                    $result = $this->addToCompanies($catsEntriesRows, $catsEntriesValuesNamed, $foreignEntries, $importID, $encoding);
+                    $result = $this->addToCompanies($catsEntriesRows, $catsEntriesValuesNamed, $foreignEntries, $importID);
                     break;
 
                 default:
@@ -986,7 +991,7 @@ class ImportUI extends UserInterface
    /*
     * Inserts a record into candidates.
     */
-    private function addToCandidates($dataFields, $dataNamed, $dataForeign, $importID, $encoding)
+    private function addToCandidates($dataFields, $dataNamed, $dataForeign, $importID)
     {
         $dateAvailable = '01/01/0001';
 
@@ -1010,7 +1015,7 @@ class ImportUI extends UserInterface
         if (!eval(Hooks::get('IMPORT_ADD_CANDIDATE'))) return;
 
         $candidatesImport = new CandidatesImportService($this->_siteID);
-        $candidateID = $candidatesImport->add($dataNamed, $this->_userID, $importID, $encoding);
+        $candidateID = $candidatesImport->add($dataNamed, $this->_userID, $importID);
 
         if ($candidateID <= 0)
         {
@@ -1027,7 +1032,7 @@ class ImportUI extends UserInterface
    /*
     * Inserts a record into Companies.
     */
-    private function addToCompanies($dataFields, $dataNamed, $dataForeign, $importID, $encoding)
+    private function addToCompanies($dataFields, $dataNamed, $dataForeign, $importID)
     {
         $companiesImport = new CompaniesImportService($this->_siteID);
         $companies = new Companies($this->_siteID);
@@ -1049,7 +1054,7 @@ class ImportUI extends UserInterface
 
         if (!eval(Hooks::get('IMPORT_ADD_CLIENT'))) return;
 
-        $companyID = $companiesImport->add($dataNamed, $this->_userID, $importID, $encoding);
+        $companyID = $companiesImport->add($dataNamed, $this->_userID, $importID);
 
         if ($companyID <= 0)
         {
@@ -1066,7 +1071,7 @@ class ImportUI extends UserInterface
    /*
     * Inserts a record into Contacts.
     */
-    private function addToContacts($dataFields, $dataNamed, $dataForeign, $importID, $encoding)
+    private function addToContacts($dataFields, $dataNamed, $dataForeign, $importID)
     {
         $contactImport = new ContactImportService($this->_siteID);
         $companies = new Companies($this->_siteID);
@@ -1106,7 +1111,7 @@ class ImportUI extends UserInterface
                 if (!eval(Hooks::get('IMPORT_ADD_CONTACT_CLIENT'))) return;
 
                 $companiesImport = new CompaniesImportService($this->_siteID);
-                $companyID = $companiesImport->add($dataCompany, $this->_userID, $importID, $encoding);
+                $companyID = $companiesImport->add($dataCompany, $this->_userID, $importID);
                 if ($companyID == -1)
                 {
                     return 'Unable to add company.';
