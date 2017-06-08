@@ -18,6 +18,7 @@ class Company
     private $notes;
     private $enteredBy;
     private $owner;
+    private $importId;
     
     function __construct($siteId, $name)
     {
@@ -167,6 +168,16 @@ class Company
     function getOwner()
     {
         return $this->owner;
+    }
+
+    function setImportId($value)
+    {
+        $this->importId = $value;
+    }
+
+    function getImportId()
+    {
+        return $this->importId;
     }
     
     static function create(

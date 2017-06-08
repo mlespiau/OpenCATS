@@ -33,7 +33,8 @@ class CompanyRepository
                 owner,
                 site_id,
                 date_created,
-                date_modified
+                date_modified,
+                import_id
             )
             VALUES (
                 %s,
@@ -52,7 +53,8 @@ class CompanyRepository
                 %s,
                 %s,
                 NOW(),
-                NOW()
+                NOW(),
+                %s
             )",
             $this->databaseConnection->makeQueryString($company->getName()),
             $this->databaseConnection->makeQueryString($company->getAddress()),
@@ -68,7 +70,8 @@ class CompanyRepository
             $this->databaseConnection->makeQueryString($company->getNotes()),
             $this->databaseConnection->makeQueryInteger($company->getEnteredBy()),
             $this->databaseConnection->makeQueryInteger($company->getOwner()),
-            $company->getSiteId()
+            $company->getSiteId(),
+            $this->databaseConnection->makeQueryInteger($company->getImportId())
         );
         if ($result = $this->databaseConnection->query($sql)) {
             $companyId = $this->databaseConnection->getLastInsertID();

@@ -13,6 +13,16 @@ abstract class ImportService
         $this->_db = DatabaseConnection::getInstance();
     }
 
+    protected function getSiteId()
+    {
+        return $this->_siteID;
+    }
+
+    protected function getDatabaseConnection()
+    {
+        return $this->_db;
+    }
+
     /**
      * Translate encoding of all values in an array from input encoding to UTF-8.
      *
