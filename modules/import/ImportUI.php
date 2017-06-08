@@ -1053,8 +1053,25 @@ class ImportUI extends UserInterface
         }
 
         if (!eval(Hooks::get('IMPORT_ADD_CLIENT'))) return;
-
-        $companyID = $companiesImport->add($dataNamed, $this->_userID, $importID);
+        $company = Company::create(
+            $this->_siteID,
+            $dataNamed['name'],
+            $dataNamed['address'],
+            $dataNamed['city'],
+            $dataNamed['state'],
+            $dataNamed['zipCode'],
+            $dataNamed['phoneNumberOne'],
+            $dataNamed['phoneNumberTwo'],
+            $dataNamed['faxNumber'],
+            $dataNamed['url'],
+            $dataNamed['keyTechnologies'],
+            $dataNamed['isHot'],
+            $dataNamed['notes'],
+            $this->_userID,
+            $this->_userID
+        );
+        $company->setImportId($importID);
+        $companyID = $companiesImport->add($company);
 
         if ($companyID <= 0)
         {
@@ -1111,7 +1128,25 @@ class ImportUI extends UserInterface
                 if (!eval(Hooks::get('IMPORT_ADD_CONTACT_CLIENT'))) return;
 
                 $companiesImport = new CompaniesImportService($this->_siteID);
-                $companyID = $companiesImport->add($dataCompany, $this->_userID, $importID);
+                $company = Company::create(
+                    $this->_siteID,
+                    $dataCompany['name'],
+                    $dataCompany['address'],
+                    $dataCompany['city'],
+                    $dataCompany['state'],
+                    $dataCompany['zipCode'],
+                    $dataCompany['phoneNumberOne'],
+                    $dataCompany['phoneNumberTwo'],
+                    $dataCompany['faxNumber'],
+                    $dataCompany['url'],
+                    $dataCompany['keyTechnologies'],
+                    $dataCompany['isHot'],
+                    $dataCompany['notes'],
+                    $this->_userID,
+                    $this->_userID
+                );
+                $company->setImportId($importID);
+                $companyID = $companiesImport->add($company);
                 if ($companyID == -1)
                 {
                     return 'Unable to add company.';
