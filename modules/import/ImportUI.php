@@ -1128,7 +1128,7 @@ class ImportUI extends UserInterface
                     }
                 }
 
-                if (!eval(Hooks::get('IMPORT_ADD_CONTACT_CLIENT'))) return;
+
 
                 $companiesImport = new CompaniesImportService(
                     $this->_siteID,
@@ -1158,8 +1158,6 @@ class ImportUI extends UserInterface
                     return 'Unable to add company.';
                 }
                 $genCompany = true;
-
-                if (!eval(Hooks::get('IMPORT_ADD_CONTACT_CLIENT_POST'))) return;
             }
             else
             {
