@@ -15,13 +15,13 @@ class CompaniesImportService
 
     public function add(Company $company)
     {
-        if (!eval(Hooks::get('IMPORT_ADD_CONTACT_CLIENT'))) return;
+        if (!eval(Hooks::get('IMPORT_ADD_CLIENT'))) return;
         try {
             $companyId = $this->companyRepository->persist($company, new History($this->siteID));
         } catch(CompanyRepositoryException $e) {
             return -1;
         }
-        if (!eval(Hooks::get('IMPORT_ADD_CONTACT_CLIENT_POST'))) return;
+        if (!eval(Hooks::get('IMPORT_ADD_CLIENT_POST'))) return;
         return $companyId;
     }
 }

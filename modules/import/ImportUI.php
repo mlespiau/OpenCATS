@@ -1054,8 +1054,6 @@ class ImportUI extends UserInterface
         {
             return 'Duplicate entry.';
         }
-
-        if (!eval(Hooks::get('IMPORT_ADD_CLIENT'))) return;
         $company = Company::create(
             $this->_siteID,
             $dataNamed['name'],
@@ -1082,9 +1080,6 @@ class ImportUI extends UserInterface
         }
 
         $this->addForeign(DATA_ITEM_COMPANY, $dataForeign, $companyID, $importID);
-
-        if (!eval(Hooks::get('IMPORT_ADD_CLIENT_POST'))) return;
-
         return '';
     }
 
