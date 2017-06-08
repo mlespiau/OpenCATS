@@ -1106,43 +1106,24 @@ class ImportUI extends UserInterface
         {
             if ($_POST['generateCompanies'] == 'yes')
             {
-                /* Build data for the new company. */
-                $dataCompany = array();
-                $dataCompany['name'] = $dataNamed['company_id'];
-
-                if (isset($dataNamed['phone_work']))
-                {
-                    $dataCompany['phone1'] = $dataNamed['phone_work'];
-                }
-
-                foreach (array('address', 'city', 'state', 'zip') as $field)
-                {
-                    if (isset($dataNamed[$field]))
-                    {
-                        $dataCompany[$field] = $dataNamed[$field];
-                    }
-                }
-
-
-
                 $companiesImport = new CompaniesImportService(
                     $this->_siteID,
                     new CompanyRepository(DatabaseConnection::getInstance())
                 );
                 $company = Company::create(
                     $this->_siteID,
-                    $dataCompany['name'],
-                    $dataCompany['address'],
-                    $dataCompany['city'],
-                    $dataCompany['state'],
-                    $dataCompany['zipCode'],
-                    $dataCompany['phoneNumberOne'],
-                    $dataCompany['phoneNumberTwo'],
-                    $dataCompany['faxNumber'],
-                    $dataCompany['url'],
-                    $dataCompany['keyTechnologies'],
-                    $dataCompany['isHot'],
-                    $dataCompany['notes'],
+                    $dataNamed['company_id'],
+                    isset($dataNamed['address']) ? $dataNamed['address'] : '',
+                    isset($dataNamed['city']) ? $dataNamed['city'] : '',
+                    isset($dataNamed['state']) ? $dataNamed['state'] : '',
+                    isset($dataNamed['zip']) ? $dataNamed['zip'] : '',
+                    isset($dataNamed['phone_work']) ? $dataNamed['phone_work'] : '',
+                    '',
+                    '',
+                    '',
+                    '',
+                    null,
+                    '',
                     $this->_userID,
                     $this->_userID
                 );
