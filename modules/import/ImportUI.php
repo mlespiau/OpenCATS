@@ -1038,22 +1038,6 @@ class ImportUI extends UserInterface
             $this->_siteID,
             new CompanyRepository(DatabaseConnection::getInstance())
         );
-        $companies = new Companies($this->_siteID);
-
-        /* Bail out if any of the required fields are empty. */
-
-        if (!isset($dataNamed['name']))
-        {
-            return 'Required fields (Company Name) are missing.';
-        }
-
-        /* check for duplicates */
-
-        $cID = $companies->companyByName($dataNamed['name']);
-        if ($cID != -1)
-        {
-            return 'Duplicate entry.';
-        }
         $company = Company::create(
             $this->_siteID,
             $dataNamed['name'],
@@ -1072,13 +1056,13 @@ class ImportUI extends UserInterface
             $this->_userID
         );
         $company->setImportId($importID);
-        $companyID = $companiesImport->add($company);
-
-        if ($companyID <= 0)
-        {
-            return 'Failed to add candidate.';
+        try {
+            $companyID = $companiesImport->add($company);
         }
-
+        catch (ImportServiceException $e)
+        {
+            return $e->getMessage();
+        }
         $this->addForeign(DATA_ITEM_COMPANY, $dataForeign, $companyID, $importID);
         return '';
     }
