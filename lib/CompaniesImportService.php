@@ -1,19 +1,22 @@
 <?php
 use \OpenCATS\Entity\Company;
+use \OpenCATS\Entity\CompanyRepository;
 
 class CompaniesImportService
 {
-    public function __construct($siteID)
+    private $companyRepository;
+    private $siteID;
+
+    public function __construct($siteID, CompanyRepository $companyRepository)
     {
-        $this->_siteID = $siteID;
-        $this->_db = DatabaseConnection::getInstance();
+        $this->siteID = $siteID;
+        $this->companyRepository = $companyRepository;
     }
 
     public function add(Company $company)
     {
-        $CompanyRepository = new CompanyRepository($this->getDatabaseConnection());
         try {
-            $companyId = $CompanyRepository->persist($company, new History($this->_siteID));
+            $companyId = $this->companyRepository->persist($company, new History($this->siteID));
         } catch(CompanyRepositoryException $e) {
             return -1;
         }

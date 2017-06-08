@@ -1034,7 +1034,10 @@ class ImportUI extends UserInterface
     */
     private function addToCompanies($dataFields, $dataNamed, $dataForeign, $importID)
     {
-        $companiesImport = new CompaniesImportService($this->_siteID);
+        $companiesImport = new CompaniesImportService(
+            $this->_siteID,
+            new CompanyRepository(DatabaseConnection::getInstance())
+        );
         $companies = new Companies($this->_siteID);
 
         /* Bail out if any of the required fields are empty. */
@@ -1127,7 +1130,10 @@ class ImportUI extends UserInterface
 
                 if (!eval(Hooks::get('IMPORT_ADD_CONTACT_CLIENT'))) return;
 
-                $companiesImport = new CompaniesImportService($this->_siteID);
+                $companiesImport = new CompaniesImportService(
+                    $this->_siteID,
+                    new CompanyRepository(DatabaseConnection::getInstance())
+                );
                 $company = Company::create(
                     $this->_siteID,
                     $dataCompany['name'],
