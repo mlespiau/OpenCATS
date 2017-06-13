@@ -993,12 +993,16 @@ class ImportUI extends UserInterface
                 $extraFields[] = new ExtraField(
                     $this->_siteID,
                     $type,
-                    $assocID,
+                    null,
                     $field,
                     $value,
                     $importID
                 );
             }
+        }
+        foreach ($extraFields as $extraField)
+        {
+            $extraField->setDataItemId($assocID);
         }
         $import = new Import($this->_siteID);
         $import->addExtraFields($extraFields);

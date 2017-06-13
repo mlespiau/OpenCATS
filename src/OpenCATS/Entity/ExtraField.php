@@ -53,6 +53,11 @@ class ExtraField
         return $this->dataItemId;
     }
 
+    public function setDataItemId($value)
+    {
+        $this->dataItemId = $value;
+    }
+
     /**
      * @return mixed
      */
