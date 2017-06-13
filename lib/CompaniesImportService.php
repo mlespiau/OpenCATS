@@ -1,7 +1,9 @@
 <?php
 use \OpenCATS\Entity\Company;
 use \OpenCATS\Entity\CompanyRepository;
+use \OpenCATS\Entity\CompanyRepositoryException;
 use \OpenCATS\Exception\ImportServiceException;
+use \OpenCATS\Entity\ExtraFieldRepository;
 
 
 class CompaniesImportService
@@ -9,10 +11,11 @@ class CompaniesImportService
     private $companyRepository;
     private $siteID;
 
-    public function __construct($siteID, CompanyRepository $companyRepository)
+    public function __construct($siteID, CompanyRepository $companyRepository, ExtraFieldRepository $extraFieldRepository)
     {
         $this->siteID = $siteID;
         $this->companyRepository = $companyRepository;
+        $this->extraFieldRepository = $extraFieldRepository;
     }
 
     public function add(Company $company)
@@ -32,7 +35,24 @@ class CompaniesImportService
         } catch(CompanyRepositoryException $e) {
             throw new ImportServiceException('Failed to add candidate.');
         }
+        $company->setId($companyId);
+        $this->persistExtraFields($company);
         if (!eval(Hooks::get('IMPORT_ADD_CLIENT_POST'))) return;
         return $companyId;
+    }
+
+    /**
+     * @param Company $company
+     * @param $companyId
+     */
+    private function persistExtraFields(Company $company)
+    {
+        if (!empty($company->getExtraFields())) {
+            foreach ($company->getExtraFields() as $extraField) {
+                $extraField->setDataItemId($company->getId());
+            }
+            $extraFieldRepository = new ExtraFieldRepository($this->_db);
+            $extraFieldRepository->persistMultiple($company->getExtraFields());
+        }
     }
 }

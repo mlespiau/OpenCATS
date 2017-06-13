@@ -46,6 +46,7 @@ use \OpenCATS\Entity\CompanyRepository;
 use \OpenCATS\Entity\Company;
 use \OpenCATS\Exception\ImportServiceException;
 use \OpenCATS\Entity\ExtraField;
+use \OpenCATS\Entity\ExtraFieldRepository;
 
 class ImportUI extends UserInterface
 {
@@ -1053,7 +1054,8 @@ class ImportUI extends UserInterface
     {
         $companiesImport = new CompaniesImportService(
             $this->_siteID,
-            new CompanyRepository(DatabaseConnection::getInstance())
+            new CompanyRepository(DatabaseConnection::getInstance()),
+            new ExtraFieldRepository(DatabaseConnection::getInstance())
         );
         $extraFields = array();
         foreach ($dataForeign AS $field => $value)
@@ -1090,13 +1092,12 @@ class ImportUI extends UserInterface
         $company->setImportId($importID);
         $company->setExtraFields($extraFields);
         try {
-            $companyID = $companiesImport->add($company);
+            $companiesImport->add($company);
         }
         catch (ImportServiceException $e)
         {
             return $e->getMessage();
         }
-        $this->addExtraFields($companyID, $extraFields);
         return '';
     }
 
