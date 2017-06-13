@@ -1000,13 +1000,10 @@ class ImportUI extends UserInterface
                 );
             }
         }
-        foreach ($extraFields as $extraField)
-        {
-            $extraField->setDataItemId($assocID);
-        }
-        $import = new Import($this->_siteID);
-        $import->addExtraFields($extraFields);
+        $this->addExtraFields($assocID, $extraFields);
     }
+
+
 
    /*
     * Inserts a record into candidates.
@@ -2021,6 +2018,19 @@ class ImportUI extends UserInterface
         }
 
         CATSUtility::transferRelativeURI('m=import&a=massImport&step=2');
+    }
+
+    /**
+     * @param $dataItemId
+     * @param $extraFields
+     */
+    private function addExtraFields($dataItemId, $extraFields)
+    {
+        foreach ($extraFields as $extraField) {
+            $extraField->setDataItemId($dataItemId);
+        }
+        $import = new Import($this->_siteID);
+        $import->addExtraFields($extraFields);
     }
 }
 
