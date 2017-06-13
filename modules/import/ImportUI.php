@@ -897,7 +897,7 @@ class ImportUI extends UserInterface
                     break;
 
                 case 'Companies':
-                    $result = $this->addToCompanies($catsEntriesRows, $catsEntriesValuesNamed, $foreignEntries, $importID);
+                    $result = $this->addToCompanies($catsEntriesValuesNamed, $foreignEntries, $importID);
                     break;
 
                 default:
@@ -1032,7 +1032,7 @@ class ImportUI extends UserInterface
    /*
     * Inserts a record into Companies.
     */
-    private function addToCompanies($dataFields, $dataNamed, $dataForeign, $importID)
+    private function addToCompanies($dataNamed, $dataForeign, $importID)
     {
         $companiesImport = new CompaniesImportService(
             $this->_siteID,
