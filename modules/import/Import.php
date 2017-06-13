@@ -27,6 +27,7 @@
  * $Id: Import.php 3785 2007-12-03 21:59:23Z brian $
  */
 
+use \OpenCATS\Entity\ExtraField;
 class Import
 {
     private $_db;
@@ -327,6 +328,7 @@ class Import
         $ar = array();
         $dataS = '';
 
+        $extraFields = array();
         foreach ($data AS $field => $value)
         {
             if ($value != '')
@@ -335,6 +337,14 @@ class Import
                     . $this->_db->makeQueryStringOrNULL($field) . ', '
                     . $this->_db->makeQueryStringOrNULL($value) . ', '
                     .  $importID . ',' .$this->_siteID . ', ' . $type . ')';
+                $extraFields[] = new ExtraField(
+                    $this->_siteID,
+                    $type,
+                    $assocID,
+                    $field,
+                    $value,
+                    $importID
+                );
             }
         }
         $dataS = implode(',', $ar);
