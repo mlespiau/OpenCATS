@@ -985,7 +985,6 @@ class ImportUI extends UserInterface
     */
     private function addForeign($type, $data, $assocID, $importID)
     {
-        if (!eval(Hooks::get('IMPORT_ADD_FOREIGN'))) return;
         $extraFields = array();
         foreach ($data AS $field => $value)
         {
