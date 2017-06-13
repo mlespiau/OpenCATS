@@ -1,6 +1,8 @@
 <?php
 use \OpenCATS\Entity\Company;
 use \OpenCATS\Entity\CompanyRepository;
+use \OpenCATS\Exception\ImportServiceException;
+
 
 class CompaniesImportService
 {
@@ -19,7 +21,7 @@ class CompaniesImportService
         {
             throw new ImportServiceException('Required fields (Company Name) are missing.');
         }
-        $companies = $this->companyRepository->findByName($company->getName());
+        $companies = $this->companyRepository->findByName($this->siteID, $company->getName());
         if (count($companies) > 0)
         {
             throw new ImportServiceException('Duplicate entry.');

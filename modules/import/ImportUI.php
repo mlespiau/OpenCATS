@@ -42,7 +42,9 @@ include_once(LEGACY_ROOT . '/lib/ImportUtility.php');
 include_once(LEGACY_ROOT . '/lib/CandidatesImportService.php');
 include_once(LEGACY_ROOT . '/lib/CompaniesImportService.php');
 include_once(LEGACY_ROOT . '/lib/ContactsImportService.php');
-
+use \OpenCATS\Entity\CompanyRepository;
+use \OpenCATS\Entity\Company;
+use \OpenCATS\Exception\ImportServiceException;
 
 class ImportUI extends UserInterface
 {
