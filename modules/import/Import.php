@@ -314,34 +314,13 @@ class Import
     }
 
     /**
-     * Adds a set of records to the foreign entry table for an
-     * associated record in a normal data table.
+     * Adds a set of extra fields to entity
      *
-     * FIXME: Parameter documentation incorrect; types must be specified after @param.
-     *
-     * @param string foreign table
-     * @param array fields => values
-     * @param integer associated index on non foreign table
-     * @param integer importID
-     * @return integer getLastInsertID
+     * @param array OpenCats\Entity\ExtraField
+     * @return int id of last inserted extra field
      */
-    public function addForeign($type, $data, $assocID, $importID)
+    public function addExtraFields($extraFields)
     {
-        $extraFields = array();
-        foreach ($data AS $field => $value)
-        {
-            if ($value != '')
-            {
-                $extraFields[] = new ExtraField(
-                    $this->_siteID,
-                    $type,
-                    $assocID,
-                    $field,
-                    $value,
-                    $importID
-                );
-            }
-        }
         $extraFieldRepository = new ExtraFieldRepository($this->_db);
         return $extraFieldRepository->persistMultiple($extraFields);
     }

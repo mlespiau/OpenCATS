@@ -45,6 +45,7 @@ include_once(LEGACY_ROOT . '/lib/ContactsImportService.php');
 use \OpenCATS\Entity\CompanyRepository;
 use \OpenCATS\Entity\Company;
 use \OpenCATS\Exception\ImportServiceException;
+use \OpenCATS\Entity\ExtraField;
 
 class ImportUI extends UserInterface
 {
@@ -982,12 +983,26 @@ class ImportUI extends UserInterface
    /*
     * Generic function to add a extra field to any foreign table.
     */
-    private function addForeign($dataTable, $data, $assocID, $importID)
+    private function addForeign($type, $data, $assocID, $importID)
     {
         if (!eval(Hooks::get('IMPORT_ADD_FOREIGN'))) return;
-
+        $extraFields = array();
+        foreach ($data AS $field => $value)
+        {
+            if ($value != '')
+            {
+                $extraFields[] = new ExtraField(
+                    $this->_siteID,
+                    $type,
+                    $assocID,
+                    $field,
+                    $value,
+                    $importID
+                );
+            }
+        }
         $import = new Import($this->_siteID);
-        $import->addForeign($dataTable, $data, $assocID, $importID);
+        $import->addExtraFields($extraFields);
     }
 
    /*
