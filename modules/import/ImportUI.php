@@ -1055,6 +1055,21 @@ class ImportUI extends UserInterface
             $this->_siteID,
             new CompanyRepository(DatabaseConnection::getInstance())
         );
+        $extraFields = array();
+        foreach ($dataForeign AS $field => $value)
+        {
+            if ($value != '')
+            {
+                $extraFields[] = new ExtraField(
+                    $this->_siteID,
+                    DATA_ITEM_COMPANY,
+                    null,
+                    $field,
+                    $value,
+                    $importID
+                );
+            }
+        }
         $company = Company::create(
             $this->_siteID,
             $dataNamed['name'],
@@ -1073,6 +1088,7 @@ class ImportUI extends UserInterface
             $this->_userID
         );
         $company->setImportId($importID);
+        $company->setExtraFields($extraFields);
         try {
             $companyID = $companiesImport->add($company);
         }
@@ -1080,7 +1096,7 @@ class ImportUI extends UserInterface
         {
             return $e->getMessage();
         }
-        $this->addForeign(DATA_ITEM_COMPANY, $dataForeign, $companyID, $importID);
+        $this->addExtraFields($companyID, $extraFields);
         return '';
     }
 

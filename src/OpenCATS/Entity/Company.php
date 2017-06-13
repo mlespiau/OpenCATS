@@ -19,6 +19,7 @@ class Company
     private $enteredBy;
     private $owner;
     private $importId;
+    private $extraFields;
     
     function __construct($siteId, $name)
     {
@@ -168,6 +169,22 @@ class Company
     function getOwner()
     {
         return $this->owner;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExtraFields()
+    {
+        return $this->extraFields;
+    }
+
+    /**
+     * @param mixed $extraFields
+     */
+    public function setExtraFields($extraFields)
+    {
+        $this->extraFields = $extraFields;
     }
 
     function setImportId($value)
