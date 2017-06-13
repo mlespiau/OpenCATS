@@ -28,6 +28,8 @@
  */
 
 use \OpenCATS\Entity\ExtraField;
+use \OpenCATS\Entity\ExtraFieldRepository;
+
 class Import
 {
     private $_db;
@@ -325,18 +327,11 @@ class Import
      */
     public function addForeign($type, $data, $assocID, $importID)
     {
-        $ar = array();
-        $dataS = '';
-
         $extraFields = array();
         foreach ($data AS $field => $value)
         {
             if ($value != '')
             {
-                $ar[] = '(' . $assocID . ', '
-                    . $this->_db->makeQueryStringOrNULL($field) . ', '
-                    . $this->_db->makeQueryStringOrNULL($value) . ', '
-                    .  $importID . ',' .$this->_siteID . ', ' . $type . ')';
                 $extraFields[] = new ExtraField(
                     $this->_siteID,
                     $type,
@@ -347,31 +342,8 @@ class Import
                 );
             }
         }
-        $dataS = implode(',', $ar);
-
-        if (!empty($dataS))
-        {
-            $sql = sprintf(
-                "INSERT INTO extra_field (
-                    data_item_id,
-                    field_name,
-                    value,
-                    import_id,
-                    site_id,
-                    data_item_type
-                )
-                VALUES %s",
-                $dataS
-            );
-
-            $queryResult = $this->_db->query($sql);
-            if (!$queryResult)
-            {
-                return -1;
-            }
-
-            return $this->_db->getLastInsertID();
-        }
+        $extraFieldRepository = new ExtraFieldRepository($this->_db);
+        return $extraFieldRepository->persistMultiple($extraFields);
     }
 }
 
