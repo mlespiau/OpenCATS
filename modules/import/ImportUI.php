@@ -1112,6 +1112,7 @@ class ImportUI extends UserInterface
     private function addToContacts($dataFields, $dataNamed, $dataForeign, $importID)
     {
         $contactImport = new ContactImportService($this->_siteID);
+        $companyRepository = new CompanyRepository(DatabaseConnection::getInstance());
         $companies = new Companies($this->_siteID);
         $company = Company::create(
             $this->_siteID,
@@ -1135,13 +1136,9 @@ class ImportUI extends UserInterface
         {
             return 'Unable to add company - no company name.';
         }
-
-        $companyID = $companies->companyByName($company->getName());
-
         $genCompany = false;
-
         /* The company does not exist. What do we do? */
-        if ($companyID == -1)
+        if (!$companyRepository->exists($this->_siteID, $company->getName()))
         {
             if ($_POST['generateCompanies'] == 'yes')
             {
