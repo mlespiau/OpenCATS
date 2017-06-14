@@ -1,6 +1,7 @@
 <?php
 namespace OpenCATS\Entity;
 use OpenCATS\Entity\Company;
+use OpenCATS\Exception\RepositoryException;
 
 include_once(LEGACY_ROOT . '/lib/History.php');
 
@@ -122,8 +123,41 @@ class CompanyRepository
                 company.site_id = %s
             ",
             $wildCardString,
-            $siteId,
+            $siteId
         );
-        return $this->databaseConnection->getAllAssoc($sql);
+        $result = $this->databaseConnection->getAssoc($sql);
+        if (empty($result)) {
+            throw new RepositoryException('Company named: ' . $companyName . ' does not exist');
+        }
+        $company = Company::create(
+            $siteId,
+            $result['name'],
+            $result['address'],
+            $result['city'],
+            $result['state'],
+            $result['zip'],
+            $result['phone1'],
+            $result['phone2'],
+            $result['fax_number'],
+            $result['url'],
+            $result['key_technologies'],
+            $result['is_hot'],
+            $result['notes'],
+            $result['entered_by'],
+            $result['owner']
+        );
+        $company->setId($result['company_id']);
+        $company->setImportId($result['import_id']);
+        return $company;
+    }
+
+    function exists($siteId, $companyName)
+    {
+        try {
+            $this->findByName($siteId, $companyName);
+        } catch (RepositoryException $e) {
+            return true;
+        }
+        return false;
     }
 }

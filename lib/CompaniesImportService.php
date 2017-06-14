@@ -24,8 +24,7 @@ class CompaniesImportService
         {
             throw new ImportServiceException('Required fields (Company Name) are missing.');
         }
-        $companies = $this->companyRepository->findByName($this->siteID, $company->getName());
-        if (count($companies) > 0)
+        if ($this->companyRepository->exists($this->siteID, $company->getName()))
         {
             throw new ImportServiceException('Duplicate entry.');
         }

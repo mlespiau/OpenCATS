@@ -341,8 +341,8 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
     {
         $siteId = $this->getSiteId();
         $CompanyRepository = new CompanyRepository(DatabaseConnection::getInstance());
-        $companies = $CompanyRepository->findByName($siteId, $companyName);
-        $companyId = $companies[0]['companyID'];
+        $company = $CompanyRepository->findByName($siteId, $companyName);
+        $companyId = $company->getId();
         $jobOrder = JobOrder::create(
             $siteId,
             $jobTitle,
