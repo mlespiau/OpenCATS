@@ -897,7 +897,24 @@ class ImportUI extends UserInterface
                     break;
 
                 case 'Contacts':
-                    $result = $this->addToContacts($catsEntriesRows, $catsEntriesValuesNamed, $foreignEntries, $importID);
+                    $company = Company::create(
+                        $this->_siteID,
+                        $catsEntriesValuesNamed['company_id'],
+                        isset($catsEntriesValuesNamed['address']) ? $catsEntriesValuesNamed['address'] : '',
+                        isset($catsEntriesValuesNamed['city']) ? $catsEntriesValuesNamed['city'] : '',
+                        isset($catsEntriesValuesNamed['state']) ? $catsEntriesValuesNamed['state'] : '',
+                        isset($catsEntriesValuesNamed['zip']) ? $catsEntriesValuesNamed['zip'] : '',
+                        isset($catsEntriesValuesNamed['phone_work']) ? $catsEntriesValuesNamed['phone_work'] : '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        null,
+                        '',
+                        $this->_userID,
+                        $this->_userID
+                    );
+                    $result = $this->addToContacts($catsEntriesRows, $catsEntriesValuesNamed, $foreignEntries, $importID, $company);
                     break;
 
                 case 'Companies':
@@ -1109,27 +1126,10 @@ class ImportUI extends UserInterface
    /*
     * Inserts a record into Contacts.
     */
-    private function addToContacts($dataFields, $dataNamed, $dataForeign, $importID)
+    private function addToContacts($dataFields, $dataNamed, $dataForeign, $importID, $company)
     {
         $contactImport = new ContactImportService($this->_siteID);
         $companyRepository = new CompanyRepository(DatabaseConnection::getInstance());
-        $company = Company::create(
-            $this->_siteID,
-            $dataNamed['company_id'],
-            isset($dataNamed['address']) ? $dataNamed['address'] : '',
-            isset($dataNamed['city']) ? $dataNamed['city'] : '',
-            isset($dataNamed['state']) ? $dataNamed['state'] : '',
-            isset($dataNamed['zip']) ? $dataNamed['zip'] : '',
-            isset($dataNamed['phone_work']) ? $dataNamed['phone_work'] : '',
-            '',
-            '',
-            '',
-            '',
-            null,
-            '',
-            $this->_userID,
-            $this->_userID
-        );
         /* Try to find the company. */
         if (empty($company->getName()))
         {
@@ -1163,7 +1163,7 @@ class ImportUI extends UserInterface
             }
         }
 
-        $dataNamed['company_id'] = $companyID;
+        $dataNamed['company_id'] = $company->getId();
 
         /* Bail out if any of the required fields are empty. */
 
