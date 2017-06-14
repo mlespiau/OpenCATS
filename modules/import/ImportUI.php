@@ -1151,10 +1151,12 @@ class ImportUI extends UserInterface
                     new ExtraFieldRepository(DatabaseConnection::getInstance())
                 );
                 $company->setImportId($importID);
-                $companyID = $companiesImport->add($company);
-                if ($companyID == -1)
+                try
                 {
-                    return 'Unable to add company.';
+                    $companiesImport->add($company);
+                } catch (ImportServiceException $e)
+                {
+                    return $e->getMessage();
                 }
                 $genCompany = true;
             }
