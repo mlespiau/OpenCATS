@@ -51,8 +51,7 @@ class CompaniesImportService
             foreach ($company->getExtraFields() as $extraField) {
                 $extraField->setDataItemId($company->getId());
             }
-            $extraFieldRepository = new ExtraFieldRepository($this->_db);
-            $extraFieldRepository->persistMultiple($company->getExtraFields());
+            $this->extraFieldRepository->persistMultiple($company->getExtraFields());
         }
     }
 }
