@@ -1113,7 +1113,6 @@ class ImportUI extends UserInterface
     {
         $contactImport = new ContactImportService($this->_siteID);
         $companyRepository = new CompanyRepository(DatabaseConnection::getInstance());
-        $companies = new Companies($this->_siteID);
         $company = Company::create(
             $this->_siteID,
             $dataNamed['company_id'],
