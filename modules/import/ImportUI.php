@@ -1147,7 +1147,8 @@ class ImportUI extends UserInterface
             {
                 $companiesImport = new CompaniesImportService(
                     $this->_siteID,
-                    new CompanyRepository(DatabaseConnection::getInstance())
+                    $companyRepository,
+                    new ExtraFieldRepository(DatabaseConnection::getInstance())
                 );
                 $company->setImportId($importID);
                 $companyID = $companiesImport->add($company);
