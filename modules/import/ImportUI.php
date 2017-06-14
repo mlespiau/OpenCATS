@@ -901,7 +901,41 @@ class ImportUI extends UserInterface
                     break;
 
                 case 'Companies':
-                    $result = $this->addToCompanies($catsEntriesValuesNamed, $foreignEntries, $importID);
+                    $extraFields = array();
+                    foreach ($foreignEntries AS $field => $value)
+                    {
+                        if ($value != '')
+                        {
+                            $extraFields[] = new ExtraField(
+                                $this->_siteID,
+                                DATA_ITEM_COMPANY,
+                                null,
+                                $field,
+                                $value,
+                                $importID
+                            );
+                        }
+                    }
+                    $company = Company::create(
+                        $this->_siteID,
+                        $catsEntriesValuesNamed['name'],
+                        $catsEntriesValuesNamed['address'],
+                        $catsEntriesValuesNamed['city'],
+                        $catsEntriesValuesNamed['state'],
+                        $catsEntriesValuesNamed['zipCode'],
+                        $catsEntriesValuesNamed['phoneNumberOne'],
+                        $catsEntriesValuesNamed['phoneNumberTwo'],
+                        $catsEntriesValuesNamed['faxNumber'],
+                        $catsEntriesValuesNamed['url'],
+                        $catsEntriesValuesNamed['keyTechnologies'],
+                        $catsEntriesValuesNamed['isHot'],
+                        $catsEntriesValuesNamed['notes'],
+                        $this->_userID,
+                        $this->_userID
+                    );
+                    $company->setImportId($importID);
+                    $company->setExtraFields($extraFields);
+                    $result = $this->addToCompanies($company);
                     break;
 
                 default:
@@ -1050,47 +1084,18 @@ class ImportUI extends UserInterface
    /*
     * Inserts a record into Companies.
     */
-    private function addToCompanies($dataNamed, $dataForeign, $importID)
+    /**
+     * @param Company $company
+     * @return string
+     */
+    private function addToCompanies(Company $company)
     {
         $companiesImport = new CompaniesImportService(
             $this->_siteID,
             new CompanyRepository(DatabaseConnection::getInstance()),
             new ExtraFieldRepository(DatabaseConnection::getInstance())
         );
-        $extraFields = array();
-        foreach ($dataForeign AS $field => $value)
-        {
-            if ($value != '')
-            {
-                $extraFields[] = new ExtraField(
-                    $this->_siteID,
-                    DATA_ITEM_COMPANY,
-                    null,
-                    $field,
-                    $value,
-                    $importID
-                );
-            }
-        }
-        $company = Company::create(
-            $this->_siteID,
-            $dataNamed['name'],
-            $dataNamed['address'],
-            $dataNamed['city'],
-            $dataNamed['state'],
-            $dataNamed['zipCode'],
-            $dataNamed['phoneNumberOne'],
-            $dataNamed['phoneNumberTwo'],
-            $dataNamed['faxNumber'],
-            $dataNamed['url'],
-            $dataNamed['keyTechnologies'],
-            $dataNamed['isHot'],
-            $dataNamed['notes'],
-            $this->_userID,
-            $this->_userID
-        );
-        $company->setImportId($importID);
-        $company->setExtraFields($extraFields);
+
         try {
             $companiesImport->add($company);
         }
