@@ -1113,14 +1113,30 @@ class ImportUI extends UserInterface
     {
         $contactImport = new ContactImportService($this->_siteID);
         $companies = new Companies($this->_siteID);
-
+        $company = Company::create(
+            $this->_siteID,
+            $dataNamed['company_id'],
+            isset($dataNamed['address']) ? $dataNamed['address'] : '',
+            isset($dataNamed['city']) ? $dataNamed['city'] : '',
+            isset($dataNamed['state']) ? $dataNamed['state'] : '',
+            isset($dataNamed['zip']) ? $dataNamed['zip'] : '',
+            isset($dataNamed['phone_work']) ? $dataNamed['phone_work'] : '',
+            '',
+            '',
+            '',
+            '',
+            null,
+            '',
+            $this->_userID,
+            $this->_userID
+        );
         /* Try to find the company. */
-        if (!isset($dataNamed['company_id']))
+        if (empty($company->getName()))
         {
             return 'Unable to add company - no company name.';
         }
 
-        $companyID = $companies->companyByName($dataNamed['company_id']);
+        $companyID = $companies->companyByName($company->getName());
 
         $genCompany = false;
 
@@ -1132,23 +1148,6 @@ class ImportUI extends UserInterface
                 $companiesImport = new CompaniesImportService(
                     $this->_siteID,
                     new CompanyRepository(DatabaseConnection::getInstance())
-                );
-                $company = Company::create(
-                    $this->_siteID,
-                    $dataNamed['company_id'],
-                    isset($dataNamed['address']) ? $dataNamed['address'] : '',
-                    isset($dataNamed['city']) ? $dataNamed['city'] : '',
-                    isset($dataNamed['state']) ? $dataNamed['state'] : '',
-                    isset($dataNamed['zip']) ? $dataNamed['zip'] : '',
-                    isset($dataNamed['phone_work']) ? $dataNamed['phone_work'] : '',
-                    '',
-                    '',
-                    '',
-                    '',
-                    null,
-                    '',
-                    $this->_userID,
-                    $this->_userID
                 );
                 $company->setImportId($importID);
                 $companyID = $companiesImport->add($company);
