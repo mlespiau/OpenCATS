@@ -51,7 +51,7 @@ use \OpenCATS\Entity\ExtraFieldRepository;
 class ImportUI extends UserInterface
 {
     const MAX_ERRORS = 100;
-
+    private $companiesImport;
 
     public function __construct()
     {
@@ -61,6 +61,11 @@ class ImportUI extends UserInterface
         $this->_moduleDirectory = 'import';
         $this->_moduleName = 'import';
         $this->_subTabs = array();
+        $this->companiesImport = new CompaniesImportService(
+            $this->_siteID,
+            new CompanyRepository(DatabaseConnection::getInstance()),
+            new ExtraFieldRepository(DatabaseConnection::getInstance())
+        );
     }
 
 
@@ -918,6 +923,7 @@ class ImportUI extends UserInterface
                     {
                         return 'Unable to add company - no company name.';
                     }
+
                     $result = $this->addToContacts($catsEntriesRows, $catsEntriesValuesNamed, $foreignEntries, $importID, $company);
                     break;
 
@@ -1111,14 +1117,8 @@ class ImportUI extends UserInterface
      */
     private function addToCompanies(Company $company)
     {
-        $companiesImport = new CompaniesImportService(
-            $this->_siteID,
-            new CompanyRepository(DatabaseConnection::getInstance()),
-            new ExtraFieldRepository(DatabaseConnection::getInstance())
-        );
-
         try {
-            $companiesImport->add($company);
+            $this->companiesImport->add($company);
         }
         catch (ImportServiceException $e)
         {
@@ -1140,15 +1140,10 @@ class ImportUI extends UserInterface
         {
             if ($_POST['generateCompanies'] == 'yes')
             {
-                $companiesImport = new CompaniesImportService(
-                    $this->_siteID,
-                    $companyRepository,
-                    new ExtraFieldRepository(DatabaseConnection::getInstance())
-                );
                 $company->setImportId($importID);
                 try
                 {
-                    $companiesImport->add($company);
+                    $this->companiesImport->add($company);
                 } catch (ImportServiceException $e)
                 {
                     return $e->getMessage();
