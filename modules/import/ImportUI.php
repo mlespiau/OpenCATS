@@ -52,6 +52,7 @@ class ImportUI extends UserInterface
 {
     const MAX_ERRORS = 100;
     private $companiesImport;
+    private $companyRepository;
 
     public function __construct()
     {
@@ -61,9 +62,10 @@ class ImportUI extends UserInterface
         $this->_moduleDirectory = 'import';
         $this->_moduleName = 'import';
         $this->_subTabs = array();
+        $this->companyRepository = new CompanyRepository(DatabaseConnection::getInstance());
         $this->companiesImport = new CompaniesImportService(
             $this->_siteID,
-            new CompanyRepository(DatabaseConnection::getInstance()),
+            $this->companyRepository,
             new ExtraFieldRepository(DatabaseConnection::getInstance())
         );
     }
@@ -1133,10 +1135,9 @@ class ImportUI extends UserInterface
     private function addToContacts($dataFields, $dataNamed, $dataForeign, $importID, $company)
     {
         $contactImport = new ContactImportService($this->_siteID);
-        $companyRepository = new CompanyRepository(DatabaseConnection::getInstance());
         $genCompany = false;
         /* The company does not exist. What do we do? */
-        if (!$companyRepository->exists($this->_siteID, $company->getName()))
+        if (!$this->companyRepository->exists($this->_siteID, $company->getName()))
         {
             if ($_POST['generateCompanies'] == 'yes')
             {
