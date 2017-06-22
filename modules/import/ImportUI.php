@@ -914,6 +914,10 @@ class ImportUI extends UserInterface
                         $this->_userID,
                         $this->_userID
                     );
+                    if (empty($company->getName()))
+                    {
+                        return 'Unable to add company - no company name.';
+                    }
                     $result = $this->addToContacts($catsEntriesRows, $catsEntriesValuesNamed, $foreignEntries, $importID, $company);
                     break;
 
@@ -1130,11 +1134,6 @@ class ImportUI extends UserInterface
     {
         $contactImport = new ContactImportService($this->_siteID);
         $companyRepository = new CompanyRepository(DatabaseConnection::getInstance());
-        /* Try to find the company. */
-        if (empty($company->getName()))
-        {
-            return 'Unable to add company - no company name.';
-        }
         $genCompany = false;
         /* The company does not exist. What do we do? */
         if (!$companyRepository->exists($this->_siteID, $company->getName()))
