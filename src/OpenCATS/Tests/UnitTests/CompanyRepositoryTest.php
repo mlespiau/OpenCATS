@@ -3,6 +3,7 @@ namespace OpenCATS\Tests\UnitTests;
 use PHPUnit\Framework\TestCase;
 use OpenCATS\Entity\CompanyRepository;
 use OpenCATS\Entity\Company;
+use OpenCATS\Exception\RepositoryException;
 
 if( !defined('LEGACY_ROOT') )
 {
@@ -92,7 +93,7 @@ class CompanyRepositoryTests extends TestCase
     }
     
     /**
-     * @expectedException OpenCATS\Entity\CompanyRepositoryException
+     * @expectedException OpenCATS\Exception\RepositoryException;
      */
     function test_persist_FailToCreateNewCompany_ThrowsException()
     {

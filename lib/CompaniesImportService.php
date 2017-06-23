@@ -1,8 +1,8 @@
 <?php
 use \OpenCATS\Entity\Company;
 use \OpenCATS\Entity\CompanyRepository;
-use \OpenCATS\Entity\CompanyRepositoryException;
 use \OpenCATS\Exception\ImportServiceException;
+use \OpenCATS\Exception\RepositoryException;
 use \OpenCATS\Entity\ExtraFieldRepository;
 
 
@@ -31,7 +31,7 @@ class CompaniesImportService
         if (!eval(Hooks::get('IMPORT_ADD_CLIENT'))) return;
         try {
             $companyId = $this->companyRepository->persist($company, new History($this->siteID));
-        } catch(CompanyRepositoryException $e) {
+        } catch(RepositoryException $e) {
             throw new ImportServiceException('Failed to add candidate.');
         }
         $company->setId($companyId);

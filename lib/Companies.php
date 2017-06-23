@@ -2,6 +2,7 @@
 include_once('./vendor/autoload.php');
 use OpenCATS\Entity\Company;
 use OpenCATS\Entity\CompanyRepository;
+use OpenCATS\Exception\RepositoryException;
 
 
 /**
@@ -106,7 +107,7 @@ class Companies
         $CompanyRepository = new CompanyRepository($this->_db);
         try {
             $companyId = $CompanyRepository->persist($company, new History($this->_siteID));
-        } catch(CompanyRepositoryException $e) {
+        } catch(RepositoryException $e) {
             return -1;
         }
         return $companyId;

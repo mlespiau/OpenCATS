@@ -86,7 +86,7 @@ class CompanyRepository
             $history->storeHistoryNew(DATA_ITEM_COMPANY, $companyId);
             return $companyId;
         } else {
-            throw new CompanyRepositoryException('errorPersistingCompany');
+            throw new RepositoryException('errorPersistingCompany');
         }
     }
     
