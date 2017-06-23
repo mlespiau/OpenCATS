@@ -47,6 +47,7 @@ use \OpenCATS\Entity\Company;
 use \OpenCATS\Exception\ImportServiceException;
 use \OpenCATS\Entity\ExtraField;
 use \OpenCATS\Entity\ExtraFieldRepository;
+use \OpenCATS\Entity\Contact;
 
 class ImportUI extends UserInterface
 {
@@ -1185,7 +1186,30 @@ class ImportUI extends UserInterface
             }
 
         }
-
+        $contact = Contact::create(
+            $this->_siteID,
+            $company->getId(),
+            isset($dataNamed['last_name']) ? $dataNamed['last_name'] : '',
+            isset($dataNamed['first_name']) ? $dataNamed['first_name'] : '',
+            isset($dataNamed['title']) ? $dataNamed['title'] : '',
+            isset($dataNamed['email1']) ? $dataNamed['email1'] : '',
+            isset($dataNamed['email2']) ? $dataNamed['email2'] : '',
+            isset($dataNamed['phoneWork']) ? $dataNamed['phoneWork'] : '',
+            isset($dataNamed['phoneCell']) ? $dataNamed['phoneCell'] : '',
+            isset($dataNamed['phoneOther']) ? $dataNamed['phoneOther'] : '',
+            isset($dataNamed['address']) ? $dataNamed['address'] : '',
+            isset($dataNamed['city']) ? $dataNamed['city'] : '',
+            isset($dataNamed['state']) ? $dataNamed['state'] : '',
+            isset($dataNamed['zip']) ? $dataNamed['zip'] : '',
+            isset($dataNamed['isHot']) ? $dataNamed['isHot'] : '',
+            isset($dataNamed['notes']) ? $dataNamed['notes'] : '',
+            $this->_userID,
+            $this->_userID,
+            isset($dataNamed['leftCompany']) ? $dataNamed['leftCompany'] : '',
+            isset($dataNamed['companyDepartmentId']) ? $dataNamed['companyDepartmentId'] : null,
+            isset($dataNamed['reportsTo']) ? $dataNamed['reportsTo'] : ''
+        );
+        $contact->setImportId($importID);
         if (!eval(Hooks::get('IMPORT_ADD_CONTACT'))) return;
 
         $contactID = $contactImport->add($dataNamed, $this->_userID, $importID);
