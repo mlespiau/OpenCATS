@@ -926,6 +926,27 @@ class ImportUI extends UserInterface
                         return 'Unable to add company - no company name.';
                     }
                     $genCompany = false;
+                    /* The company does not exist. What do we do? */
+                    if (!$this->companyRepository->exists($this->_siteID, $company->getName()))
+                    {
+                        if ($_POST['generateCompanies'] == 'yes')
+                        {
+                            $company->setImportId($importID);
+                            try
+                            {
+                                $this->companiesImport->add($company);
+                            } catch (ImportServiceException $e)
+                            {
+                                return $e->getMessage();
+                            }
+                            $genCompany = true;
+                        }
+                        else
+                        {
+                            /* Bail out of add - no company. */
+                            return 'Invalid company name.';
+                        }
+                    }
                     $result = $this->addToContacts($catsEntriesRows, $catsEntriesValuesNamed, $foreignEntries, $importID, $company, $genCompany);
                     break;
 
@@ -1135,29 +1156,6 @@ class ImportUI extends UserInterface
     private function addToContacts($dataFields, $dataNamed, $dataForeign, $importID, $company, $genCompany)
     {
         $contactImport = new ContactImportService($this->_siteID);
-
-        /* The company does not exist. What do we do? */
-        if (!$this->companyRepository->exists($this->_siteID, $company->getName()))
-        {
-            if ($_POST['generateCompanies'] == 'yes')
-            {
-                $company->setImportId($importID);
-                try
-                {
-                    $this->companiesImport->add($company);
-                } catch (ImportServiceException $e)
-                {
-                    return $e->getMessage();
-                }
-                $genCompany = true;
-            }
-            else
-            {
-                /* Bail out of add - no company. */
-                return 'Invalid company name.';
-            }
-        }
-
         $dataNamed['company_id'] = $company->getId();
 
         /* Bail out if any of the required fields are empty. */
