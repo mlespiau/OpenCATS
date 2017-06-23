@@ -947,7 +947,7 @@ class ImportUI extends UserInterface
                             return 'Invalid company name.';
                         }
                     }
-                    $result = $this->addToContacts($catsEntriesRows, $catsEntriesValuesNamed, $foreignEntries, $importID, $company, $genCompany);
+                    $result = $this->addToContacts($catsEntriesValuesNamed, $foreignEntries, $importID, $company, $genCompany);
                     break;
 
                 case 'Companies':
@@ -1153,7 +1153,7 @@ class ImportUI extends UserInterface
    /*
     * Inserts a record into Contacts.
     */
-    private function addToContacts($dataFields, $dataNamed, $dataForeign, $importID, $company, $genCompany)
+    private function addToContacts($dataNamed, $dataForeign, $importID, $company, $genCompany)
     {
         $contactImport = new ContactImportService($this->_siteID);
         $dataNamed['company_id'] = $company->getId();
