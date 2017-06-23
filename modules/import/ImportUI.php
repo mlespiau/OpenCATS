@@ -925,8 +925,8 @@ class ImportUI extends UserInterface
                     {
                         return 'Unable to add company - no company name.';
                     }
-
-                    $result = $this->addToContacts($catsEntriesRows, $catsEntriesValuesNamed, $foreignEntries, $importID, $company);
+                    $genCompany = false;
+                    $result = $this->addToContacts($catsEntriesRows, $catsEntriesValuesNamed, $foreignEntries, $importID, $company, $genCompany);
                     break;
 
                 case 'Companies':
@@ -1132,10 +1132,10 @@ class ImportUI extends UserInterface
    /*
     * Inserts a record into Contacts.
     */
-    private function addToContacts($dataFields, $dataNamed, $dataForeign, $importID, $company)
+    private function addToContacts($dataFields, $dataNamed, $dataForeign, $importID, $company, $genCompany)
     {
         $contactImport = new ContactImportService($this->_siteID);
-        $genCompany = false;
+
         /* The company does not exist. What do we do? */
         if (!$this->companyRepository->exists($this->_siteID, $company->getName()))
         {
