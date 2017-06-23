@@ -232,7 +232,7 @@ class Company
         $owner
     )
     {
-        $company = new Company($siteId, $name);
+        $company = new self($siteId, $name);
         $company->setAddress($address);
         $company->setCity($city);
         $company->setState($state);
