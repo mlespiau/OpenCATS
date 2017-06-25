@@ -156,8 +156,8 @@ class CompanyRepository
         try {
             $this->findByName($siteId, $companyName);
         } catch (RepositoryException $e) {
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 }
