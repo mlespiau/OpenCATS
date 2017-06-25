@@ -280,7 +280,7 @@ class Contact
     /**
      * @return mixed
      */
-    public function getIsHot()
+    public function isHot()
     {
         return $this->isHot;
     }
