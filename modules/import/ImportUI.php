@@ -42,12 +42,15 @@ include_once(LEGACY_ROOT . '/lib/ImportUtility.php');
 include_once(LEGACY_ROOT . '/lib/CandidatesImportService.php');
 include_once(LEGACY_ROOT . '/lib/CompaniesImportService.php');
 include_once(LEGACY_ROOT . '/lib/ContactsImportService.php');
+include_once(LEGACY_ROOT . '/lib/History.php');
 use \OpenCATS\Entity\CompanyRepository;
 use \OpenCATS\Entity\Company;
 use \OpenCATS\Exception\ImportServiceException;
 use \OpenCATS\Entity\ExtraField;
 use \OpenCATS\Entity\ExtraFieldRepository;
 use \OpenCATS\Entity\Contact;
+use \OpenCATS\Entity\ContactRepository;
+use \OpenCATS\Exception\RepositoryException;
 
 class ImportUI extends UserInterface
 {
@@ -64,6 +67,7 @@ class ImportUI extends UserInterface
         $this->_moduleName = 'import';
         $this->_subTabs = array();
         $this->companyRepository = new CompanyRepository(DatabaseConnection::getInstance());
+        $this->contactRepository = new ContactRepository(DatabaseConnection::getInstance());
         $this->companiesImport = new CompaniesImportService(
             $this->_siteID,
             $this->companyRepository,
@@ -1160,6 +1164,7 @@ class ImportUI extends UserInterface
     private function addToContacts($dataNamed, $dataForeign, $importID, $company, $genCompany)
     {
         $contactImport = new ContactImportService($this->_siteID);
+
         $dataNamed['company_id'] = $company->getId();
 
         /* Bail out if any of the required fields are empty. */
@@ -1215,7 +1220,7 @@ class ImportUI extends UserInterface
         $contact->setImportId($importID);
         if (!eval(Hooks::get('IMPORT_ADD_CONTACT'))) return;
 
-        $contactID = $contactImport->add($dataNamed, $this->_userID, $importID);
+        $contactID = $this->contactRepository->persist($contact, new \History($this->_siteID));
 
         if ($contactID <= 0)
         {
