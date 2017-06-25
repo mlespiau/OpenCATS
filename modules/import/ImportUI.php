@@ -1164,9 +1164,6 @@ class ImportUI extends UserInterface
     private function addToContacts($dataNamed, $dataForeign, $importID, $company, $genCompany)
     {
         $contactImport = new ContactImportService($this->_siteID);
-
-        $dataNamed['company_id'] = $company->getId();
-
         /* Bail out if any of the required fields are empty. */
 
         if (!empty($dataNamed['name']))
