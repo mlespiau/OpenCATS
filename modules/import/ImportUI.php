@@ -927,9 +927,11 @@ class ImportUI extends UserInterface
                         return 'Unable to add company - no company name.';
                     }
                     $genCompany = false;
-                    /* The company does not exist. What do we do? */
-                    if (!$this->companyRepository->exists($this->_siteID, $company->getName()))
-                    {
+
+                    try {
+                        $persistedCompany = $this->companyRepository->findByName($this->_siteID, $company->getName());
+                    } catch (RepositoryException $e) {
+                        /* The company does not exist. What do we do? */
                         if ($_POST['generateCompanies'] == 'yes')
                         {
                             $company->setImportId($importID);
@@ -941,6 +943,7 @@ class ImportUI extends UserInterface
                                 return $e->getMessage();
                             }
                             $genCompany = true;
+                            $persistedCompany = $company;
                         }
                         else
                         {
@@ -948,7 +951,7 @@ class ImportUI extends UserInterface
                             return 'Invalid company name.';
                         }
                     }
-                    $result = $this->addToContacts($catsEntriesValuesNamed, $foreignEntries, $importID, $company, $genCompany);
+                    $result = $this->addToContacts($catsEntriesValuesNamed, $foreignEntries, $importID, $persistedCompany, $genCompany);
                     break;
 
                 case 'Companies':
