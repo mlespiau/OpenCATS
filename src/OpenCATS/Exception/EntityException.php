@@ -1,6 +1,6 @@
 <?php
 namespace OpenCATS\Exception;
 
-class ImportServiceException extends \Exception
+class EntityException extends \Exception
 {
 }
