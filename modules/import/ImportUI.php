@@ -956,6 +956,22 @@ class ImportUI extends UserInterface
                             return 'Invalid company name.';
                         }
                     }
+                    /* Bail out if any of the required fields are empty. */
+                    if (!empty($catsEntriesValuesNamed['name']))
+                    {
+                        $nameArray = explode(' ', $catsEntriesValuesNamed['name']);
+                        $catsEntriesValuesNamed['first_name'] = $nameArray[0];
+                        $catsEntriesValuesNamed['last_name'] = $nameArray[count($nameArray)-1];
+                        unset($catsEntriesValuesNamed['name']);
+                    }
+
+                    if (!isset($catsEntriesValuesNamed['first_name']) && !isset($catsEntriesValuesNamed['last_name']))
+                    {
+                        if ($_POST['unnamedContacts'] == 'yes' && $genCompany)
+                        {
+                            $catsEntriesValuesNamed['first_name'] = 'nobody';
+                        }
+                    }
                     $result = $this->addToContacts($catsEntriesValuesNamed, $foreignEntries, $importID, $persistedCompany, $genCompany);
                     break;
 
@@ -1165,23 +1181,6 @@ class ImportUI extends UserInterface
     private function addToContacts($dataNamed, $dataForeign, $importID, $company, $genCompany)
     {
         $contactImport = new ContactImportService($this->_siteID);
-        /* Bail out if any of the required fields are empty. */
-
-        if (!empty($dataNamed['name']))
-        {
-            $nameArray = explode(' ', $dataNamed['name']);
-            $dataNamed['first_name'] = $nameArray[0];
-            $dataNamed['last_name'] = $nameArray[count($nameArray)-1];
-            unset($dataNamed['name']);
-        }
-
-        if (!isset($dataNamed['first_name']) && !isset($dataNamed['last_name']))
-        {
-            if ($_POST['unnamedContacts'] == 'yes' && $genCompany)
-            {
-                $dataNamed['first_name'] = 'nobody';
-            }
-        }
         try
         {
             $contact = Contact::create(
