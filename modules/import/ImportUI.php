@@ -1006,6 +1006,22 @@ class ImportUI extends UserInterface
                         }
                         return $error;
                     }
+                    $extraFields = array();
+                    foreach ($foreignEntries AS $field => $value)
+                    {
+                        if ($value != '')
+                        {
+                            $extraFields[] = new ExtraField(
+                                $this->_siteID,
+                                DATA_ITEM_CONTACT,
+                                null,
+                                $field,
+                                $value,
+                                $importID
+                            );
+                        }
+                    }
+                    $contact->setExtraFields($extraFields);
                     $contact->setImportId($importID);
                     $result = $this->addToContacts($contact, $foreignEntries, $importID, $genCompany);
                     break;
