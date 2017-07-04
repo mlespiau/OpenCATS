@@ -1,5 +1,6 @@
 <?php
 namespace OpenCATS\Entity;
+use OpenCATS\Entity\EntityException;
 
 class Contact
 {
@@ -460,6 +461,17 @@ class Contact
         $companyDepartmentId,
         $reportsTo
     ) {
+        if ($companyId <= 0) {
+            throw new EntityException('invalidCompanyId: company id must be greater than 0, it is: ' . $companyId);
+        }
+        if (empty($lastName))
+        {
+            throw new EntityException('invalidLastName: last name cannot be empty');
+        }
+        if (empty($firstName))
+        {
+            throw new EntityException('invalidFirstName: first name cannot be empty');
+        }
         $instance = new self($siteId, $companyId, $lastName, $firstName);
         $instance->setTitle($title);
         $instance->setEmail1($email1);

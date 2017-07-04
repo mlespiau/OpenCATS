@@ -51,6 +51,7 @@ use \OpenCATS\Entity\ExtraFieldRepository;
 use \OpenCATS\Entity\Contact;
 use \OpenCATS\Entity\ContactRepository;
 use \OpenCATS\Exception\RepositoryException;
+use \OpenCATS\Exception\EntityException;
 
 class ImportUI extends UserInterface
 {
@@ -1180,40 +1181,42 @@ class ImportUI extends UserInterface
             {
                 $dataNamed['first_name'] = 'nobody';
             }
-            else
-            {
-                $error = 'Required fields (first name, last name) are missing.';
-                if ($genCompany)
-                {
-                    $error .= '  However, the company was generated.';
-                }
-                return $error;
-            }
-
         }
-        $contact = Contact::create(
-            $this->_siteID,
-            $company->getId(),
-            isset($dataNamed['last_name']) ? $dataNamed['last_name'] : '',
-            isset($dataNamed['first_name']) ? $dataNamed['first_name'] : '',
-            isset($dataNamed['title']) ? $dataNamed['title'] : '',
-            isset($dataNamed['email1']) ? $dataNamed['email1'] : '',
-            isset($dataNamed['email2']) ? $dataNamed['email2'] : '',
-            isset($dataNamed['phoneWork']) ? $dataNamed['phoneWork'] : '',
-            isset($dataNamed['phoneCell']) ? $dataNamed['phoneCell'] : '',
-            isset($dataNamed['phoneOther']) ? $dataNamed['phoneOther'] : '',
-            isset($dataNamed['address']) ? $dataNamed['address'] : '',
-            isset($dataNamed['city']) ? $dataNamed['city'] : '',
-            isset($dataNamed['state']) ? $dataNamed['state'] : '',
-            isset($dataNamed['zip']) ? $dataNamed['zip'] : '',
-            isset($dataNamed['isHot']) ? $dataNamed['isHot'] : '',
-            isset($dataNamed['notes']) ? $dataNamed['notes'] : '',
-            $this->_userID,
-            $this->_userID,
-            isset($dataNamed['leftCompany']) ? $dataNamed['leftCompany'] : '',
-            isset($dataNamed['companyDepartmentId']) ? $dataNamed['companyDepartmentId'] : null,
-            isset($dataNamed['reportsTo']) ? $dataNamed['reportsTo'] : ''
-        );
+        try
+        {
+            $contact = Contact::create(
+                $this->_siteID,
+                $company->getId(),
+                isset($dataNamed['last_name']) ? $dataNamed['last_name'] : '',
+                isset($dataNamed['first_name']) ? $dataNamed['first_name'] : '',
+                isset($dataNamed['title']) ? $dataNamed['title'] : '',
+                isset($dataNamed['email1']) ? $dataNamed['email1'] : '',
+                isset($dataNamed['email2']) ? $dataNamed['email2'] : '',
+                isset($dataNamed['phoneWork']) ? $dataNamed['phoneWork'] : '',
+                isset($dataNamed['phoneCell']) ? $dataNamed['phoneCell'] : '',
+                isset($dataNamed['phoneOther']) ? $dataNamed['phoneOther'] : '',
+                isset($dataNamed['address']) ? $dataNamed['address'] : '',
+                isset($dataNamed['city']) ? $dataNamed['city'] : '',
+                isset($dataNamed['state']) ? $dataNamed['state'] : '',
+                isset($dataNamed['zip']) ? $dataNamed['zip'] : '',
+                isset($dataNamed['isHot']) ? $dataNamed['isHot'] : '',
+                isset($dataNamed['notes']) ? $dataNamed['notes'] : '',
+                $this->_userID,
+                $this->_userID,
+                isset($dataNamed['leftCompany']) ? $dataNamed['leftCompany'] : '',
+                isset($dataNamed['companyDepartmentId']) ? $dataNamed['companyDepartmentId'] : null,
+                isset($dataNamed['reportsTo']) ? $dataNamed['reportsTo'] : ''
+            );
+        } catch (EntityException $e)
+        {
+            $error = $e->getMessage();
+            if ($genCompany)
+            {
+                $error .= '.  However, the company was generated.';
+            }
+            return $error;
+        }
+
         $contact->setImportId($importID);
         if (!eval(Hooks::get('IMPORT_ADD_CONTACT'))) return;
 
