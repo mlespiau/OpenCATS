@@ -29,6 +29,7 @@ class Contact
     private $importId;
     private $companyDepartmentId;
     private $reportsTo;
+    private $id;
 
     public function __construct($siteId, $companyId, $lastName, $firstName)
     {
@@ -36,6 +37,22 @@ class Contact
         $this->companyId = $companyId;
         $this->lastName = $lastName;
         $this->firstName = $firstName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     /**

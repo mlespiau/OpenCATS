@@ -1,42 +1,32 @@
 <?php
 
 include_once(LEGACY_ROOT . '/lib/ImportService.php');
+use \OpenCATS\Entity\Contact;
+use \OpenCATS\Entity\ContactRepository;
+use \OpenCATS\Exception\ImportServiceException;
+use \OpenCATS\Exception\RepositoryException;
 
-class ContactImportService extends ImportService
+class ContactImportService
 {
-    public function __construct($siteID)
+    private $siteID;
+    private $contactRepository;
+
+    public function __construct($siteId, ContactRepository $contactRepository)
     {
-       parent::__construct($siteID);
+        $this->siteID = $siteId;
+        $this->contactRepository = $contactRepository;
     }
 
-    public function getInsertQuery($columns, $values, $userID, $importID)
+    public function add(Contact $contact)
     {
-        return sprintf(
-            "INSERT INTO contact (
-                %s,
-                entered_by,
-                owner,
-                site_id,
-                date_created,
-                date_modified,
-                import_id
-            )
-            VALUES (
-                %s,
-                %s,
-                %s,
-                %s,
-                NOW(),
-                NOW(),
-                %s
-            )",
-            implode(",\n", $columns),
-            implode(",\n", $values),
-            $userID,
-            $userID,
-            $this->_siteID,
-            $importID
-        );
+        if (!eval(Hooks::get('IMPORT_ADD_CONTACT'))) return;
+        try {
+            $contactId = $this->contactRepository->persist($contact, new History($this->siteID));
+        } catch(RepositoryException $e) {
+            throw new ImportServiceException('Failed to add contact');
+        }
+        $contact->setId($contactId);
+        return $contactId;
     }
 
 }
