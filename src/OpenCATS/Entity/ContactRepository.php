@@ -104,7 +104,7 @@ class ContactRepository
             $history->storeHistoryNew(DATA_ITEM_CONTACT, $contactId);
             return $contactId;
         } else {
-            throw new RepositoryException('errorPersistingCompany');
+            throw new RepositoryException('errorPersistingContact');
         }
     }
 }
