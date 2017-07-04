@@ -972,7 +972,42 @@ class ImportUI extends UserInterface
                             $catsEntriesValuesNamed['first_name'] = 'nobody';
                         }
                     }
-                    $result = $this->addToContacts($catsEntriesValuesNamed, $foreignEntries, $importID, $persistedCompany, $genCompany);
+                    try
+                    {
+                        $contact = Contact::create(
+                            $this->_siteID,
+                            $persistedCompany->getId(),
+                            isset($catsEntriesValuesNamed['last_name']) ? $catsEntriesValuesNamed['last_name'] : '',
+                            isset($catsEntriesValuesNamed['first_name']) ? $catsEntriesValuesNamed['first_name'] : '',
+                            isset($catsEntriesValuesNamed['title']) ? $catsEntriesValuesNamed['title'] : '',
+                            isset($catsEntriesValuesNamed['email1']) ? $catsEntriesValuesNamed['email1'] : '',
+                            isset($catsEntriesValuesNamed['email2']) ? $catsEntriesValuesNamed['email2'] : '',
+                            isset($catsEntriesValuesNamed['phoneWork']) ? $catsEntriesValuesNamed['phoneWork'] : '',
+                            isset($catsEntriesValuesNamed['phoneCell']) ? $catsEntriesValuesNamed['phoneCell'] : '',
+                            isset($catsEntriesValuesNamed['phoneOther']) ? $catsEntriesValuesNamed['phoneOther'] : '',
+                            isset($catsEntriesValuesNamed['address']) ? $catsEntriesValuesNamed['address'] : '',
+                            isset($catsEntriesValuesNamed['city']) ? $catsEntriesValuesNamed['city'] : '',
+                            isset($catsEntriesValuesNamed['state']) ? $catsEntriesValuesNamed['state'] : '',
+                            isset($catsEntriesValuesNamed['zip']) ? $catsEntriesValuesNamed['zip'] : '',
+                            isset($catsEntriesValuesNamed['isHot']) ? $catsEntriesValuesNamed['isHot'] : '',
+                            isset($catsEntriesValuesNamed['notes']) ? $catsEntriesValuesNamed['notes'] : '',
+                            $this->_userID,
+                            $this->_userID,
+                            isset($catsEntriesValuesNamed['leftCompany']) ? $catsEntriesValuesNamed['leftCompany'] : '',
+                            isset($catsEntriesValuesNamed['companyDepartmentId']) ? $catsEntriesValuesNamed['companyDepartmentId'] : null,
+                            isset($catsEntriesValuesNamed['reportsTo']) ? $catsEntriesValuesNamed['reportsTo'] : ''
+                        );
+                    } catch (EntityException $e)
+                    {
+                        $error = $e->getMessage();
+                        if ($genCompany)
+                        {
+                            $error .= '.  However, the company was generated.';
+                        }
+                        return $error;
+                    }
+                    $contact->setImportId($importID);
+                    $result = $this->addToContacts($contact, $foreignEntries, $importID, $genCompany);
                     break;
 
                 case 'Companies':
@@ -1178,45 +1213,9 @@ class ImportUI extends UserInterface
    /*
     * Inserts a record into Contacts.
     */
-    private function addToContacts($dataNamed, $dataForeign, $importID, $company, $genCompany)
+    private function addToContacts($contact, $dataForeign, $importID, $genCompany)
     {
         $contactImport = new ContactImportService($this->_siteID);
-        try
-        {
-            $contact = Contact::create(
-                $this->_siteID,
-                $company->getId(),
-                isset($dataNamed['last_name']) ? $dataNamed['last_name'] : '',
-                isset($dataNamed['first_name']) ? $dataNamed['first_name'] : '',
-                isset($dataNamed['title']) ? $dataNamed['title'] : '',
-                isset($dataNamed['email1']) ? $dataNamed['email1'] : '',
-                isset($dataNamed['email2']) ? $dataNamed['email2'] : '',
-                isset($dataNamed['phoneWork']) ? $dataNamed['phoneWork'] : '',
-                isset($dataNamed['phoneCell']) ? $dataNamed['phoneCell'] : '',
-                isset($dataNamed['phoneOther']) ? $dataNamed['phoneOther'] : '',
-                isset($dataNamed['address']) ? $dataNamed['address'] : '',
-                isset($dataNamed['city']) ? $dataNamed['city'] : '',
-                isset($dataNamed['state']) ? $dataNamed['state'] : '',
-                isset($dataNamed['zip']) ? $dataNamed['zip'] : '',
-                isset($dataNamed['isHot']) ? $dataNamed['isHot'] : '',
-                isset($dataNamed['notes']) ? $dataNamed['notes'] : '',
-                $this->_userID,
-                $this->_userID,
-                isset($dataNamed['leftCompany']) ? $dataNamed['leftCompany'] : '',
-                isset($dataNamed['companyDepartmentId']) ? $dataNamed['companyDepartmentId'] : null,
-                isset($dataNamed['reportsTo']) ? $dataNamed['reportsTo'] : ''
-            );
-        } catch (EntityException $e)
-        {
-            $error = $e->getMessage();
-            if ($genCompany)
-            {
-                $error .= '.  However, the company was generated.';
-            }
-            return $error;
-        }
-
-        $contact->setImportId($importID);
         if (!eval(Hooks::get('IMPORT_ADD_CONTACT'))) return;
 
         $contactID = $this->contactRepository->persist($contact, new \History($this->_siteID));
