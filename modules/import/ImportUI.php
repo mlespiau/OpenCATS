@@ -1031,7 +1031,7 @@ class ImportUI extends UserInterface
                     $contact->setExtraFields($extraFields);
                     $contact->setImportId($importID);
                     $contact->setExtraFields($extraFields);
-                    $result = $this->addToContacts($contact, $foreignEntries, $importID, $genCompany);
+                    $result = $this->addToContacts($contact, $genCompany);
                     break;
 
                 case 'Companies':
@@ -1237,7 +1237,7 @@ class ImportUI extends UserInterface
    /*
     * Inserts a record into Contacts.
     */
-    private function addToContacts(Contact $contact, $dataForeign, $importID, $genCompany)
+    private function addToContacts(Contact $contact, $genCompany)
     {
         try {
             $this->contactImportService->add($contact);
