@@ -913,7 +913,7 @@ class ImportUI extends UserInterface
             switch ($importInto)
             {
                 case 'Candidates':
-                    $result = $this->addToCandidates($catsEntriesRows, $catsEntriesValuesNamed, $foreignEntries, $importID);
+                    $result = $this->addToCandidates($catsEntriesValuesNamed, $foreignEntries, $importID);
                     break;
 
                 case 'Contacts':
@@ -1181,7 +1181,7 @@ class ImportUI extends UserInterface
    /*
     * Inserts a record into candidates.
     */
-    private function addToCandidates($dataFields, $dataNamed, $dataForeign, $importID)
+    private function addToCandidates($dataNamed, $dataForeign, $importID)
     {
         /* Bail out if any of the required fields are empty. */
 
