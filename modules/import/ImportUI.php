@@ -58,6 +58,7 @@ class ImportUI extends UserInterface
     const MAX_ERRORS = 100;
     private $companiesImport;
     private $companyRepository;
+    private $contactImportService;
 
     public function __construct()
     {
@@ -69,10 +70,16 @@ class ImportUI extends UserInterface
         $this->_subTabs = array();
         $this->companyRepository = new CompanyRepository(DatabaseConnection::getInstance());
         $this->contactRepository = new ContactRepository(DatabaseConnection::getInstance());
+        $extraFieldRepository = new ExtraFieldRepository(DatabaseConnection::getInstance());
         $this->companiesImport = new CompaniesImportService(
             $this->_siteID,
             $this->companyRepository,
-            new ExtraFieldRepository(DatabaseConnection::getInstance())
+            $extraFieldRepository
+        );
+        $this->contactImportService = new ContactImportService(
+            $this->_siteID,
+            $this->contactRepository,
+            $extraFieldRepository
         );
     }
 
