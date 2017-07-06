@@ -1229,7 +1229,7 @@ class ImportUI extends UserInterface
    /*
     * Inserts a record into Contacts.
     */
-    private function addToContacts($contact, $dataForeign, $importID, $genCompany)
+    private function addToContacts(Contact $contact, $dataForeign, $importID, $genCompany)
     {
         $contactImport = new ContactImportService($this->_siteID);
         $contactID = $contactImport->add($contact);
