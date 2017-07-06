@@ -30,6 +30,7 @@ class ContactImportService
         }
         $contact->setId($contactId);
         $this->persistExtraFields($contact);
+        if (!eval(Hooks::get('IMPORT_ADD_CONTACT_POST'))) return;
         return $contactId;
     }
 

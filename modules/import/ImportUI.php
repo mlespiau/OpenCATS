@@ -1246,8 +1246,6 @@ class ImportUI extends UserInterface
         {
             return $e->getMessage();
         }
-        if (!eval(Hooks::get('IMPORT_ADD_CONTACT_POST'))) return;
-
         if ($genCompany)
         {
             return 'newCompany';
