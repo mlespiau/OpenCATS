@@ -836,7 +836,6 @@ class ImportUI extends UserInterface
                     return;
             }
 
-            $catsEntriesRows = array();
             $catsEntriesValuesNamed = array();
             $foreignEntries = array();
 
@@ -857,7 +856,6 @@ class ImportUI extends UserInterface
                     }
                     else
                     {
-                        $catsEntriesRows[] = $_POST['importIntoField' .$fieldID];
                         if ($encoding != "") {
                             $catsEntriesValuesNamed[$_POST['importIntoField' . $fieldID]] = trim(iconv($encoding, 'UTF-8', $theData[$fieldID]));
                         } else {
