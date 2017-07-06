@@ -29,6 +29,7 @@ class Contact
     private $importId;
     private $companyDepartmentId;
     private $reportsTo;
+    private $extraFields;
     private $id;
 
     public function __construct($siteId, $companyId, $lastName, $firstName)
@@ -45,6 +46,22 @@ class Contact
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExtraFields()
+    {
+        return $this->extraFields;
+    }
+
+    /**
+     * @param mixed $extraFields
+     */
+    public function setExtraFields($extraFields)
+    {
+        $this->extraFields = $extraFields;
     }
 
     /**
