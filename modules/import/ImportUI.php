@@ -1238,11 +1238,14 @@ class ImportUI extends UserInterface
     */
     private function addToContacts(Contact $contact, $dataForeign, $importID, $genCompany)
     {
-        $contactImport = new ContactImportService($this->_siteID);
-        $contactID = $contactImport->add($contact);
-
         $this->addForeign(DATA_ITEM_CONTACT, $dataForeign, $contactID, $importID);
-
+        try {
+            $this->contactImportService->add($contact);
+        }
+        catch (ImportServiceException $e)
+        {
+            return $e->getMessage();
+        }
         if (!eval(Hooks::get('IMPORT_ADD_CONTACT_POST'))) return;
 
         if ($genCompany)
