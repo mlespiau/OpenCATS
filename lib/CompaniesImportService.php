@@ -9,6 +9,7 @@ use \OpenCATS\Entity\ExtraFieldRepository;
 class CompaniesImportService
 {
     private $companyRepository;
+    private $extraFieldRepository;
     private $siteID;
 
     public function __construct($siteID, CompanyRepository $companyRepository, ExtraFieldRepository $extraFieldRepository)
