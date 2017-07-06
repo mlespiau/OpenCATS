@@ -1219,10 +1219,8 @@ class ImportUI extends UserInterface
         return '';
     }
 
-   /*
-    * Inserts a record into Companies.
-    */
     /**
+     * Inserts a record into Companies.
      * @param Company $company
      * @return string
      */
@@ -1238,9 +1236,11 @@ class ImportUI extends UserInterface
         return '';
     }
 
-   /*
-    * Inserts a record into Contacts.
-    */
+    /**
+     * Inserts a record into Contacts.
+     * @param Contact $contact
+     * @return string
+     */
     private function addToContacts(Contact $contact)
     {
         try {
