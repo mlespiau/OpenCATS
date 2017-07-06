@@ -1183,8 +1183,6 @@ class ImportUI extends UserInterface
     */
     private function addToCandidates($dataFields, $dataNamed, $dataForeign, $importID)
     {
-        $dateAvailable = '01/01/0001';
-
         /* Bail out if any of the required fields are empty. */
 
         if (!empty($dataNamed['name']))
