@@ -56,7 +56,7 @@ use \OpenCATS\Exception\EntityException;
 class ImportUI extends UserInterface
 {
     const MAX_ERRORS = 100;
-    private $companiesImport;
+    private $companiesImportService;
     private $companyRepository;
     private $contactImportService;
 
@@ -71,7 +71,7 @@ class ImportUI extends UserInterface
         $this->companyRepository = new CompanyRepository(DatabaseConnection::getInstance());
         $this->contactRepository = new ContactRepository(DatabaseConnection::getInstance());
         $extraFieldRepository = new ExtraFieldRepository(DatabaseConnection::getInstance());
-        $this->companiesImport = new CompaniesImportService(
+        $this->companiesImportService = new CompaniesImportService(
             $this->_siteID,
             $this->companyRepository,
             $extraFieldRepository
@@ -947,7 +947,7 @@ class ImportUI extends UserInterface
                             $company->setImportId($importID);
                             try
                             {
-                                $this->companiesImport->add($company);
+                                $this->companiesImportService->add($company);
                             } catch (ImportServiceException $e)
                             {
                                 return $e->getMessage();
@@ -1223,7 +1223,7 @@ class ImportUI extends UserInterface
     private function addToCompanies(Company $company)
     {
         try {
-            $this->companiesImport->add($company);
+            $this->companiesImportService->add($company);
         }
         catch (ImportServiceException $e)
         {
