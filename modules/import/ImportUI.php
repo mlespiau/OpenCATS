@@ -59,7 +59,9 @@ class ImportUI extends UserInterface
     private $companiesImportService;
     private $companyRepository;
     private $contactRepository;
+    private $candidateRepository;
     private $contactImportService;
+    private $candidatesImportService;
 
     public function __construct()
     {
@@ -71,6 +73,7 @@ class ImportUI extends UserInterface
         $this->_subTabs = array();
         $this->companyRepository = new CompanyRepository(DatabaseConnection::getInstance());
         $this->contactRepository = new ContactRepository(DatabaseConnection::getInstance());
+        $this->candidateRepository = new CandidateRepository(DatabaseConnection::getInstance());
         $extraFieldRepository = new ExtraFieldRepository(DatabaseConnection::getInstance());
         $this->companiesImportService = new CompaniesImportService(
             $this->_siteID,
@@ -80,6 +83,11 @@ class ImportUI extends UserInterface
         $this->contactImportService = new ContactImportService(
             $this->_siteID,
             $this->contactRepository,
+            $extraFieldRepository
+        );
+        $this->candidatesImportService = new CandidatesImportService(
+            $this->_siteID,
+            $this->candidateRepository,
             $extraFieldRepository
         );
     }
@@ -1201,8 +1209,7 @@ class ImportUI extends UserInterface
 
         if (!eval(Hooks::get('IMPORT_ADD_CANDIDATE'))) return;
 
-        $candidatesImport = new CandidatesImportService($this->_siteID);
-        $candidateID = $candidatesImport->add($dataNamed, $this->_userID, $importID);
+        $candidateID = $this->candidatesImportService->add($dataNamed, $this->_userID, $importID);
 
         if ($candidateID <= 0)
         {
