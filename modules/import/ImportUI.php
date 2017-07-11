@@ -58,6 +58,7 @@ class ImportUI extends UserInterface
     const MAX_ERRORS = 100;
     private $companiesImportService;
     private $companyRepository;
+    private $contactRepository;
     private $contactImportService;
 
     public function __construct()
